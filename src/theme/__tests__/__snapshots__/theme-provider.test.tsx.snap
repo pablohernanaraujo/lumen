@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ThemeProvider custom persistence key should render correctly with custom persistence key 1`] = `
+[
+  <Text
+    testID="current-mode"
+  >
+    dark
+  </Text>,
+  <Text
+    testID="background-color"
+  >
+    #000000
+  </Text>,
+  <Text
+    testID="text-color"
+  >
+    #FFFFFF
+  </Text>,
+  <Text
+    onPress={[Function]}
+    testID="set-light"
+  >
+    Set Light
+  </Text>,
+  <Text
+    onPress={[Function]}
+    testID="set-dark"
+  >
+    Set Dark
+  </Text>,
+  <Text
+    onPress={[Function]}
+    testID="toggle-mode"
+  >
+    Toggle Mode
+  </Text>,
+]
+`;
+
+exports[`ThemeProvider with preference prop should render correctly with dark preference 1`] = `
+[
+  <Text
+    testID="current-mode"
+  >
+    dark
+  </Text>,
+  <Text
+    testID="background-color"
+  >
+    #000000
+  </Text>,
+  <Text
+    testID="text-color"
+  >
+    #FFFFFF
+  </Text>,
+  <Text
+    onPress={[Function]}
+    testID="set-light"
+  >
+    Set Light
+  </Text>,
+  <Text
+    onPress={[Function]}
+    testID="set-dark"
+  >
+    Set Dark
+  </Text>,
+  <Text
+    onPress={[Function]}
+    testID="toggle-mode"
+  >
+    Toggle Mode
+  </Text>,
+]
+`;

@@ -1,0 +1,372 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Icon accessibility should render correctly with accessibility disabled 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={false}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-no-accessibility-1"
+/>
+`;
+
+exports[`Icon accessibility should render correctly with custom accessibility label 1`] = `
+<MaterialIcons
+  accessibilityLabel="Custom home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-accessibility-1"
+/>
+`;
+
+exports[`Icon edge cases should render correctly with empty name 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons  icon"
+  accessible={true}
+  color="#1A1A1A"
+  name=""
+  size={16}
+  testID="icon-empty-name-1"
+/>
+`;
+
+exports[`Icon edge cases should render correctly with unknown family (fallback to MaterialIcons) 1`] = `
+<MaterialIcons
+  accessibilityLabel="UnknownFamily home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-unknown-family-1"
+/>
+`;
+
+exports[`Icon interactive functionality should render as touchable when onPress is provided 1`] = `
+<View
+  accessibilityLabel="MaterialIcons home button"
+  accessibilityRole="button"
+  accessibilityState={
+    {
+      "busy": undefined,
+      "checked": undefined,
+      "disabled": undefined,
+      "expanded": undefined,
+      "selected": undefined,
+    }
+  }
+  accessibilityValue={
+    {
+      "max": undefined,
+      "min": undefined,
+      "now": undefined,
+      "text": undefined,
+    }
+  }
+  accessible={true}
+  collapsable={false}
+  focusable={true}
+  onClick={[Function]}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    {
+      "opacity": 1,
+    }
+  }
+  testID="icon-touchable-1-button"
+>
+  <MaterialIcons
+    accessibilityLabel="MaterialIcons home icon"
+    accessible={true}
+    color="#1A1A1A"
+    name="home"
+    size={16}
+    testID="icon-touchable-1"
+  />
+</View>
+`;
+
+exports[`Icon interactive functionality should render correctly with children 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-with-children-1"
+>
+  <AntDesign
+    accessibilityLabel="AntDesign star icon"
+    accessible={true}
+    color="#1A1A1A"
+    name="star"
+    size={14}
+    testID="icon-child-1"
+  />
+</MaterialIcons>
+`;
+
+exports[`Icon snapshots should render correctly in dark mode 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#FFFFFF"
+  name="home"
+  size={16}
+  testID="icon-1"
+/>
+`;
+
+exports[`Icon snapshots should render correctly in light mode 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-1"
+/>
+`;
+
+exports[`Icon with custom styling should render correctly with custom color 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#ff0000"
+  name="home"
+  size={16}
+  testID="icon-red-1"
+/>
+`;
+
+exports[`Icon with custom styling should render correctly with custom style 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  style={
+    {
+      "margin": 8,
+    }
+  }
+  testID="icon-styled-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with AntDesign family 1`] = `
+<AntDesign
+  accessibilityLabel="AntDesign home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-AntDesign-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with Entypo family 1`] = `
+<Entypo
+  accessibilityLabel="Entypo home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-Entypo-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with EvilIcons family 1`] = `
+<EvilIcons
+  accessibilityLabel="EvilIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-EvilIcons-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with Feather family 1`] = `
+<Feather
+  accessibilityLabel="Feather home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-Feather-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with FontAwesome family 1`] = `
+<FontAwesome
+  accessibilityLabel="FontAwesome home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-FontAwesome-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with FontAwesome5 family 1`] = `
+<FontAwesome5
+  accessibilityLabel="FontAwesome5 home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-FontAwesome5-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with Foundation family 1`] = `
+<Foundation
+  accessibilityLabel="Foundation home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-Foundation-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with Ionicons family 1`] = `
+<Ionicons
+  accessibilityLabel="Ionicons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-Ionicons-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with MaterialCommunityIcons family 1`] = `
+<MaterialCommunityIcons
+  accessibilityLabel="MaterialCommunityIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-MaterialCommunityIcons-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with MaterialIcons family 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-MaterialIcons-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with Octicons family 1`] = `
+<Octicons
+  accessibilityLabel="Octicons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-Octicons-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with SimpleLineIcons family 1`] = `
+<SimpleLineIcons
+  accessibilityLabel="SimpleLineIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-SimpleLineIcons-1"
+/>
+`;
+
+exports[`Icon with different families should render correctly with Zocial family 1`] = `
+<Zocial
+  accessibilityLabel="Zocial home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-Zocial-1"
+/>
+`;
+
+exports[`Icon with different sizes should render correctly with custom numeric size 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={32}
+  testID="icon-custom-size-1"
+/>
+`;
+
+exports[`Icon with different sizes should render correctly with lg size 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={18}
+  testID="icon-lg-1"
+/>
+`;
+
+exports[`Icon with different sizes should render correctly with md size 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={16}
+  testID="icon-md-1"
+/>
+`;
+
+exports[`Icon with different sizes should render correctly with sm size 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={14}
+  testID="icon-sm-1"
+/>
+`;
+
+exports[`Icon with different sizes should render correctly with xl size 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={20}
+  testID="icon-xl-1"
+/>
+`;
+
+exports[`Icon with different sizes should render correctly with xs size 1`] = `
+<MaterialIcons
+  accessibilityLabel="MaterialIcons home icon"
+  accessible={true}
+  color="#1A1A1A"
+  name="home"
+  size={12}
+  testID="icon-xs-1"
+/>
+`;

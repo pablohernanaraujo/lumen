@@ -1,0 +1,383 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ContentWrapper edge cases should render correctly with unknown variant (fallback to screen) 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper snapshots should render correctly in dark mode 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper snapshots should render correctly in light mode 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with borderless prop should render correctly with borderless and different variants: borderless-body 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "flex": 1,
+        "paddingVertical": 8,
+      },
+      {
+        "paddingHorizontal": 0,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with borderless prop should render correctly with borderless and different variants: borderless-footer 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingBottom": 24,
+        "paddingTop": 16,
+      },
+      {
+        "paddingHorizontal": 0,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with borderless prop should render correctly with borderless and different variants: borderless-header 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingBottom": 16,
+        "paddingTop": 24,
+      },
+      {
+        "paddingHorizontal": 0,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with borderless prop should render correctly with borderless and different variants: borderless-screen 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      {
+        "paddingHorizontal": 0,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with borderless prop should render correctly with borderless disabled 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with borderless prop should render correctly with borderless enabled 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      {
+        "paddingHorizontal": 0,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with custom styling should render correctly with custom style 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      {
+        "backgroundColor": "#3B82F6",
+        "margin": 8,
+      },
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with custom styling should render correctly with custom style and borderless 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      {
+        "paddingHorizontal": 0,
+      },
+      {
+        "backgroundColor": "#10B981",
+      },
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with different content should render correctly with multiple children 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    First Child
+  </Text>
+  <Text>
+    Second Child
+  </Text>
+  <Text>
+    Third Child
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with different content should render correctly with no children 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+/>
+`;
+
+exports[`ContentWrapper with different variants should render correctly with body variant 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "flex": 1,
+        "paddingVertical": 8,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with different variants should render correctly with footer variant 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingBottom": 24,
+        "paddingTop": 16,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with different variants should render correctly with header variant 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingBottom": 16,
+        "paddingTop": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ContentWrapper with different variants should render correctly with screen variant 1`] = `
+<View
+  style={
+    [
+      {
+        "paddingHorizontal": 16,
+      },
+      {
+        "paddingVertical": 24,
+      },
+      false,
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;

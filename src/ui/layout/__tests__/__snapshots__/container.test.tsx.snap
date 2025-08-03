@@ -1,0 +1,370 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Container edge cases should render correctly with empty scrollViewProps 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="handled"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container edge cases should render correctly with no children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="handled"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View />
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container snapshots should render correctly in dark mode 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#000000",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="handled"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#000000",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container snapshots should render correctly in light mode 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="handled"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container with different props should render correctly with custom scrollViewProps 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    bounces={false}
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    contentInsetAdjustmentBehavior="automatic"
+    keyboardShouldPersistTaps="handled"
+    showsHorizontalScrollIndicator={true}
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container with different props should render correctly with custom style 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      {
+        "backgroundColor": "#EF4444",
+      },
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="handled"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        {
+          "backgroundColor": "#EF4444",
+        },
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container with different props should render correctly with keyboardShouldPersistTaps set to always 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="always"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container with different props should render correctly with keyboardShouldPersistTaps set to never 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="never"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;
+
+exports[`Container with different props should render correctly with multiple children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <RCTScrollView
+    contentContainerStyle={
+      {
+        "flexGrow": 1,
+      }
+    }
+    keyboardShouldPersistTaps="handled"
+    showsVerticalScrollIndicator={false}
+    style={
+      [
+        {
+          "backgroundColor": "#FFFFFF",
+          "flex": 1,
+        },
+        undefined,
+      ]
+    }
+  >
+    <View>
+      <Text>
+        First Child
+      </Text>
+      <Text>
+        Second Child
+      </Text>
+      <Text>
+        Third Child
+      </Text>
+    </View>
+  </RCTScrollView>
+</View>
+`;

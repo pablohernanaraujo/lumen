@@ -1,0 +1,798 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`VStack edge cases should render correctly with children without keys 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    No Key 1
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    No Key 2
+  </Text>
+</View>
+`;
+
+exports[`VStack edge cases should render correctly with empty children 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+/>
+`;
+
+exports[`VStack edge cases should render correctly with no children 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+/>
+`;
+
+exports[`VStack snapshots should render correctly in dark mode 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack snapshots should render correctly in light mode 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack spacing behavior should apply correct spacing between multiple children 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 32,
+        },
+      ]
+    }
+  >
+    Child 1
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 32,
+        },
+      ]
+    }
+  >
+    Child 2
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 32,
+        },
+      ]
+    }
+  >
+    Child 3
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Child 4
+  </Text>
+</View>
+`;
+
+exports[`VStack spacing behavior should not apply margin to last child 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Last
+  </Text>
+</View>
+`;
+
+exports[`VStack with custom styling should render correctly with custom style 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      {
+        "backgroundColor": "#EF4444",
+        "padding": 8,
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack with custom styling should render correctly with custom style and spacing 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      {
+        "backgroundColor": "#3B82F6",
+      },
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack with different children types should render correctly with children having existing styles 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        {
+          "color": "#EF4444",
+        },
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    Styled Text 1
+  </Text>
+  <Text
+    style={
+      [
+        {
+          "fontWeight": "700",
+        },
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    Styled Text 2
+  </Text>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#3B82F6",
+          "padding": 4,
+        },
+        false,
+      ]
+    }
+  >
+    <Text>
+      Nested Content
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`VStack with different children types should render correctly with mixed children types 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    Text Child
+  </Text>
+  <View
+    style={
+      [
+        {
+          "backgroundColor": "#EF4444",
+          "height": 20,
+          "width": 20,
+        },
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  />
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Another Text
+  </Text>
+</View>
+`;
+
+exports[`VStack with different children types should render correctly with null/undefined children 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    Valid Child
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Another Valid Child
+  </Text>
+</View>
+`;
+
+exports[`VStack with different children types should render correctly with single child 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Single Child
+  </Text>
+</View>
+`;
+
+exports[`VStack with different children types should render correctly with string children 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    String child 1
+  </View>
+  <View
+    style={
+      {
+        "marginBottom": 16,
+      }
+    }
+  >
+    String child 2
+  </View>
+  <View>
+    String child 3
+  </View>
+</View>
+`;
+
+exports[`VStack with different spacing should render correctly with lg spacing 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 24,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack with different spacing should render correctly with md spacing 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 16,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack with different spacing should render correctly with sm spacing 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 8,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 8,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack with different spacing should render correctly with xl spacing 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 32,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 32,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;
+
+exports[`VStack with different spacing should render correctly with xs spacing 1`] = `
+<View
+  style={
+    [
+      {
+        "flexDirection": "column",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 4,
+        },
+      ]
+    }
+  >
+    First
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        {
+          "marginBottom": 4,
+        },
+      ]
+    }
+  >
+    Second
+  </Text>
+  <Text
+    style={
+      [
+        undefined,
+        false,
+      ]
+    }
+  >
+    Third
+  </Text>
+</View>
+`;

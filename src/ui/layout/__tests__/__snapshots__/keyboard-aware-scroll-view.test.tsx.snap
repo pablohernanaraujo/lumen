@@ -1,0 +1,635 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KeyboardAwareScrollView Android Platform should render correctly on Android with custom Android props 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={false}
+  enableOnAndroid={true}
+  extraHeight={100}
+  extraScrollHeight={50}
+  keyboardOpeningTime={500}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Android Platform should render correctly on Android with custom styles 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      {
+        "padding": 24,
+      },
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      {
+        "backgroundColor": "#3B82F6",
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Android Platform should render correctly on Android with default props 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Android Platform should render correctly on Android with disabled features 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={false}
+  enableOnAndroid={false}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={true}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Android Platform should render correctly on Android with keyboard callbacks 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  onKeyboardWillHide={[MockFunction]}
+  onKeyboardWillShow={[MockFunction]}
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Common Props should render correctly with custom scroll view props 1`] = `
+<KeyboardAwareScrollView
+  bounces={false}
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  horizontal={false}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="always"
+  scrollEnabled={false}
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Common Props should render correctly with different keyboardShouldPersistTaps values: persistTaps-always 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="always"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Common Props should render correctly with different keyboardShouldPersistTaps values: persistTaps-handled 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Common Props should render correctly with different keyboardShouldPersistTaps values: persistTaps-never 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="never"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Common Props should render correctly with showsVerticalScrollIndicator enabled 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={true}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Edge Cases should render correctly with extreme prop values 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={0}
+  extraScrollHeight={1000}
+  keyboardOpeningTime={0}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Edge Cases should render correctly with multiple children 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    First Child
+  </Text>
+  <TextInput
+    placeholder="Input 1"
+  />
+  <Text>
+    Second Child
+  </Text>
+  <TextInput
+    placeholder="Input 2"
+  />
+  <View
+    style={
+      {
+        "backgroundColor": "#E5E7EB",
+        "height": 50,
+      }
+    }
+  />
+</KeyboardAwareScrollView>
+`;
+
+exports[`KeyboardAwareScrollView Edge Cases should render correctly with no children 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+/>
+`;
+
+exports[`KeyboardAwareScrollView Edge Cases should render correctly with null children 1`] = `
+<KeyboardAwareScrollView
+  contentContainerStyle={
+    [
+      {
+        "flexGrow": 1,
+      },
+      undefined,
+    ]
+  }
+  enableAutomaticScroll={true}
+  enableOnAndroid={true}
+  extraHeight={75}
+  extraScrollHeight={0}
+  keyboardOpeningTime={250}
+  keyboardShouldPersistTaps="handled"
+  showsVerticalScrollIndicator={false}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+/>
+`;
+
+exports[`KeyboardAwareScrollView iOS Platform should render correctly on iOS with custom behavior 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAwareScrollView iOS Platform should render correctly on iOS with custom style 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        {
+          "backgroundColor": "#EF4444",
+          "padding": 8,
+        },
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAwareScrollView iOS Platform should render correctly on iOS with default props 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAwareScrollView iOS Platform should render correctly on iOS with keyboardVerticalOffset 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "bottom": 0,
+      }
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+      <TextInput
+        placeholder="Test Input"
+      />
+    </View>
+  </View>
+</View>
+`;

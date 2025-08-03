@@ -1,97 +1,232 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Lumen 💡
 
-# Getting Started
+**Lumen** is a modern cryptocurrency portfolio tracker built with React Native and the New Architecture. Track your crypto investments with a beautiful, intuitive interface and real-time data.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## ✨ Features
 
-## Step 1: Start Metro
+- 🔐 **Authentication System** - Secure login and registration
+- 📊 **Crypto Portfolio Tracking** - Monitor your cryptocurrency investments
+- 💱 **Real-time Crypto Data** - View current prices and market changes
+- 🎨 **Dynamic Theming** - Light and dark mode support
+- 📱 **Cross-platform** - Works on both iOS and Android
+- ⚡ **New Architecture** - Built with React Native's latest Fabric and TurboModules
+- 🎯 **TypeScript** - Full type safety throughout the application
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## 🚀 Technology Stack
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+- **React Native 0.80.2** with New Architecture
+- **TypeScript** for type safety
+- **React Navigation 7** for routing
+- **Fabric** rendering system
+- **TurboModules** for native modules
+- **Vector Icons** for beautiful iconography
+- **Keyboard handling** for better UX
+- **ESLint + Prettier** for code quality
 
-```sh
-# Using npm
+## 📋 Prerequisites
+
+Before running this application, make sure you have completed the [React Native Environment Setup](https://reactnative.dev/docs/set-up-your-environment).
+
+- Node.js >= 18
+- React Native CLI
+- Android Studio (for Android development)
+- Xcode (for iOS development)
+- CocoaPods (for iOS dependencies)
+
+## 🛠️ Installation & Setup
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd Lumen
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **iOS Setup** (iOS only)
+
+   ```bash
+   # Install Ruby dependencies
+   bundle install
+
+   # Install CocoaPods dependencies
+   bundle exec pod install
+   ```
+
+4. **Environment Configuration**
+   ```bash
+   # Create environment file if needed
+   cp .env.example .env
+   ```
+
+## 🚀 Running the Application
+
+### Standard Mode
+
+```bash
+# Start Metro bundler
 npm start
 
-# OR using Yarn
-yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+# Run on Android
 npm run android
 
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
+# Run on iOS
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### New Architecture Mode
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+For enhanced performance with React Native's New Architecture:
 
-## Step 3: Modify your app
+```bash
+# Start Metro with New Architecture
+npm run start:new-arch
 
-Now that you have successfully run the app, let's make changes!
+# Run Android with New Architecture
+npm run android:new-arch
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+# Run iOS with New Architecture
+npm run ios:new-arch
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+# Or use the helper script
+./scripts/new-arch.sh
+```
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🧪 Development
 
-## Congratulations! :tada:
+### Testing
 
-You've successfully run and modified your React Native App. :partying_face:
+```bash
+# Run tests
+npm test
 
-### Now what?
+# Run tests in watch mode
+npm test -- --watch
+```
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+### Code Quality
 
-# Troubleshooting
+```bash
+# Lint code
+npm run lint
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+# Fix linting issues
+npm run lint -- --fix
+```
 
-# Learn More
+### Debugging
 
-To learn more about React Native, take a look at the following resources:
+- **Android**: Press <kbd>R</kbd> twice or <kbd>Ctrl/Cmd</kbd> + <kbd>M</kbd> for dev menu
+- **iOS**: Press <kbd>R</kbd> in the simulator
+- **Fast Refresh** is enabled by default for instant updates
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## 📱 App Structure
+
+```
+src/
+├── app.tsx                 # Main app component
+├── routing/                # Navigation setup
+│   ├── root-navigator.tsx  # Main navigation container
+│   ├── app-stack.tsx       # Authenticated app screens
+│   ├── auth-stack.tsx      # Authentication screens
+│   └── screens/            # All screen components
+│       ├── auth/           # Login & Register
+│       ├── crypto/         # Crypto list & details
+│       └── splash/         # Splash screen
+├── theme/                  # Theming system
+│   ├── colors.ts           # Color definitions
+│   ├── tokens.ts           # Design tokens
+│   └── theme-provider.tsx  # Theme context
+├── ui/                     # Reusable UI components
+│   ├── layout/             # Layout components
+│   └── icon/               # Icon components
+└── wording/                # Internationalization
+```
+
+## 🏗️ Architecture
+
+This project leverages React Native's **New Architecture** for optimal performance:
+
+- **Fabric**: New rendering system for smoother UI
+- **TurboModules**: Enhanced native module system
+- **Codegen**: Type-safe native interface generation
+- **Hermes**: High-performance JavaScript engine
+
+Key environment variables:
+
+- `REACT_NATIVE_USE_NEW_ARCHITECTURE=1`
+- `USE_FABRIC=1`
+- `USE_TURBOMODULE=1`
+
+## 🎨 UI Components
+
+The app includes a comprehensive design system with:
+
+- **Layout Components**: Container, VStack, HStack, ScreenWrapper
+- **Interactive Elements**: Buttons, Forms, Input fields
+- **Navigation**: Stack navigation with smooth transitions
+- **Theming**: Dynamic light/dark mode switching
+- **Icons**: Material Icons integration
+
+## 🔧 Configuration Files
+
+- `metro.config.js` - Metro bundler configuration
+- `eslint.config.mjs` - ESLint rules and setup
+- `babel.config.js` - Babel transformation settings
+- `tsconfig.json` - TypeScript configuration
+- `jest.config.js` - Testing framework setup
+
+## 📚 Additional Documentation
+
+- [`NEW_ARCHITECTURE.md`](./NEW_ARCHITECTURE.md) - Detailed New Architecture migration guide
+- [`CLAUDE.md`](./CLAUDE.md) - Development guidelines for AI assistance
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **Metro bundler fails to start**
+
+   ```bash
+   npx react-native start --reset-cache
+   ```
+
+2. **iOS build fails**
+
+   ```bash
+   cd ios && bundle exec pod install
+   ```
+
+3. **Android build issues**
+
+   ```bash
+   cd android && ./gradlew clean
+   ```
+
+4. **New Architecture issues**
+   - Ensure all environment variables are set
+   - Clean and rebuild the project
+   - Check [`NEW_ARCHITECTURE.md`](./NEW_ARCHITECTURE.md) for detailed guidance
+
+For more troubleshooting, visit the [React Native Troubleshooting Guide](https://reactnative.dev/docs/troubleshooting).
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+---
+
+Built with ❤️ using React Native and the New Architecture

@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`makeStyles style function behavior should create consistent styles across multiple calls 1`] = `
+<View>
+  <Text
+    style={
+      {
+        "color": "#1A1A1A",
+      }
+    }
+  >
+    Test 1
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#1A1A1A",
+      }
+    }
+  >
+    Test 2
+  </Text>
+</View>
+`;
+
+exports[`makeStyles style function behavior should handle complex style objects 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": 8,
+      "paddingHorizontal": 24,
+      "paddingVertical": 8,
+    }
+  }
+/>
+`;
+
+exports[`makeStyles style function behavior should handle empty style objects 1`] = `
+<View
+  style={{}}
+/>
+`;
+
+exports[`makeStyles theme integration should create styles with dark theme 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#000000",
+      "padding": 16,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#FFFFFF",
+        "fontSize": 16,
+      }
+    }
+  >
+    Test Text
+  </Text>
+  <View
+    style={
+      {
+        "borderColor": "#374151",
+        "borderWidth": 1,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`makeStyles theme integration should create styles with light theme 1`] = `
+<View
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "padding": 16,
+    }
+  }
+>
+  <Text
+    style={
+      {
+        "color": "#1A1A1A",
+        "fontSize": 16,
+      }
+    }
+  >
+    Test Text
+  </Text>
+  <View
+    style={
+      {
+        "borderColor": "#E5E7EB",
+        "borderWidth": 1,
+      }
+    }
+  />
+</View>
+`;
+
+exports[`makeStyles theme responsiveness should update styles when theme changes: dark-responsive 1`] = `
+<Text
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "color": "#1A1A1A",
+    }
+  }
+  testID="responsive-text"
+>
+  Responsive Text
+</Text>
+`;
+
+exports[`makeStyles theme responsiveness should update styles when theme changes: light-responsive 1`] = `
+<Text
+  style={
+    {
+      "backgroundColor": "#FFFFFF",
+      "color": "#1A1A1A",
+    }
+  }
+  testID="responsive-text"
+>
+  Responsive Text
+</Text>
+`;

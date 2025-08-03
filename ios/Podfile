@@ -20,8 +20,17 @@ target 'Lumen' do
   use_react_native!(
     :path => config[:reactNativePath],
     # An absolute path to your application root.
-    :app_path => "#{Pod::Config.instance.installation_root}/.."
+    :app_path => "#{Pod::Config.instance.installation_root}/..",
+    # Enable the New Architecture
+    :fabric_enabled => true,
+    :hermes_enabled => true
   )
+
+  # Vector Icons configuration
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+  
+  # React Navigation screens configuration
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
 
   post_install do |installer|
     # https://github.com/facebook/react-native/blob/main/packages/react-native/scripts/react_native_pods.rb#L197-L202

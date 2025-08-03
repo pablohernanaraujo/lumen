@@ -1,0 +1,453 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`KeyboardAvoidingView Android Platform should render correctly on Android (no KeyboardAvoidingView wrapper) 1`] = `
+<View>
+  <Text>
+    Test Content
+  </Text>
+  <TextInput
+    placeholder="Test Input"
+  />
+</View>
+`;
+
+exports[`KeyboardAvoidingView Android Platform should render correctly on Android with ignored props 1`] = `
+<View>
+  <Text>
+    Test Content
+  </Text>
+  <TextInput
+    placeholder="Test Input"
+  />
+</View>
+`;
+
+exports[`KeyboardAvoidingView Android Platform should render correctly on Android with multiple children 1`] = `
+[
+  <Text>
+    First Child
+  </Text>,
+  <TextInput
+    placeholder="Input 1"
+  />,
+  <Text>
+    Second Child
+  </Text>,
+  <TextInput
+    placeholder="Input 2"
+  />,
+  <View
+    style={
+      {
+        "backgroundColor": "gray",
+        "height": 50,
+      }
+    }
+  />,
+]
+`;
+
+exports[`KeyboardAvoidingView Cross-Platform Edge Cases should render correctly with no children on Android 1`] = `null`;
+
+exports[`KeyboardAvoidingView Cross-Platform Edge Cases should render correctly with no children on iOS 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+/>
+`;
+
+exports[`KeyboardAvoidingView Cross-Platform Edge Cases should render correctly with null children on Android 1`] = `null`;
+
+exports[`KeyboardAvoidingView Cross-Platform Edge Cases should render correctly with null children on iOS 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+/>
+`;
+
+exports[`KeyboardAvoidingView Cross-Platform Edge Cases should render correctly with string children on Android 1`] = `"Direct string content"`;
+
+exports[`KeyboardAvoidingView Cross-Platform Edge Cases should render correctly with string children on iOS 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  Direct string content
+</View>
+`;
+
+exports[`KeyboardAvoidingView Default Prop Handling should handle undefined behavior gracefully 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView Default Prop Handling should handle undefined keyboardVerticalOffset gracefully 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView Default Prop Handling should use default behavior when not specified 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView Default Prop Handling should use default keyboardVerticalOffset when not specified 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "bottom": 0,
+      }
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+      <TextInput
+        placeholder="Test Input"
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with custom style 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        {
+          "backgroundColor": "red",
+          "padding": 10,
+        },
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with default props 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with height behavior 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with keyboardVerticalOffset 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with negative keyboardVerticalOffset 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with padding behavior 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with position behavior 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      {
+        "flex": 1,
+      },
+      undefined,
+    ]
+  }
+>
+  <View
+    style={
+      {
+        "bottom": 0,
+      }
+    }
+  >
+    <View>
+      <Text>
+        Test Content
+      </Text>
+      <TextInput
+        placeholder="Test Input"
+      />
+    </View>
+  </View>
+</View>
+`;
+
+exports[`KeyboardAvoidingView iOS Platform should render correctly on iOS with zero keyboardVerticalOffset 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    [
+      [
+        {
+          "flex": 1,
+        },
+        undefined,
+      ],
+      {
+        "paddingBottom": 0,
+      },
+    ]
+  }
+>
+  <View>
+    <Text>
+      Test Content
+    </Text>
+    <TextInput
+      placeholder="Test Input"
+    />
+  </View>
+</View>
+`;

@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ScreenWrapper edge cases should render correctly with empty children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+/>
+`;
+
+exports[`ScreenWrapper edge cases should render correctly with mixed content types 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  String content
+  <Text>
+    Text component
+  </Text>
+  42
+</View>
+`;
+
+exports[`ScreenWrapper edge cases should render correctly with string children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  Direct string content
+</View>
+`;
+
+exports[`ScreenWrapper integration with SafeAreaView should properly wrap content with SafeAreaView 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Safe area content
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper snapshots should render correctly in dark mode 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#000000",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper snapshots should render correctly in light mode 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper with custom styling should render correctly with complex custom styling 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      {
+        "backgroundColor": "#3B82F6",
+        "borderColor": "#FFFFFF",
+        "borderWidth": 2,
+        "margin": 8,
+      },
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper with custom styling should render correctly with custom style 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      {
+        "backgroundColor": "#EF4444",
+        "padding": 16,
+      },
+    ]
+  }
+>
+  <Text>
+    Test Content
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper with different content should render correctly with complex nested content 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text
+    style={
+      {
+        "fontSize": 20,
+        "fontWeight": "700",
+      }
+    }
+  >
+    Title
+  </Text>
+  <Text>
+    Some body text content
+  </Text>
+  <Text
+    style={
+      {
+        "color": "#6B7280",
+        "fontSize": 12,
+      }
+    }
+  >
+    Footer text
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper with different content should render correctly with multiple children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+>
+  <Text>
+    First Child
+  </Text>
+  <Text>
+    Second Child
+  </Text>
+  <Text>
+    Third Child
+  </Text>
+</View>
+`;
+
+exports[`ScreenWrapper with different content should render correctly with no children 1`] = `
+<View
+  style={
+    [
+      {
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "space-between",
+      },
+      undefined,
+    ]
+  }
+/>
+`;
