@@ -1,15 +1,9 @@
 import React, { type FC, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-import { makeStyles } from '../../../../theme';
-import {
-  Container,
-  ContentWrapper,
-  HStack,
-  Icon,
-  VStack,
-} from '../../../../ui';
-import type { RegisterScreenProps } from '../../../types';
+import type { RegisterScreenProps } from '../../../routing';
+import { makeStyles } from '../../../theme';
+import { Container, ContentWrapper, HStack, Icon, VStack } from '../../../ui';
 import type { RegisterFormData } from './types';
 
 const useStyles = makeStyles((theme) => ({

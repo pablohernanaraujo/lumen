@@ -1,30 +1,20 @@
 import React, { type FC, useState } from 'react';
-import { Text, TextInput, TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 
-import { makeStyles } from '../../../../theme';
+import type { RootNavigationProp } from '../../../routing';
+import { makeStyles } from '../../../theme';
 import {
+  Body1,
   Container,
   ContentWrapper,
+  H1,
   HStack,
   Icon,
   VStack,
-} from '../../../../ui';
-import type { RootNavigationProp } from '../../../types';
+} from '../../../ui';
 import type { LoginFormData } from './types';
 
 const useStyles = makeStyles((theme) => ({
-  title: {
-    fontSize: theme.typography.size.xxxl,
-    fontWeight: theme.typography.weight.bold,
-    color: theme.colors.text.primary,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: theme.typography.size.lg,
-    fontWeight: theme.typography.weight.regular,
-    color: theme.colors.text.secondary,
-    textAlign: 'center',
-  },
   input: {
     backgroundColor: theme.colors.surface,
     borderWidth: 1,
@@ -81,8 +71,8 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
     <Container>
       <ContentWrapper variant="header">
         <VStack spacing="sm">
-          <Text style={styles.title}>Welcome Back</Text>
-          <Text style={styles.subtitle}>Sign in to your account</Text>
+          <H1>Welcome Back</H1>
+          <Body1 emphasis="medium">Sign in to your account</Body1>
         </VStack>
       </ContentWrapper>
 
@@ -96,7 +86,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
           />
 
           <VStack spacing="md">
-            <Text>Email</Text>
+            <Body1 emphasis="medium">Email</Body1>
             <TextInput
               style={styles.input}
               value={formData.email}
@@ -115,7 +105,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
               testID="email-input"
             />
 
-            <Text>Password</Text>
+            <Body1 emphasis="medium">Password</Body1>
             <TextInput
               style={styles.input}
               value={formData.password}
@@ -143,13 +133,13 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
             onPress={handleLogin}
             testID="login-button"
           >
-            <Text style={styles.buttonText}>Sign In</Text>
+            <Body1 emphasis="medium">Sign In</Body1>
           </TouchableOpacity>
 
           <HStack spacing="sm">
-            <Text>Don't have an account?</Text>
+            <Body1 emphasis="medium">Don't have an account?</Body1>
             <TouchableOpacity onPress={handleRegister} testID="register-link">
-              <Text style={styles.linkText}>Sign Up</Text>
+              <Body1 emphasis="medium">Sign Up</Body1>
             </TouchableOpacity>
           </HStack>
         </VStack>

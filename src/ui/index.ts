@@ -16,3 +16,13 @@ export {
   ScreenWrapper,
   VStack,
 } from './layout';
+export type {
+  BaseTypographyProps,
+  Body1Props,
+  Body2Props,
+  EmphasisLevel,
+  H1Props,
+  H2Props,
+  H3Props,
+} from './typography';
+export { Body1, Body2, H1, H2, H3 } from './typography';

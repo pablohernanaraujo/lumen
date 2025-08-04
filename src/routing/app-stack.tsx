@@ -1,9 +1,9 @@
 import React, { type FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { CryptoDetailScreen } from '../screens/crypto/crypto-detail';
+import { CryptoListScreen } from '../screens/crypto/crypto-list';
 import { useTheme } from '../theme';
-import { CryptoDetailScreen } from './screens/crypto/crypto-detail';
-import { CryptoListScreen } from './screens/crypto/crypto-list';
 import type { AppStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<AppStackParamList>();

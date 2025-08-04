@@ -42,11 +42,11 @@ export type {
   RegisterFormData,
   RegisterScreenState,
   SplashScreenState,
-} from './screens';
+} from '../screens';
 export {
   CryptoDetailScreen,
   CryptoListScreen,
   LoginScreen,
   RegisterScreen,
   SplashScreen,
-} from './screens';
+} from '../screens';

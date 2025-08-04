@@ -36,3 +36,5 @@ export interface ThemeProviderProps {
   preference?: Mode;
   persistenceKey?: string;
 }
+
+export type EmphasisLevel = keyof BaseTokens['emphasis'];

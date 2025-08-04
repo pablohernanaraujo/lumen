@@ -1,0 +1,24 @@
+import type { ReactNode } from 'react';
+import type { TextStyle } from 'react-native';
+
+import type { baseTokens } from '../../theme/tokens';
+
+export type EmphasisLevel = keyof typeof baseTokens.emphasis;
+
+export interface BaseTypographyProps {
+  children: ReactNode;
+  emphasis?: EmphasisLevel;
+  color?: string;
+  style?: TextStyle;
+  testID?: string;
+}
+
+export interface H1Props extends BaseTypographyProps {}
+
+export interface H2Props extends BaseTypographyProps {}
+
+export interface H3Props extends BaseTypographyProps {}
+
+export interface Body1Props extends BaseTypographyProps {}
+
+export interface Body2Props extends BaseTypographyProps {}

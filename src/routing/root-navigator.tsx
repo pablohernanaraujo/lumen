@@ -1,11 +1,11 @@
 import React, { type FC } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { SplashScreen } from '../screens/splash';
 import { useTheme } from '../theme';
 import { KeyboardAwareScrollView } from '../ui/layout';
 import { AppStack } from './app-stack';
 import { AuthStack } from './auth-stack';
-import { SplashScreen } from './screens/splash';
 import type { RootStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

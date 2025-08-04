@@ -5,6 +5,7 @@ export { baseTokens } from './tokens';
 export type {
   BaseTokens,
   ColorTokens,
+  EmphasisLevel,
   Mode,
   NamedStyles,
   StyleFunction,

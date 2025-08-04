@@ -1,15 +1,9 @@
 import { type FC, useEffect, useState } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-import { makeStyles } from '../../../../theme';
-import {
-  Container,
-  ContentWrapper,
-  HStack,
-  Icon,
-  VStack,
-} from '../../../../ui';
-import type { CryptoDetailScreenProps } from '../../../types';
+import type { CryptoDetailScreenProps } from '../../../routing';
+import { makeStyles } from '../../../theme';
+import { Container, ContentWrapper, HStack, Icon, VStack } from '../../../ui';
 import type { CryptoDetail } from './types';
 
 const useStyles = makeStyles((theme) => ({

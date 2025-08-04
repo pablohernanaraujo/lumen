@@ -78,4 +78,10 @@ export const baseTokens = {
     overlay: 0.8,
     subtle: 0.4,
   },
+  emphasis: {
+    pure: 1,
+    high: 0.87,
+    medium: 0.6,
+    low: 0.38,
+  },
 } as const;

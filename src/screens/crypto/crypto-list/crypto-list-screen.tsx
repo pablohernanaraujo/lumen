@@ -1,15 +1,9 @@
 import React, { type FC, type ReactElement, useEffect, useState } from 'react';
 import { FlatList, Text, TouchableOpacity } from 'react-native';
 
-import { makeStyles } from '../../../../theme';
-import {
-  Container,
-  ContentWrapper,
-  HStack,
-  Icon,
-  VStack,
-} from '../../../../ui';
-import type { CryptoListScreenProps } from '../../../types';
+import type { CryptoListScreenProps } from '../../../routing';
+import { makeStyles } from '../../../theme';
+import { Container, ContentWrapper, HStack, Icon, VStack } from '../../../ui';
 import type { CryptoItem } from './types';
 
 const useStyles = makeStyles((theme) => ({

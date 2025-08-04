@@ -1,9 +1,9 @@
 import React, { type FC, useEffect } from 'react';
 import { Text } from 'react-native';
 
-import { makeStyles } from '../../../theme';
-import { ContentWrapper, Icon, ScreenWrapper, VStack } from '../../../ui';
-import type { SplashScreenProps } from '../../types';
+import type { SplashScreenProps } from '../../routing';
+import { makeStyles } from '../../theme';
+import { ContentWrapper, Icon, ScreenWrapper, VStack } from '../../ui';
 
 const useStyles = makeStyles((theme) => ({
   title: {
