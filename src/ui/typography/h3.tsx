@@ -14,7 +14,9 @@ export const H3: FC<H3Props> = ({
 }) => {
   const { theme } = useTheme();
 
-  const textColor = color || theme.colors.text.primary;
+  const textColor = color
+    ? theme.colors.text[color]
+    : theme.colors.text.primary;
   const emphasisOpacity = theme.emphasis[emphasis];
   const finalColor = getColorOpacity(textColor, emphasisOpacity);
 

@@ -10,6 +10,7 @@ export type {
   NamedStyles,
   StyleFunction,
   StylesOrFunction,
+  TextColorKeys,
   Theme,
   ThemeColors,
   ThemeContextValue,

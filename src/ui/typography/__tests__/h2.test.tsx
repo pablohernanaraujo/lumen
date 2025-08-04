@@ -44,7 +44,7 @@ describe('H2', () => {
   });
 
   it('should apply custom color', () => {
-    render(<H2 color="#FF0000">Test heading</H2>);
+    render(<H2 color="warning">Test heading</H2>);
 
     expect(true).toBe(true); // Color application is tested through theme integration
   });

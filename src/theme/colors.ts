@@ -8,6 +8,9 @@ export const colorTokens = {
       secondary: '#6B7280',
       tertiary: '#9CA3AF',
       inverse: '#FFFFFF',
+      link: '#2563EB',
+      warning: '#D97706',
+      error: '#DC2626',
     },
     primary: {
       50: '#EFF6FF',
@@ -73,6 +76,9 @@ export const colorTokens = {
       secondary: '#A1A1AA',
       tertiary: '#71717A',
       inverse: '#000000',
+      link: '#60A5FA',
+      warning: '#FBBF24',
+      error: '#F87171',
     },
     primary: {
       50: '#1E3A8A',

@@ -2,13 +2,14 @@ import type { ReactNode } from 'react';
 import type { TextStyle } from 'react-native';
 
 import type { baseTokens } from '../../theme/tokens';
+import type { TextColorKeys } from '../../theme/types';
 
 export type EmphasisLevel = keyof typeof baseTokens.emphasis;
 
 export interface BaseTypographyProps {
   children: ReactNode;
   emphasis?: EmphasisLevel;
-  color?: string;
+  color?: TextColorKeys;
   style?: TextStyle;
   testID?: string;
 }

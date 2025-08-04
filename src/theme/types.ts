@@ -38,3 +38,5 @@ export interface ThemeProviderProps {
 }
 
 export type EmphasisLevel = keyof BaseTokens['emphasis'];
+
+export type TextColorKeys = keyof ThemeColors['text'];

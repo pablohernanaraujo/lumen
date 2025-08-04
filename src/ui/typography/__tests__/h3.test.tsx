@@ -44,7 +44,7 @@ describe('H3', () => {
   });
 
   it('should apply custom color', () => {
-    render(<H3 color="#FF0000">Test heading</H3>);
+    render(<H3 color="link">Test heading</H3>);
 
     expect(true).toBe(true); // Color application is tested through theme integration
   });

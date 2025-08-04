@@ -44,7 +44,7 @@ describe('Body1', () => {
   });
 
   it('should apply custom color', () => {
-    render(<Body1 color="#FF0000">Test body text</Body1>);
+    render(<Body1 color="secondary">Test body text</Body1>);
 
     expect(true).toBe(true); // Color application is tested through theme integration
   });

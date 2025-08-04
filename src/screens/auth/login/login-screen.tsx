@@ -34,16 +34,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     minHeight: 44,
   },
-  buttonText: {
-    color: theme.colors.text.inverse,
-    fontSize: theme.typography.size.md,
-    fontWeight: theme.typography.weight.semibold,
-  },
-  linkText: {
-    color: theme.colors.primary.main,
-    fontSize: theme.typography.size.md,
-    fontWeight: theme.typography.weight.medium,
-  },
 }));
 
 interface LoginScreenProps {
@@ -139,7 +129,9 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
           <HStack spacing="sm">
             <Body1 emphasis="medium">Don't have an account?</Body1>
             <TouchableOpacity onPress={handleRegister} testID="register-link">
-              <Body1 emphasis="medium">Sign Up</Body1>
+              <Body1 emphasis="medium" color="link">
+                Sign Up
+              </Body1>
             </TouchableOpacity>
           </HStack>
         </VStack>
