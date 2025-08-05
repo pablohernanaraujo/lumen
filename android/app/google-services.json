@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "779027575909",
+    "firebase_url": "https://surface-98e86-default-rtdb.firebaseio.com",
+    "project_id": "surface-98e86",
+    "storage_bucket": "surface-98e86.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779027575909:android:f8e50dbbdae63f393c828c",
+        "android_client_info": {
+          "package_name": "com.lumen"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDs-ZkoZEmRxnhUAalcX7-sygyCG_Dlr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

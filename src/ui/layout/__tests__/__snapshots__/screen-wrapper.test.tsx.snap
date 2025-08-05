@@ -5,9 +5,7 @@ exports[`ScreenWrapper edge cases should render correctly with empty children 1`
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -20,9 +18,7 @@ exports[`ScreenWrapper edge cases should render correctly with mixed content typ
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -41,9 +37,7 @@ exports[`ScreenWrapper edge cases should render correctly with string children 1
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -58,9 +52,7 @@ exports[`ScreenWrapper integration with SafeAreaView should properly wrap conten
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -77,9 +69,7 @@ exports[`ScreenWrapper snapshots should render correctly in dark mode 1`] = `
   style={
     [
       {
-        "backgroundColor": "#000000",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -96,9 +86,7 @@ exports[`ScreenWrapper snapshots should render correctly in light mode 1`] = `
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -115,9 +103,7 @@ exports[`ScreenWrapper with custom styling should render correctly with complex 
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       {
         "backgroundColor": "#3B82F6",
@@ -139,9 +125,7 @@ exports[`ScreenWrapper with custom styling should render correctly with custom s
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       {
         "backgroundColor": "#EF4444",
@@ -161,9 +145,7 @@ exports[`ScreenWrapper with different content should render correctly with compl
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -200,9 +182,7 @@ exports[`ScreenWrapper with different content should render correctly with multi
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]
@@ -225,9 +205,7 @@ exports[`ScreenWrapper with different content should render correctly with no ch
   style={
     [
       {
-        "backgroundColor": "#FFFFFF",
         "flex": 1,
-        "justifyContent": "space-between",
       },
       undefined,
     ]

@@ -13,6 +13,8 @@ import type { HStackProps } from './types';
 const useStyles = makeStyles(() => ({
   container: {
     flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
   },
 }));
 

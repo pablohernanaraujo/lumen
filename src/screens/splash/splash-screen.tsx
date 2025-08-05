@@ -1,22 +1,15 @@
 import React, { type FC, useEffect } from 'react';
-import { Text } from 'react-native';
+import { View } from 'react-native';
 
 import type { SplashScreenProps } from '../../routing';
 import { makeStyles } from '../../theme';
-import { ContentWrapper, Icon, ScreenWrapper, VStack } from '../../ui';
+import { H1, ScreenWrapper } from '../../ui';
 
-const useStyles = makeStyles((theme) => ({
-  title: {
-    fontSize: theme.typography.size.xxxl,
-    fontWeight: theme.typography.weight.bold,
-    color: theme.colors.text.primary,
-    textAlign: 'center',
-  },
-  subtitle: {
-    fontSize: theme.typography.size.lg,
-    fontWeight: theme.typography.weight.regular,
-    color: theme.colors.text.secondary,
-    textAlign: 'center',
+const useStyles = makeStyles(() => ({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 }));
 
@@ -34,18 +27,9 @@ export const SplashScreen: FC<SplashScreenProps> = ({ navigation }) => {
 
   return (
     <ScreenWrapper>
-      <ContentWrapper variant="screen">
-        <VStack spacing="xl">
-          <Icon
-            name="flash-on"
-            family="MaterialIcons"
-            size="xxxl"
-            testID="splash-icon"
-          />
-          <Text style={styles.title}>Lumen</Text>
-          <Text style={styles.subtitle}>Crypto Portfolio Tracker</Text>
-        </VStack>
-      </ContentWrapper>
+      <View style={styles.container}>
+        <H1>Lumen</H1>
+      </View>
     </ScreenWrapper>
   );
 };

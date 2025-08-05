@@ -5,11 +5,13 @@ import type { RootNavigationProp } from '../../../routing';
 import { makeStyles } from '../../../theme';
 import {
   Body1,
-  Container,
+  ButtonLink,
+  ButtonRegular,
   ContentWrapper,
   H1,
   HStack,
   Icon,
+  ScreenWrapper,
   VStack,
 } from '../../../ui';
 import type { LoginFormData } from './types';
@@ -25,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.size.md,
     color: theme.colors.text.primary,
     minHeight: 44,
+    width: '100%',
   },
   button: {
     backgroundColor: theme.colors.primary.main,
@@ -58,7 +61,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <Container>
+    <ScreenWrapper>
       <ContentWrapper variant="header">
         <VStack spacing="sm">
           <H1>Welcome Back</H1>
@@ -67,7 +70,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
       </ContentWrapper>
 
       <ContentWrapper variant="body">
-        <VStack spacing="lg">
+        <VStack spacing="lg" align="flex-start">
           <Icon
             name="account-circle"
             family="MaterialIcons"
@@ -75,7 +78,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
             testID="login-icon"
           />
 
-          <VStack spacing="md">
+          <VStack spacing="md" align="flex-start">
             <Body1 emphasis="medium">Email</Body1>
             <TextInput
               style={styles.input}
@@ -118,24 +121,16 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
 
       <ContentWrapper variant="footer">
         <VStack spacing="md">
-          <TouchableOpacity
-            style={styles.button}
-            onPress={handleLogin}
-            testID="login-button"
-          >
-            <Body1 emphasis="medium">Sign In</Body1>
-          </TouchableOpacity>
+          <ButtonRegular onPress={handleLogin} testID="login-button">
+            Sign In
+          </ButtonRegular>
 
           <HStack spacing="sm">
             <Body1 emphasis="medium">Don't have an account?</Body1>
-            <TouchableOpacity onPress={handleRegister} testID="register-link">
-              <Body1 emphasis="medium" color="link">
-                Sign Up
-              </Body1>
-            </TouchableOpacity>
+            <ButtonLink>Sign Up</ButtonLink>
           </HStack>
         </VStack>
       </ContentWrapper>
-    </Container>
+    </ScreenWrapper>
   );
 };

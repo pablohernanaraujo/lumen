@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing.md,
   },
   body: {
-    flex: 1,
     paddingVertical: theme.spacing.sm,
   },
   footer: {

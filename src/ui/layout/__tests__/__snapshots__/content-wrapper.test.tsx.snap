@@ -71,7 +71,6 @@ exports[`ContentWrapper with borderless prop should render correctly with border
         "paddingHorizontal": 16,
       },
       {
-        "flex": 1,
         "paddingVertical": 8,
       },
       {
@@ -303,7 +302,6 @@ exports[`ContentWrapper with different variants should render correctly with bod
         "paddingHorizontal": 16,
       },
       {
-        "flex": 1,
         "paddingVertical": 8,
       },
       false,

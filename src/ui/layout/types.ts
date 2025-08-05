@@ -29,6 +29,7 @@ export interface ContentWrapperProps {
 export interface VStackProps {
   children: ReactNode;
   spacing?: SpacingSize;
+  align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   style?: ViewStyle;
 }
 

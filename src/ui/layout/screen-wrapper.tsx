@@ -8,11 +8,10 @@ import type { ScreenWrapperProps } from './types';
 const useStyles = makeStyles((theme) => ({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
-    backgroundColor: theme.colors.background,
   },
   safeArea: {
     flex: 1,
+    justifyContent: 'space-between',
   },
 }));
 

@@ -13,12 +13,14 @@ import type { VStackProps } from './types';
 const useStyles = makeStyles(() => ({
   container: {
     flexDirection: 'column',
+    width: '100%',
   },
 }));
 
 export const VStack: FC<VStackProps> = ({
   children,
   spacing = 'md',
+  align = 'center',
   style,
 }) => {
   const styles = useStyles();
@@ -29,7 +31,7 @@ export const VStack: FC<VStackProps> = ({
   const childrenArray = Children.toArray(children);
 
   return (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, { alignItems: align }, style]}>
       {childrenArray.map((child, index) => {
         const isLastChild = index === childrenArray.length - 1;
 

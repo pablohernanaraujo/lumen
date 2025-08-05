@@ -1,3 +1,20 @@
+export type {
+  BaseButtonProps,
+  ButtonGhostProps,
+  ButtonIconProps,
+  ButtonLinkProps,
+  ButtonOutlineProps,
+  ButtonRegularProps,
+  ButtonSize,
+  ButtonVariant,
+} from './buttons';
+export {
+  ButtonGhost,
+  ButtonIcon,
+  ButtonLink,
+  ButtonOutline,
+  ButtonRegular,
+} from './buttons';
 export type { IconFamily, IconProps, IconSize } from './icon';
 export { Icon } from './icon';
 export type {
