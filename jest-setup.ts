@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 // Jest setup for React Native Testing Library
 
 // Mock react-native modules
@@ -37,8 +39,8 @@ jest.mock('react-native-keyboard-aware-scroll-view', () => ({
 
 // Mock react-native-safe-area-context
 jest.mock('react-native-safe-area-context', () => ({
-  SafeAreaProvider: ({ children }: { children: React.ReactNode }) => children,
-  SafeAreaView: ({ children }: { children: React.ReactNode }) => children,
+  SafeAreaProvider: ({ children }: { children: ReactNode }) => children,
+  SafeAreaView: ({ children }: { children: ReactNode }) => children,
   useSafeAreaInsets: () => ({
     top: 0,
     left: 0,
@@ -54,8 +56,7 @@ jest.mock('react-native-screens', () => ({
 
 // Mock Navigation
 jest.mock('@react-navigation/native', () => ({
-  NavigationContainer: ({ children }: { children: React.ReactNode }) =>
-    children,
+  NavigationContainer: ({ children }: { children: ReactNode }) => children,
   createNavigationContainerRef: () => ({
     isReady: () => true,
     navigate: jest.fn(),
@@ -95,8 +96,8 @@ jest.mock('@react-navigation/native', () => ({
 
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: () => ({
-    Navigator: ({ children }: { children: React.ReactNode }) => children,
-    Screen: ({ children }: { children: React.ReactNode }) => children,
+    Navigator: ({ children }: { children: ReactNode }) => children,
+    Screen: ({ children }: { children: ReactNode }) => children,
   }),
 }));
 
