@@ -5,8 +5,6 @@ export { SplashScreen } from './splash';
 // Auth Screens
 export type { LoginFormData, LoginScreenState } from './auth/login';
 export { LoginScreen } from './auth/login';
-export type { RegisterFormData, RegisterScreenState } from './auth/register';
-export { RegisterScreen } from './auth/register';
 
 // Crypto Screens
 export { CryptoDetailScreen } from './crypto/crypto-detail';

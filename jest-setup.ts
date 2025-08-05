@@ -6,6 +6,12 @@ jest.mock('react-native/Libraries/Utilities/useColorScheme', () => ({
   default: jest.fn(() => 'light'),
 }));
 
+// Mock StatusBar
+jest.mock('react-native/Libraries/Components/StatusBar/StatusBar', () => ({
+  __esModule: true,
+  default: 'StatusBar',
+}));
+
 // Mock vector icons
 jest.mock('react-native-vector-icons/AntDesign', () => 'AntDesign');
 jest.mock('react-native-vector-icons/Entypo', () => 'Entypo');
@@ -55,16 +61,36 @@ jest.mock('@react-navigation/native', () => ({
     navigate: jest.fn(),
     goBack: jest.fn(),
     reset: jest.fn(),
+    canGoBack: () => true,
+    getCurrentRoute: () => ({ name: 'Splash' }),
   }),
   useNavigation: () => ({
     navigate: jest.fn(),
     goBack: jest.fn(),
     reset: jest.fn(),
+    replace: jest.fn(),
+    push: jest.fn(),
+    pop: jest.fn(),
+    popToTop: jest.fn(),
+    setOptions: jest.fn(),
+    addListener: jest.fn(),
+    removeListener: jest.fn(),
+    isFocused: () => true,
+    canGoBack: () => true,
+    getId: () => 'test-navigator',
+    getParent: () => null,
+    getState: () => ({
+      routes: [{ name: 'Splash' }],
+      index: 0,
+    }),
   }),
   useRoute: () => ({
     params: {},
+    name: 'Splash',
+    key: 'test-route',
   }),
   useFocusEffect: jest.fn(),
+  useIsFocused: () => true,
 }));
 
 jest.mock('@react-navigation/native-stack', () => ({

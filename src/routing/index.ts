@@ -26,7 +26,6 @@ export type {
   CryptoDetailScreenProps,
   CryptoListScreenProps,
   LoginScreenProps,
-  RegisterScreenProps,
   RootNavigationProp,
   RootRouteProp,
   RootStackParamList,
@@ -39,14 +38,11 @@ export type {
   CryptoListScreenState,
   LoginFormData,
   LoginScreenState,
-  RegisterFormData,
-  RegisterScreenState,
   SplashScreenState,
 } from '../screens';
 export {
   CryptoDetailScreen,
   CryptoListScreen,
   LoginScreen,
-  RegisterScreen,
   SplashScreen,
 } from '../screens';

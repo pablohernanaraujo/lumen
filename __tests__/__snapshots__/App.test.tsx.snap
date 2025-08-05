@@ -1,96 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App rendering should render correctly in dark mode: dark-mode 1`] = `
-<View
-  onLayout={[Function]}
-  style={
-    [
-      [
-        {
-          "flex": 1,
-        },
-        undefined,
-      ],
-      {
-        "paddingBottom": 0,
-      },
-    ]
-  }
+<StatusBar
+  backgroundColor="#FFFFFF"
+  barStyle="dark-content"
 />
 `;
 
 exports[`App rendering should render correctly in light mode: light-mode 1`] = `
-<View
-  onLayout={[Function]}
-  style={
-    [
-      [
-        {
-          "flex": 1,
-        },
-        undefined,
-      ],
-      {
-        "paddingBottom": 0,
-      },
-    ]
-  }
+<StatusBar
+  backgroundColor="#FFFFFF"
+  barStyle="dark-content"
 />
 `;
 
 exports[`App snapshots should render correctly in dark mode 1`] = `
-<View
-  onLayout={[Function]}
-  style={
-    [
-      [
-        {
-          "flex": 1,
-        },
-        undefined,
-      ],
-      {
-        "paddingBottom": 0,
-      },
-    ]
-  }
+<StatusBar
+  backgroundColor="#FFFFFF"
+  barStyle="dark-content"
 />
 `;
 
 exports[`App snapshots should render correctly in light mode 1`] = `
-<View
-  onLayout={[Function]}
-  style={
-    [
-      [
-        {
-          "flex": 1,
-        },
-        undefined,
-      ],
-      {
-        "paddingBottom": 0,
-      },
-    ]
-  }
+<StatusBar
+  backgroundColor="#FFFFFF"
+  barStyle="dark-content"
 />
 `;
 
 exports[`App structure should render app structure correctly: app-structure 1`] = `
-<View
-  onLayout={[Function]}
-  style={
-    [
-      [
-        {
-          "flex": 1,
-        },
-        undefined,
-      ],
-      {
-        "paddingBottom": 0,
-      },
-    ]
-  }
+<StatusBar
+  backgroundColor="#FFFFFF"
+  barStyle="dark-content"
 />
 `;

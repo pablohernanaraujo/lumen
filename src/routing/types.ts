@@ -9,7 +9,6 @@ export type RootStackParamList = {
 
 export type AuthStackParamList = {
   Login: undefined;
-  Register: undefined;
 };
 
 export type AppStackParamList = {
@@ -47,11 +46,6 @@ export interface SplashScreenProps {
 export interface LoginScreenProps {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login'>;
   route: RouteProp<AuthStackParamList, 'Login'>;
-}
-
-export interface RegisterScreenProps {
-  navigation: NativeStackNavigationProp<AuthStackParamList, 'Register'>;
-  route: RouteProp<AuthStackParamList, 'Register'>;
 }
 
 export interface CryptoListScreenProps {
