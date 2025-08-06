@@ -16,9 +16,22 @@ exports[`App rendering should render correctly in dark mode: dark-mode 1`] = `
       }
     }
   >
-    <ActivityIndicator
-      color="#3B82F6"
-      size="large"
+    <Image
+      source={
+        {
+          "testUri": "../../../src/assets/images/lumen-logo-02.png",
+        }
+      }
+      style={
+        [
+          {
+            "width": 80,
+          },
+          {
+            "height": 80,
+          },
+        ]
+      }
     />
   </View>,
 ]
@@ -40,9 +53,22 @@ exports[`App rendering should render correctly in light mode: light-mode 1`] = `
       }
     }
   >
-    <ActivityIndicator
-      color="#3B82F6"
-      size="large"
+    <Image
+      source={
+        {
+          "testUri": "../../../src/assets/images/lumen-logo-02.png",
+        }
+      }
+      style={
+        [
+          {
+            "width": 80,
+          },
+          {
+            "height": 80,
+          },
+        ]
+      }
     />
   </View>,
 ]
@@ -64,9 +90,22 @@ exports[`App snapshots should render correctly in dark mode 1`] = `
       }
     }
   >
-    <ActivityIndicator
-      color="#3B82F6"
-      size="large"
+    <Image
+      source={
+        {
+          "testUri": "../../../src/assets/images/lumen-logo-02.png",
+        }
+      }
+      style={
+        [
+          {
+            "width": 80,
+          },
+          {
+            "height": 80,
+          },
+        ]
+      }
     />
   </View>,
 ]
@@ -88,9 +127,22 @@ exports[`App snapshots should render correctly in light mode 1`] = `
       }
     }
   >
-    <ActivityIndicator
-      color="#3B82F6"
-      size="large"
+    <Image
+      source={
+        {
+          "testUri": "../../../src/assets/images/lumen-logo-02.png",
+        }
+      }
+      style={
+        [
+          {
+            "width": 80,
+          },
+          {
+            "height": 80,
+          },
+        ]
+      }
     />
   </View>,
 ]
@@ -112,9 +164,22 @@ exports[`App structure should render app structure correctly: app-structure 1`] 
       }
     }
   >
-    <ActivityIndicator
-      color="#3B82F6"
-      size="large"
+    <Image
+      source={
+        {
+          "testUri": "../../../src/assets/images/lumen-logo-02.png",
+        }
+      }
+      style={
+        [
+          {
+            "width": 80,
+          },
+          {
+            "height": 80,
+          },
+        ]
+      }
     />
   </View>,
 ]

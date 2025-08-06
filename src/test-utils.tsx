@@ -1,6 +1,5 @@
 import React, { type FC, type ReactElement } from 'react';
 import {
-  act,
   render,
   type RenderOptions,
   type RenderResult,

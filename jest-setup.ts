@@ -101,6 +101,13 @@ jest.mock('@react-navigation/native-stack', () => ({
   }),
 }));
 
+jest.mock('@react-navigation/bottom-tabs', () => ({
+  createBottomTabNavigator: () => ({
+    Navigator: ({ children }: { children: ReactNode }) => children,
+    Screen: ({ children }: { children: ReactNode }) => children,
+  }),
+}));
+
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   __esModule: true,

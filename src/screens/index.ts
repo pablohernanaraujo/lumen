@@ -6,3 +6,9 @@ export { LoginScreen } from './auth/login';
 export { CryptoDetailScreen } from './crypto/crypto-detail';
 export type { CryptoItem, CryptoListScreenState } from './crypto/crypto-list';
 export { CryptoListScreen } from './crypto/crypto-list';
+
+// Exchange Screen
+export { ExchangeScreen } from './exchange';
+
+// Scanner Screen
+export { ScannerScreen } from './scanner';

@@ -1,5 +1,5 @@
 import React, { type FC } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { View } from 'react-native';
 import {
   createNativeStackNavigator,
   type NativeStackNavigationOptions,
@@ -9,7 +9,7 @@ import { useAuth } from '../contexts';
 import { PrivacyModalScreen } from '../screens/modals/privacy-modal';
 import { TermsModalScreen } from '../screens/modals/terms-modal';
 import { makeStyles, useTheme } from '../theme';
-import { Icon } from '../ui';
+import { Icon, Image } from '../ui';
 import { AppStack } from './app-stack';
 import { AuthStack } from './auth-stack';
 import type { RootStackParamList } from './types';
@@ -34,7 +34,11 @@ export const RootNavigator: FC = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.colors.primary.main} />
+        <Image
+          source={require('../assets/images/lumen-logo-02.png')}
+          width={80}
+          height={80}
+        />
       </View>
     );
   }

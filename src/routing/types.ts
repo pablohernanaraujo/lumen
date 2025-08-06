@@ -1,4 +1,8 @@
-import type { RouteProp } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import type {
+  CompositeNavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
@@ -13,8 +17,14 @@ export type AuthStackParamList = {
 };
 
 export type AppStackParamList = {
-  CryptoList: undefined;
+  MainTabs: undefined;
   CryptoDetail: { cryptoId: string };
+};
+
+export type TabStackParamList = {
+  CryptoListTab: undefined;
+  Exchange: undefined;
+  Scanner: undefined;
 };
 
 // Root Navigator Types
@@ -38,6 +48,19 @@ export type AppRouteProp<T extends keyof AppStackParamList> = RouteProp<
   T
 >;
 
+// Tab Navigator Types
+export type TabNavigationProp = BottomTabNavigationProp<TabStackParamList>;
+export type TabRouteProp<T extends keyof TabStackParamList> = RouteProp<
+  TabStackParamList,
+  T
+>;
+
+// Combined navigation type for screens in tabs that need to navigate to stack screens
+export type CryptoListNavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<TabStackParamList, 'CryptoListTab'>,
+  NativeStackNavigationProp<AppStackParamList>
+>;
+
 // Screen Props Types
 export interface LoginScreenProps {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login'>;
@@ -45,11 +68,21 @@ export interface LoginScreenProps {
 }
 
 export interface CryptoListScreenProps {
-  navigation: NativeStackNavigationProp<AppStackParamList, 'CryptoList'>;
-  route: RouteProp<AppStackParamList, 'CryptoList'>;
+  navigation: CryptoListNavigationProp;
+  route: RouteProp<TabStackParamList, 'CryptoListTab'>;
 }
 
 export interface CryptoDetailScreenProps {
   navigation: NativeStackNavigationProp<AppStackParamList, 'CryptoDetail'>;
   route: RouteProp<AppStackParamList, 'CryptoDetail'>;
+}
+
+export interface ExchangeScreenProps {
+  navigation: BottomTabNavigationProp<TabStackParamList, 'Exchange'>;
+  route: RouteProp<TabStackParamList, 'Exchange'>;
+}
+
+export interface ScannerScreenProps {
+  navigation: BottomTabNavigationProp<TabStackParamList, 'Scanner'>;
+  route: RouteProp<TabStackParamList, 'Scanner'>;
 }

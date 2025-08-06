@@ -4,6 +4,7 @@ export { RootNavigator } from './root-navigator';
 // Stack Navigators
 export { AppStack } from './app-stack';
 export { AuthStack } from './auth-stack';
+export { TabNavigator } from './tab-navigator';
 
 // Navigation Service
 export {
@@ -24,11 +25,17 @@ export type {
   AuthRouteProp,
   AuthStackParamList,
   CryptoDetailScreenProps,
+  CryptoListNavigationProp,
   CryptoListScreenProps,
+  ExchangeScreenProps,
   LoginScreenProps,
   RootNavigationProp,
   RootRouteProp,
   RootStackParamList,
+  ScannerScreenProps,
+  TabNavigationProp,
+  TabRouteProp,
+  TabStackParamList,
 } from './types';
 
 // Screens
