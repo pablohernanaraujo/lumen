@@ -26,11 +26,9 @@ export type {
   CryptoDetailScreenProps,
   CryptoListScreenProps,
   LoginScreenProps,
-  PrivacyModalScreenProps,
   RootNavigationProp,
   RootRouteProp,
   RootStackParamList,
-  TermsModalScreenProps,
 } from './types';
 
 // Screens
