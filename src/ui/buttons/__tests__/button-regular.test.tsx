@@ -115,4 +115,60 @@ describe('ButtonRegular', () => {
     expect(button.props.accessibilityHint).toBe('Custom hint');
     expect(button.props.accessibilityRole).toBe('button');
   });
+
+  it('should render left icon when iconName is provided', () => {
+    renderWithTheme(
+      <ButtonRegular
+        testID="button-1"
+        iconName="send"
+        iconFamily="MaterialIcons"
+      >
+        Send Message
+      </ButtonRegular>,
+    );
+
+    expect(screen.getByText('Send Message')).toBeTruthy();
+    expect(screen.getByTestId('button-1-icon')).toBeTruthy();
+  });
+
+  it('should render right icon when iconPosition is right', () => {
+    renderWithTheme(
+      <ButtonRegular
+        testID="button-1"
+        iconName="arrow-forward"
+        iconFamily="MaterialIcons"
+        iconPosition="right"
+      >
+        Next Step
+      </ButtonRegular>,
+    );
+
+    expect(screen.getByText('Next Step')).toBeTruthy();
+    expect(screen.getByTestId('button-1-icon')).toBeTruthy();
+  });
+
+  it('should not render icon when loading', () => {
+    renderWithTheme(
+      <ButtonRegular
+        testID="button-1"
+        iconName="send"
+        iconFamily="MaterialIcons"
+        loading
+      >
+        Sending
+      </ButtonRegular>,
+    );
+
+    expect(screen.getByText('Sending')).toBeTruthy();
+    expect(() => screen.getByTestId('button-1-icon')).toThrow();
+  });
+
+  it('should not render icon when iconName is not provided', () => {
+    renderWithTheme(
+      <ButtonRegular testID="button-1">No Icon Button</ButtonRegular>,
+    );
+
+    expect(screen.getByText('No Icon Button')).toBeTruthy();
+    expect(() => screen.getByTestId('button-1-icon')).toThrow();
+  });
 });

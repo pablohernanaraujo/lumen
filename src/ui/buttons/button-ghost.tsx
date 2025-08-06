@@ -4,9 +4,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { Icon } from '../icon';
 import type { ButtonGhostProps } from './types';
 
 export const ButtonGhost: FC<ButtonGhostProps> = ({
@@ -23,6 +25,12 @@ export const ButtonGhost: FC<ButtonGhostProps> = ({
   accessible = true,
   accessibilityLabel,
   accessibilityHint,
+  iconName,
+  iconFamily,
+  iconSize,
+  iconColor,
+  iconPosition = 'left',
+  iconStyle,
 }) => {
   const { theme } = useTheme();
 
@@ -91,7 +99,40 @@ export const ButtonGhost: FC<ButtonGhostProps> = ({
     loadingIndicator: {
       marginRight: theme.spacing.sm,
     },
+    iconContainer: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    leftIcon: {
+      marginRight: theme.spacing.sm,
+    },
+    rightIcon: {
+      marginLeft: theme.spacing.sm,
+    },
   });
+
+  const renderIcon = (
+    position: 'left' | 'right',
+  ): React.ReactElement | null => {
+    if (!iconName || loading || iconPosition !== position) {
+      return null;
+    }
+
+    const iconMarginStyle =
+      position === 'left' ? buttonStyles.leftIcon : buttonStyles.rightIcon;
+
+    return (
+      <View style={[buttonStyles.iconContainer, iconMarginStyle, iconStyle]}>
+        <Icon
+          name={iconName}
+          family={iconFamily}
+          size={iconSize || size}
+          color={iconColor || colors.textColor}
+          testID={testID ? `${testID}-icon` : undefined}
+        />
+      </View>
+    );
+  };
 
   return (
     <TouchableOpacity
@@ -113,7 +154,9 @@ export const ButtonGhost: FC<ButtonGhostProps> = ({
           style={buttonStyles.loadingIndicator}
         />
       )}
+      {renderIcon('left')}
       <Text style={[buttonStyles.text, textStyle]}>{children}</Text>
+      {renderIcon('right')}
     </TouchableOpacity>
   );
 };

@@ -59,6 +59,10 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             onPress={handleGoogleSignIn}
             testID="google-signin-button"
             disabled={isLoading}
+            iconName="google"
+            iconFamily="FontAwesome5"
+            iconSize={24}
+            iconColor="white"
             fullWidth
           >
             {isLoading ? 'Entrando...' : 'Entrar con Google'}

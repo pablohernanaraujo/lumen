@@ -27,6 +27,12 @@ export interface BaseButtonProps {
   accessible?: boolean;
   accessibilityLabel?: string;
   accessibilityHint?: string;
+  iconName?: string;
+  iconFamily?: IconFamily;
+  iconSize?: IconProps['size'];
+  iconColor?: string;
+  iconPosition?: 'left' | 'right';
+  iconStyle?: ViewStyle;
 }
 
 export interface ButtonRegularProps extends BaseButtonProps {
