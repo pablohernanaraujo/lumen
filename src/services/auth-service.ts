@@ -1,3 +1,4 @@
+import { Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   GoogleSignin,
@@ -21,14 +22,29 @@ export interface SignInResult {
 }
 
 export class AuthService {
-  static async configure(): Promise<void> {
-    GoogleSignin.configure({
-      webClientId:
-        '259221570110-cd04uq0dtecglu54k8aisolpa7tkmd7p.apps.googleusercontent.com',
-      offlineAccess: true,
-      hostedDomain: '',
-      forceCodeForRefreshToken: true,
-    });
+  static configure(): void {
+    if (Platform.OS === 'ios') {
+      // iOS requires explicit webClientId configuration
+      GoogleSignin.configure({
+        webClientId:
+          '259221570110-cd04uq0dtecglu54k8aisolpa7tkmd7p.apps.googleusercontent.com',
+        offlineAccess: true,
+        hostedDomain: '',
+        forceCodeForRefreshToken: true,
+        scopes: ['profile', 'email'],
+      });
+    } else {
+      // Android uses google-services.json automatically
+      // webClientId should match the web client from google-services.json
+      GoogleSignin.configure({
+        webClientId:
+          '259221570110-1519kivsgr525cq718g6nneba66o3p3i.apps.googleusercontent.com',
+        offlineAccess: true,
+        hostedDomain: '',
+        forceCodeForRefreshToken: true,
+        scopes: ['profile', 'email'],
+      });
+    }
   }
 
   static async getStoredAuthData(): Promise<{
@@ -140,27 +156,114 @@ export class AuthService {
   }
 
   static async isSignedIn(): Promise<boolean> {
-    try {
-      const currentUser = await GoogleSignin.getCurrentUser();
-      return currentUser !== null;
-    } catch (error) {
-      console.error('Error checking sign-in status:', error);
-      return false;
+    if (Platform.OS === 'ios') {
+      try {
+        await GoogleSignin.signInSilently();
+        return true;
+      } catch {
+        return false;
+      }
+    } else {
+      // Android: Use simple getCurrentUser check
+      try {
+        const currentUser = GoogleSignin.getCurrentUser();
+        return currentUser !== null;
+      } catch {
+        return false;
+      }
     }
   }
 
   static async getCurrentUser(): Promise<User | null> {
+    if (Platform.OS === 'ios') {
+      try {
+        const result = await GoogleSignin.signInSilently();
+        return result.data;
+      } catch {
+        return null;
+      }
+    } else {
+      // Android: Use simple getCurrentUser
+      try {
+        const currentUser = GoogleSignin.getCurrentUser();
+        return currentUser;
+      } catch {
+        return null;
+      }
+    }
+  }
+
+  static async restoreSignInSilently(): Promise<User | null> {
+    return await (Platform.OS === 'ios'
+      ? this.restoreSignInIOS()
+      : this.restoreSignInAndroid());
+  }
+
+  private static async restoreSignInIOS(): Promise<User | null> {
     try {
-      const userInfo = await GoogleSignin.getCurrentUser();
-      return userInfo;
-    } catch (error) {
-      console.error('Error getting current user:', error);
+      const result = await GoogleSignin.signInSilently();
+      console.log('[iOS] Silent sign-in successful');
+      return result.data;
+    } catch {
+      console.log('[iOS] Silent sign-in failed - no valid Keychain session');
+      // iOS: If signInSilently fails, there's no valid session in Keychain
       return null;
+    }
+  }
+
+  private static async restoreSignInAndroid(): Promise<User | null> {
+    console.log(
+      '[Android] Using legacy method - getCurrentUser + AsyncStorage',
+    );
+
+    try {
+      const currentUser = GoogleSignin.getCurrentUser();
+      if (currentUser) {
+        return await this.processAndroidUser(currentUser);
+      } else {
+        await this.cleanupStaleAndroidData();
+        return null;
+      }
+    } catch (error) {
+      console.error('[Android] Error during session restore:', error);
+      return null;
+    }
+  }
+
+  private static async processAndroidUser(currentUser: User): Promise<User> {
+    console.log('[Android] Found current user in Google Play Services');
+
+    const tokens = await this.refreshTokens();
+    if (tokens) {
+      await this.storeAuthData(tokens, currentUser);
+      console.log('[Android] Session restored successfully');
+    } else {
+      console.log(
+        '[Android] Token refresh failed, but user exists in Play Services',
+      );
+    }
+    return currentUser;
+  }
+
+  private static async cleanupStaleAndroidData(): Promise<void> {
+    console.log('[Android] No current user in Google Play Services');
+
+    const { token, user } = await this.getStoredAuthData();
+    if (token || user) {
+      console.log('[Android] Cleaning up stale AsyncStorage data');
+      await this.clearStoredAuthData();
     }
   }
 
   static async refreshTokens(): Promise<AuthTokens | null> {
     try {
+      // Check if user is signed in first
+      const currentUser = GoogleSignin.getCurrentUser();
+      if (!currentUser) {
+        console.warn('Cannot refresh tokens: user not signed in');
+        return null;
+      }
+
       const tokens = await GoogleSignin.getTokens();
 
       const authTokens: AuthTokens = {
@@ -174,6 +277,8 @@ export class AuthService {
       return authTokens;
     } catch (error) {
       console.error('Error refreshing tokens:', error);
+      // If token refresh fails, the user needs to sign in again
+      await this.clearStoredAuthData();
       return null;
     }
   }

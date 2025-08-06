@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { type User } from '@react-native-google-signin/google-signin';
 
-import { googleSignInService } from '../services/google-signin';
+import { AuthService } from '../services/auth-service';
 
 interface UseGoogleSignInReturn {
   user: User | null;
@@ -20,11 +20,11 @@ export const useGoogleSignIn = (): UseGoogleSignInReturn => {
   const refreshUserInfo = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const signedIn = await googleSignInService.isSignedIn();
+      const signedIn = await AuthService.isSignedIn();
       setIsSignedIn(signedIn);
 
       if (signedIn) {
-        const currentUser = await googleSignInService.getCurrentUser();
+        const currentUser = await AuthService.getCurrentUser();
         setUser(currentUser);
       } else {
         setUser(null);
@@ -41,7 +41,7 @@ export const useGoogleSignIn = (): UseGoogleSignInReturn => {
   const signIn = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
-      const signedInUser = await googleSignInService.signIn();
+      const { user: signedInUser } = await AuthService.signInWithGoogle();
       setUser(signedInUser);
       setIsSignedIn(true);
     } catch (error) {
@@ -57,7 +57,7 @@ export const useGoogleSignIn = (): UseGoogleSignInReturn => {
   const signOut = useCallback(async (): Promise<void> => {
     try {
       setIsLoading(true);
-      await googleSignInService.signOut();
+      await AuthService.signOut();
       setUser(null);
       setIsSignedIn(false);
     } catch (error) {
@@ -69,7 +69,7 @@ export const useGoogleSignIn = (): UseGoogleSignInReturn => {
   }, []);
 
   useEffect(() => {
-    googleSignInService.configure();
+    AuthService.configure();
     refreshUserInfo();
   }, [refreshUserInfo]);
 

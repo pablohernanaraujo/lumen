@@ -17,6 +17,8 @@ export {
 } from './buttons';
 export type { IconFamily, IconProps, IconSize } from './icon';
 export { Icon } from './icon';
+export type { ImageProps } from './image';
+export { Image } from './image';
 export type {
   ContainerProps,
   ContentWrapperProps,

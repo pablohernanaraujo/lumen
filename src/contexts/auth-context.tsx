@@ -41,44 +41,55 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
   // Check for existing authentication on app start
   useEffect(() => {
+    const setUnauthenticatedState = (): void => {
+      setAuthState({
+        user: null,
+        isLoading: false,
+        isAuthenticated: false,
+      });
+    };
+
+    const handleGoogleSignInUser = async (currentUser: User): Promise<void> => {
+      const tokens = await AuthService.refreshTokens();
+      if (tokens) {
+        await AuthService.storeAuthData(tokens, currentUser);
+      }
+
+      setAuthState({
+        user: currentUser,
+        isLoading: false,
+        isAuthenticated: true,
+      });
+    };
+
+    const checkStoredData = async (): Promise<void> => {
+      const { token, user } = await AuthService.getStoredAuthData();
+      if (token && user) {
+        console.warn(
+          'AsyncStorage has user data but Google Sign-In is not active. Clearing stored data.',
+        );
+        await AuthService.clearStoredAuthData();
+      }
+    };
+
     const checkAuthState = async (): Promise<void> => {
       try {
-        const { token, user } = await AuthService.getStoredAuthData();
+        // Try to restore session silently from iOS Keychain
+        const currentUser = await AuthService.restoreSignInSilently();
 
-        if (token && user) {
-          // Check if Google Sign-In is still valid
-          const isSignedIn = await AuthService.isSignedIn();
-
-          if (isSignedIn) {
-            setAuthState({
-              user,
-              isLoading: false,
-              isAuthenticated: true,
-            });
-          } else {
-            // Token exists but Google Sign-In is not valid, clear storage
-            await AuthService.clearStoredAuthData();
-            setAuthState({
-              user: null,
-              isLoading: false,
-              isAuthenticated: false,
-            });
-          }
-        } else {
-          setAuthState({
-            user: null,
-            isLoading: false,
-            isAuthenticated: false,
-          });
+        if (currentUser) {
+          // Successfully restored from Keychain
+          await handleGoogleSignInUser(currentUser);
+          return;
         }
+
+        // No silent sign-in possible, check stored data for cleanup
+        await checkStoredData();
+        setUnauthenticatedState();
       } catch (error) {
         console.error('Error checking auth state:', error);
         await AuthService.clearStoredAuthData();
-        setAuthState({
-          user: null,
-          isLoading: false,
-          isAuthenticated: false,
-        });
+        setUnauthenticatedState();
       }
     };
 
