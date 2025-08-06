@@ -20,7 +20,7 @@ module.exports = {
   coverageReporters: ['html', 'json', 'lcov', 'text'],
   coverageDirectory: 'coverage',
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|react-native-vector-icons|react-native-keyboard-aware-scroll-view|react-native-safe-area-context|react-native-screens|@react-navigation)/)',
+    'node_modules/(?!(react-native|@react-native|react-native-vector-icons|react-native-keyboard-aware-scroll-view|react-native-safe-area-context|react-native-screens|@react-navigation|@react-native-async-storage|@react-native-google-signin)/)',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',

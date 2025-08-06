@@ -1,18 +1,17 @@
-import React, { type FC, useState } from 'react';
-import { TextInput } from 'react-native';
+import React, { type FC } from 'react';
+import { Alert } from 'react-native';
 
-import type { RootNavigationProp } from '../../../routing';
+import { useAuth } from '../../../contexts';
+import type { AuthNavigationProp } from '../../../routing';
 import { makeStyles } from '../../../theme';
 import {
   Body1,
   ButtonRegular,
   ContentWrapper,
   H1,
-  Icon,
   ScreenWrapper,
   VStack,
 } from '../../../ui';
-import type { LoginFormData } from './types';
 
 const useStyles = makeStyles((theme) => ({
   input: {
@@ -35,23 +34,43 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     minHeight: 44,
   },
+  googleButton: {
+    backgroundColor: theme.colors.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radii.md,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+    alignItems: 'center',
+    minHeight: 44,
+  },
 }));
 
 interface LoginScreenProps {
-  navigation: RootNavigationProp;
+  navigation: AuthNavigationProp;
 }
 
-export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
+export const LoginScreen: FC<LoginScreenProps> = () => {
   const styles = useStyles();
-  const [formData, setFormData] = useState<LoginFormData>({
-    email: '',
-    password: '',
-  });
+  const { signInWithGoogle, isLoading } = useAuth();
 
   const handleLogin = (): void => {
-    // TODO: Implement login logic
-    console.log('Login:', formData);
-    navigation.navigate('App');
+    // TODO: Implement email/password login logic
+    Alert.alert(
+      'Info',
+      'Email/password login not implemented yet. Use Google Sign-In.',
+    );
+  };
+
+  const handleGoogleSignIn = async (): Promise<void> => {
+    try {
+      await signInWithGoogle();
+      // Navigation will be handled automatically by the auth state change
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Google Sign-In failed';
+      Alert.alert('Sign-In Error', errorMessage);
+    }
   };
 
   return (
@@ -72,8 +91,21 @@ export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
 
       <ContentWrapper variant="footer">
         <VStack spacing="md">
-          <ButtonRegular onPress={handleLogin} testID="login-button">
-            Sign In
+          <ButtonRegular
+            onPress={handleGoogleSignIn}
+            testID="google-signin-button"
+            disabled={isLoading}
+            style={styles.googleButton}
+          >
+            {isLoading ? 'Signing In...' : 'Sign in with Google'}
+          </ButtonRegular>
+
+          <ButtonRegular
+            onPress={handleLogin}
+            testID="email-login-button"
+            disabled={isLoading}
+          >
+            Sign In with Email
           </ButtonRegular>
         </VStack>
       </ContentWrapper>

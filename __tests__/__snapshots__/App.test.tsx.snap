@@ -1,36 +1,121 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App rendering should render correctly in dark mode: dark-mode 1`] = `
-<StatusBar
-  backgroundColor="#FFFFFF"
-  barStyle="dark-content"
-/>
+[
+  <StatusBar
+    backgroundColor="#FFFFFF"
+    barStyle="dark-content"
+  />,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#3B82F6"
+      size="large"
+    />
+  </View>,
+]
 `;
 
 exports[`App rendering should render correctly in light mode: light-mode 1`] = `
-<StatusBar
-  backgroundColor="#FFFFFF"
-  barStyle="dark-content"
-/>
+[
+  <StatusBar
+    backgroundColor="#FFFFFF"
+    barStyle="dark-content"
+  />,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#3B82F6"
+      size="large"
+    />
+  </View>,
+]
 `;
 
 exports[`App snapshots should render correctly in dark mode 1`] = `
-<StatusBar
-  backgroundColor="#FFFFFF"
-  barStyle="dark-content"
-/>
+[
+  <StatusBar
+    backgroundColor="#FFFFFF"
+    barStyle="dark-content"
+  />,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#3B82F6"
+      size="large"
+    />
+  </View>,
+]
 `;
 
 exports[`App snapshots should render correctly in light mode 1`] = `
-<StatusBar
-  backgroundColor="#FFFFFF"
-  barStyle="dark-content"
-/>
+[
+  <StatusBar
+    backgroundColor="#FFFFFF"
+    barStyle="dark-content"
+  />,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#3B82F6"
+      size="large"
+    />
+  </View>,
+]
 `;
 
 exports[`App structure should render app structure correctly: app-structure 1`] = `
-<StatusBar
-  backgroundColor="#FFFFFF"
-  barStyle="dark-content"
-/>
+[
+  <StatusBar
+    backgroundColor="#FFFFFF"
+    barStyle="dark-content"
+  />,
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "backgroundColor": "#FFFFFF",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  >
+    <ActivityIndicator
+      color="#3B82F6"
+      size="large"
+    />
+  </View>,
+]
 `;

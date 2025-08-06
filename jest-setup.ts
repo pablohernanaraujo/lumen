@@ -101,6 +101,60 @@ jest.mock('@react-navigation/native-stack', () => ({
   }),
 }));
 
+// Mock AsyncStorage
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  __esModule: true,
+  default: {
+    getItem: jest.fn(() => Promise.resolve(null)),
+    setItem: jest.fn(() => Promise.resolve()),
+    removeItem: jest.fn(() => Promise.resolve()),
+    clear: jest.fn(() => Promise.resolve()),
+    getAllKeys: jest.fn(() => Promise.resolve([])),
+    multiGet: jest.fn(() => Promise.resolve([])),
+    multiSet: jest.fn(() => Promise.resolve()),
+    multiRemove: jest.fn(() => Promise.resolve()),
+  },
+}));
+
+// Mock Google Sign-In
+jest.mock('@react-native-google-signin/google-signin', () => ({
+  GoogleSignin: {
+    configure: jest.fn(),
+    hasPlayServices: jest.fn(() => Promise.resolve(true)),
+    signIn: jest.fn(() =>
+      Promise.resolve({
+        type: 'success',
+        data: {
+          user: {
+            id: '123',
+            name: 'Test User',
+            email: 'test@example.com',
+            photo: null,
+            familyName: 'User',
+            givenName: 'Test',
+          },
+          scopes: ['email', 'profile'],
+          idToken: 'mock-id-token',
+          serverAuthCode: null,
+        },
+      }),
+    ),
+    signOut: jest.fn(() => Promise.resolve()),
+    getTokens: jest.fn(() =>
+      Promise.resolve({
+        accessToken: 'mock-access-token',
+        idToken: 'mock-id-token',
+      }),
+    ),
+    getCurrentUser: jest.fn(() => null),
+  },
+  statusCodes: {
+    SIGN_IN_CANCELLED: 'SIGN_IN_CANCELLED',
+    IN_PROGRESS: 'IN_PROGRESS',
+    PLAY_SERVICES_NOT_AVAILABLE: 'PLAY_SERVICES_NOT_AVAILABLE',
+  },
+}));
+
 // Global test configuration
 beforeEach(() => {
   jest.clearAllMocks();

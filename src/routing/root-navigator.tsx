@@ -1,50 +1,38 @@
 import React, { type FC } from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { ActivityIndicator, View } from 'react-native';
 
-import { SplashScreen } from '../screens/splash';
-import { useTheme } from '../theme';
+import { useAuth } from '../contexts';
+import { makeStyles, useTheme } from '../theme';
 import { AppStack } from './app-stack';
 import { AuthStack } from './auth-stack';
-import type { RootStackParamList } from './types';
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const useStyles = makeStyles((theme) => ({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: theme.colors.background,
+  },
+}));
 
 export const RootNavigator: FC = () => {
   const { theme } = useTheme();
+  const { isAuthenticated, isLoading } = useAuth();
+  const styles = useStyles();
 
-  return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        contentStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        animation: 'fade',
-      }}
-    >
-      <Stack.Screen
-        name="Splash"
-        component={SplashScreen}
-        options={{
-          title: 'Lumen',
-        }}
-      />
-      <Stack.Screen
-        name="Auth"
-        component={AuthStack}
-        options={{
-          title: 'Authentication',
-          animation: 'slide_from_right',
-        }}
-      />
-      <Stack.Screen
-        name="App"
-        component={AppStack}
-        options={{
-          title: 'Lumen App',
-          animation: 'slide_from_right',
-        }}
-      />
-    </Stack.Navigator>
-  );
+  // Show loading screen while checking authentication
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.primary.main} />
+      </View>
+    );
+  }
+
+  // Render based on authentication state
+  if (isAuthenticated) {
+    return <AppStack />;
+  }
+
+  return <AuthStack />;
 };

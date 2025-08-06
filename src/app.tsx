@@ -3,6 +3,7 @@ import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 
+import { AuthProvider } from './contexts';
 import { RootNavigator } from './routing';
 import { navigationRef } from './routing/routing-service';
 import { ThemeProvider, useTheme } from './theme';
@@ -26,7 +27,9 @@ const AppContent: FC = () => {
 export const App: FC = () => (
   <StrictMode>
     <ThemeProvider>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </ThemeProvider>
   </StrictMode>
 );

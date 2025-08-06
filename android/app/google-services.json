@@ -1,27 +1,44 @@
 {
   "project_info": {
-    "project_number": "779027575909",
-    "firebase_url": "https://surface-98e86-default-rtdb.firebaseio.com",
-    "project_id": "surface-98e86",
-    "storage_bucket": "surface-98e86.firebasestorage.app"
+    "project_number": "259221570110",
+    "project_id": "lumen-6c97f",
+    "storage_bucket": "lumen-6c97f.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:779027575909:android:f8e50dbbdae63f393c828c",
+        "mobilesdk_app_id": "1:259221570110:android:c39e074225f67c1f7dc76f",
         "android_client_info": {
           "package_name": "com.lumen"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "259221570110-mck9khvntk62uvl2o7l6b59hbiirfc46.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lumen",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "259221570110-1519kivsgr525cq718g6nneba66o3p3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDs-ZkoZEmRxnhUAalcX7-sygyCG_Dlr0"
+          "current_key": "AIzaSyA0sCwY0KUw33KyJQrv57z-p6nwJuXKHYY"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "259221570110-1519kivsgr525cq718g6nneba66o3p3i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

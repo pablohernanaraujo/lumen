@@ -1,9 +1,18 @@
 import React, { type FC, type ReactElement, useEffect, useState } from 'react';
-import { FlatList, Text, TouchableOpacity } from 'react-native';
+import { Alert, FlatList, Text, TouchableOpacity } from 'react-native';
 
+import { useAuth } from '../../../contexts';
 import type { CryptoListScreenProps } from '../../../routing';
 import { makeStyles } from '../../../theme';
-import { Container, ContentWrapper, HStack, Icon, VStack } from '../../../ui';
+import {
+  Body2,
+  ContentWrapper,
+  H3,
+  HStack,
+  Icon,
+  ScreenWrapper,
+  VStack,
+} from '../../../ui';
 import type { CryptoItem } from './types';
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.secondary,
     marginTop: theme.spacing.xl,
   },
+  logoutButton: {
+    padding: theme.spacing.xs,
+  },
 }));
 
 // Mock data for demonstration
@@ -91,6 +103,7 @@ const mockCryptos: CryptoItem[] = [
 
 export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
   const styles = useStyles();
+  const { signOut, user } = useAuth();
   const [cryptos, setCryptos] = useState<CryptoItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -108,6 +121,30 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     navigation.navigate('CryptoDetail', { cryptoId });
   };
 
+  const handleLogout = (): void => {
+    Alert.alert(
+      'Sign Out',
+      `Are you sure you want to sign out, ${user?.user.givenName || user?.user.name || 'User'}?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Sign Out',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              await signOut();
+            } catch {
+              Alert.alert('Error', 'Failed to sign out. Please try again.');
+            }
+          },
+        },
+      ],
+    );
+  };
+
   const renderCryptoItem = ({ item }: { item: CryptoItem }): ReactElement => (
     <TouchableOpacity
       style={styles.cryptoCard}
@@ -122,8 +159,8 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
         />
 
         <VStack spacing="xs">
-          <Text style={styles.cryptoName}>{item.name}</Text>
-          <Text style={styles.cryptoSymbol}>{item.symbol}</Text>
+          <H3 emphasis="high">{item.name}</H3>
+          <Body2 emphasis="medium">{item.symbol}</Body2>
         </VStack>
 
         <VStack spacing="xs">
@@ -144,38 +181,46 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <Container>
+      <ScreenWrapper>
         <ContentWrapper variant="screen">
           <VStack spacing="xl">
             <Icon name="hourglass-empty" family="MaterialIcons" size="xxxl" />
             <Text style={styles.emptyState}>Loading cryptocurrencies...</Text>
           </VStack>
         </ContentWrapper>
-      </Container>
+      </ScreenWrapper>
     );
   }
 
   return (
-    <Container>
+    <ScreenWrapper>
       <ContentWrapper variant="header">
         <HStack spacing="sm">
-          <Icon name="trending-up" family="MaterialIcons" size="xl" />
-          <Text style={styles.title}>Crypto Portfolio</Text>
+          <HStack spacing="sm">
+            <Icon name="trending-up" family="MaterialIcons" size="xl" />
+            <Text style={styles.title}>Crypto Portfolio</Text>
+          </HStack>
+
+          <TouchableOpacity
+            onPress={handleLogout}
+            style={styles.logoutButton}
+            testID="logout-button"
+          >
+            <Icon name="logout" family="MaterialIcons" size="lg" />
+          </TouchableOpacity>
         </HStack>
       </ContentWrapper>
 
-      <ContentWrapper variant="body" borderless>
-        <FlatList
-          data={cryptos}
-          renderItem={renderCryptoItem}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ padding: styles.cryptoCard.padding }}
-          ListEmptyComponent={
-            <Text style={styles.emptyState}>No cryptocurrencies found</Text>
-          }
-        />
-      </ContentWrapper>
-    </Container>
+      <FlatList
+        data={cryptos}
+        renderItem={renderCryptoItem}
+        keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ padding: styles.cryptoCard.padding }}
+        ListEmptyComponent={
+          <Text style={styles.emptyState}>No cryptocurrencies found</Text>
+        }
+      />
+    </ScreenWrapper>
   );
 };

@@ -1,4 +1,4 @@
-import React, { type FC, useEffect } from 'react';
+import React, { type FC } from 'react';
 import { View } from 'react-native';
 
 import type { SplashScreenProps } from '../../routing';
@@ -13,17 +13,11 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const SplashScreen: FC<SplashScreenProps> = ({ navigation }) => {
+export const SplashScreen: FC<SplashScreenProps> = () => {
   const styles = useStyles();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // Navigate to Auth stack after 2 seconds
-      navigation.replace('Auth');
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, [navigation]);
+  // Note: This splash screen is not used in the current auth flow
+  // Navigation is handled by the RootNavigator based on auth state
 
   return (
     <ScreenWrapper>
