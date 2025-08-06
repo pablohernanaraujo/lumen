@@ -11,6 +11,7 @@ export type {
   HStackProps,
   ScreenWrapperProps,
   SpacingSize,
+  TextAlign,
   VStackProps,
 } from './types';
 export { VStack } from './v-stack';

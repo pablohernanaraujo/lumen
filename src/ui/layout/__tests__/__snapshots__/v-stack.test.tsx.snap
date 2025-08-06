@@ -10,6 +10,7 @@ exports[`VStack edge cases should render correctly with children without keys 1`
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -50,6 +51,7 @@ exports[`VStack edge cases should render correctly with empty children 1`] = `
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -67,6 +69,7 @@ exports[`VStack edge cases should render correctly with no children 1`] = `
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -84,6 +87,7 @@ exports[`VStack snapshots should render correctly in dark mode 1`] = `
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -136,6 +140,7 @@ exports[`VStack snapshots should render correctly in light mode 1`] = `
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -188,6 +193,7 @@ exports[`VStack spacing behavior should apply correct spacing between multiple c
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -252,6 +258,7 @@ exports[`VStack spacing behavior should not apply margin to last child 1`] = `
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -292,6 +299,7 @@ exports[`VStack with custom styling should render correctly with custom style 1`
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       {
         "backgroundColor": "#EF4444",
@@ -347,6 +355,7 @@ exports[`VStack with custom styling should render correctly with custom style an
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       {
         "backgroundColor": "#3B82F6",
@@ -401,6 +410,7 @@ exports[`VStack with different children types should render correctly with child
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -462,6 +472,7 @@ exports[`VStack with different children types should render correctly with mixed
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -516,6 +527,7 @@ exports[`VStack with different children types should render correctly with null/
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -556,6 +568,7 @@ exports[`VStack with different children types should render correctly with singl
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -584,6 +597,7 @@ exports[`VStack with different children types should render correctly with strin
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -623,6 +637,7 @@ exports[`VStack with different spacing should render correctly with lg spacing 1
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -675,6 +690,7 @@ exports[`VStack with different spacing should render correctly with md spacing 1
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -727,6 +743,7 @@ exports[`VStack with different spacing should render correctly with sm spacing 1
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -779,6 +796,7 @@ exports[`VStack with different spacing should render correctly with xl spacing 1
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]
@@ -831,6 +849,7 @@ exports[`VStack with different spacing should render correctly with xs spacing 1
       },
       {
         "alignItems": "center",
+        "justifyContent": "center",
       },
       undefined,
     ]

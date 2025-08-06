@@ -26,10 +26,13 @@ export interface ContentWrapperProps {
   style?: ViewStyle;
 }
 
+export type TextAlign = 'left' | 'center' | 'right';
+
 export interface VStackProps {
   children: ReactNode;
   spacing?: SpacingSize;
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
+  textAlign?: TextAlign;
   style?: ViewStyle;
 }
 
@@ -38,4 +41,5 @@ export interface HStackProps {
   spacing?: SpacingSize;
   style?: ViewStyle;
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
+  textAlign?: TextAlign;
 }

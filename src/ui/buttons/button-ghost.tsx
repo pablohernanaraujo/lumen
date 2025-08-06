@@ -84,7 +84,7 @@ export const ButtonGhost: FC<ButtonGhostProps> = ({
     text: {
       color: colors.textColor,
       fontSize,
-      fontWeight: theme.typography.weight.medium,
+      fontWeight: theme.typography.weight.bold,
       fontFamily: theme.typography.family.regular,
       lineHeight: theme.typography.lineHeight.normal * fontSize,
     },

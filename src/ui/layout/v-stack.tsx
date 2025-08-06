@@ -21,6 +21,7 @@ export const VStack: FC<VStackProps> = ({
   children,
   spacing = 'md',
   align = 'center',
+  textAlign = 'center',
   style,
 }) => {
   const styles = useStyles();
@@ -30,8 +31,32 @@ export const VStack: FC<VStackProps> = ({
 
   const childrenArray = Children.toArray(children);
 
+  // Helper function to convert textAlign to justifyContent for flex layout
+  const getJustifyContent = (
+    textAlignValue: string,
+  ): 'flex-start' | 'flex-end' | 'center' => {
+    switch (textAlignValue) {
+      case 'left':
+        return 'flex-start';
+      case 'right':
+        return 'flex-end';
+      case 'center':
+      default:
+        return 'center';
+    }
+  };
+
   return (
-    <View style={[styles.container, { alignItems: align }, style]}>
+    <View
+      style={[
+        styles.container,
+        {
+          alignItems: align,
+          justifyContent: getJustifyContent(textAlign),
+        },
+        style,
+      ]}
+    >
       {childrenArray.map((child, index) => {
         const isLastChild = index === childrenArray.length - 1;
 

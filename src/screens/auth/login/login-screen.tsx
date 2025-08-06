@@ -5,9 +5,11 @@ import { useAuth } from '../../../contexts';
 import type { AuthNavigationProp } from '../../../routing';
 import {
   Body1,
+  ButtonLink,
   ButtonRegular,
   ContentWrapper,
   H1,
+  HStack,
   Image,
   ScreenWrapper,
   VStack,
@@ -35,8 +37,8 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
     <ScreenWrapper>
       <ContentWrapper variant="header">
         <VStack spacing="none">
-          <H1>Welcome Back</H1>
-          <Body1 emphasis="medium">Sign in to your account</Body1>
+          <H1>¡Bienvenido a Lumen!</H1>
+          <Body1>Tu billetera cripto en un toque</Body1>
         </VStack>
       </ContentWrapper>
 
@@ -57,9 +59,20 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
             onPress={handleGoogleSignIn}
             testID="google-signin-button"
             disabled={isLoading}
+            fullWidth
           >
-            {isLoading ? 'Signing In...' : 'Sign in with Google'}
+            {isLoading ? 'Entrando...' : 'Entrar con Google'}
           </ButtonRegular>
+          <VStack spacing="none">
+            <HStack spacing="xs">
+              <Body1>Al continuar aceptás nuestros</Body1>
+              <ButtonLink inline>Términos</ButtonLink>
+            </HStack>
+            <HStack spacing="xs">
+              <Body1>y</Body1>
+              <ButtonLink inline>Política de privacidad.</ButtonLink>
+            </HStack>
+          </VStack>
         </VStack>
       </ContentWrapper>
     </ScreenWrapper>
