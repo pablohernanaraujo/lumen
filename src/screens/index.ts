@@ -1,7 +1,3 @@
-// Splash Screen
-export type { SplashScreenState } from './splash';
-export { SplashScreen } from './splash';
-
 // Auth Screens
 export type { LoginFormData, LoginScreenState } from './auth/login';
 export { LoginScreen } from './auth/login';

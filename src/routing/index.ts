@@ -29,7 +29,6 @@ export type {
   RootNavigationProp,
   RootRouteProp,
   RootStackParamList,
-  SplashScreenProps,
 } from './types';
 
 // Screens
@@ -38,11 +37,5 @@ export type {
   CryptoListScreenState,
   LoginFormData,
   LoginScreenState,
-  SplashScreenState,
 } from '../screens';
-export {
-  CryptoDetailScreen,
-  CryptoListScreen,
-  LoginScreen,
-  SplashScreen,
-} from '../screens';
+export { CryptoDetailScreen, CryptoListScreen, LoginScreen } from '../screens';

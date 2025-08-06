@@ -2,7 +2,6 @@ import type { RouteProp } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
-  Splash: undefined;
   Auth: undefined;
   App: undefined;
 };
@@ -38,11 +37,6 @@ export type AppRouteProp<T extends keyof AppStackParamList> = RouteProp<
 >;
 
 // Screen Props Types
-export interface SplashScreenProps {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Splash'>;
-  route: RouteProp<RootStackParamList, 'Splash'>;
-}
-
 export interface LoginScreenProps {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login'>;
   route: RouteProp<AuthStackParamList, 'Login'>;
