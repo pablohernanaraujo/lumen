@@ -1,5 +1,5 @@
 import React, { type FC } from 'react';
-import { Alert, type ImageStyle, type StyleProp } from 'react-native';
+import { Alert } from 'react-native';
 
 import { useAuth } from '../../../contexts';
 import type { AuthNavigationProp } from '../../../routing';
@@ -34,7 +34,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
   return (
     <ScreenWrapper>
       <ContentWrapper variant="header">
-        <VStack spacing="sm">
+        <VStack spacing="none">
           <H1>Welcome Back</H1>
           <Body1 emphasis="medium">Sign in to your account</Body1>
         </VStack>
@@ -43,7 +43,7 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
       <ContentWrapper variant="body">
         <VStack spacing="sm">
           <Image
-            source={require('../../../assets/images/lumen-wallet-01.png')}
+            source={require('../../../assets/images/lumen-wallet-02.png')}
             width={300}
             height={300}
             resizeMode="contain"

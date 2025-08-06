@@ -30,7 +30,7 @@ export const H3: FC<H3Props> = ({
           lineHeight:
             theme.typography.lineHeight.normal * theme.typography.size.xl,
           color: finalColor,
-          fontFamily: theme.typography.family.regular,
+          fontFamily: theme.typography.family.medium,
         },
         style,
       ]}

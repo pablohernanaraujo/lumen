@@ -5,7 +5,7 @@ exports[`makeStyles style function behavior should create consistent styles acro
   <Text
     style={
       {
-        "color": "#1A1A1A",
+        "color": "#283238",
       }
     }
   >
@@ -14,7 +14,7 @@ exports[`makeStyles style function behavior should create consistent styles acro
   <Text
     style={
       {
-        "color": "#1A1A1A",
+        "color": "#283238",
       }
     }
   >
@@ -84,7 +84,7 @@ exports[`makeStyles theme integration should create styles with light theme 1`] 
   <Text
     style={
       {
-        "color": "#1A1A1A",
+        "color": "#283238",
         "fontSize": 16,
       }
     }
@@ -107,7 +107,7 @@ exports[`makeStyles theme responsiveness should update styles when theme changes
   style={
     {
       "backgroundColor": "#FFFFFF",
-      "color": "#1A1A1A",
+      "color": "#283238",
     }
   }
   testID="responsive-text"
@@ -121,7 +121,7 @@ exports[`makeStyles theme responsiveness should update styles when theme changes
   style={
     {
       "backgroundColor": "#FFFFFF",
-      "color": "#1A1A1A",
+      "color": "#283238",
     }
   }
   testID="responsive-text"

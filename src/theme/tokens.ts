@@ -17,7 +17,11 @@ export const baseTokens = {
   },
   typography: {
     family: {
-      regular: 'System',
+      light: 'Nunito-Light',
+      regular: 'Nunito-Regular',
+      medium: 'Nunito-Medium',
+      semibold: 'Nunito-SemiBold',
+      bold: 'Nunito-Bold',
       mono: 'Courier',
     },
     size: {

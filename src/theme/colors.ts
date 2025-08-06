@@ -4,7 +4,7 @@ export const colorTokens = {
     surface: '#F8F9FA',
     surfaceSecondary: '#F1F3F4',
     text: {
-      primary: '#1A1A1A',
+      primary: '#283238',
       secondary: '#6B7280',
       tertiary: '#9CA3AF',
       inverse: '#FFFFFF',

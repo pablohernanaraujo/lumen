@@ -147,11 +147,33 @@ jest.mock('@react-native-google-signin/google-signin', () => ({
       }),
     ),
     getCurrentUser: jest.fn(() => null),
+    signInSilently: jest.fn(() =>
+      Promise.reject(new Error('No user signed in')),
+    ),
   },
   statusCodes: {
     SIGN_IN_CANCELLED: 'SIGN_IN_CANCELLED',
     IN_PROGRESS: 'IN_PROGRESS',
     PLAY_SERVICES_NOT_AVAILABLE: 'PLAY_SERVICES_NOT_AVAILABLE',
+  },
+}));
+
+// Mock AuthService
+jest.mock('./src/services/auth-service', () => ({
+  AuthService: {
+    configure: jest.fn(),
+    restoreSignInSilently: jest.fn(() => Promise.resolve(null)),
+    getStoredAuthData: jest.fn(() =>
+      Promise.resolve({
+        token: null,
+        user: null,
+      }),
+    ),
+    clearStoredAuthData: jest.fn(() => Promise.resolve()),
+    storeAuthData: jest.fn(() => Promise.resolve()),
+    refreshTokens: jest.fn(() => Promise.resolve(null)),
+    signIn: jest.fn(() => Promise.resolve()),
+    signOut: jest.fn(() => Promise.resolve()),
   },
 }));
 

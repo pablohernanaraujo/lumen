@@ -30,7 +30,7 @@ export const H2: FC<H2Props> = ({
           lineHeight:
             theme.typography.lineHeight.tight * theme.typography.size.xxl,
           color: finalColor,
-          fontFamily: theme.typography.family.regular,
+          fontFamily: theme.typography.family.semibold,
         },
         style,
       ]}

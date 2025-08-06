@@ -30,7 +30,7 @@ export const H1: FC<H1Props> = ({
           lineHeight:
             theme.typography.lineHeight.tight * theme.typography.size.xxxl,
           color: finalColor,
-          fontFamily: theme.typography.family.regular,
+          fontFamily: theme.typography.family.bold,
         },
         style,
       ]}

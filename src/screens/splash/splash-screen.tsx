@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import type { SplashScreenProps } from '../../routing';
 import { makeStyles } from '../../theme';
-import { H1, ScreenWrapper } from '../../ui';
+import { Image, ScreenWrapper } from '../../ui';
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -22,7 +22,12 @@ export const SplashScreen: FC<SplashScreenProps> = () => {
   return (
     <ScreenWrapper>
       <View style={styles.container}>
-        <H1>Lumen</H1>
+        <Image
+          source={require('../../assets/images/lumen-logo-01.png')}
+          width={300}
+          height={300}
+          resizeMode="contain"
+        />
       </View>
     </ScreenWrapper>
   );
