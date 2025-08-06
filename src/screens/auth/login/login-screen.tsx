@@ -2,7 +2,7 @@ import React, { type FC } from 'react';
 import { Alert } from 'react-native';
 
 import { useAuth } from '../../../contexts';
-import type { AuthNavigationProp } from '../../../routing';
+import type { RootNavigationProp } from '../../../routing';
 import {
   Body1,
   ButtonLink,
@@ -16,10 +16,10 @@ import {
 } from '../../../ui';
 
 interface LoginScreenProps {
-  navigation: AuthNavigationProp;
+  navigation: RootNavigationProp;
 }
 
-export const LoginScreen: FC<LoginScreenProps> = () => {
+export const LoginScreen: FC<LoginScreenProps> = ({ navigation }) => {
   const { signInWithGoogle, isLoading } = useAuth();
 
   const handleGoogleSignIn = async (): Promise<void> => {
@@ -31,6 +31,14 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
         error instanceof Error ? error.message : 'Google Sign-In failed';
       Alert.alert('Sign-In Error', errorMessage);
     }
+  };
+
+  const handleTermsPress = (): void => {
+    navigation.navigate('TermsModal');
+  };
+
+  const handlePrivacyPress = (): void => {
+    navigation.navigate('PrivacyModal');
   };
 
   return (
@@ -70,11 +78,23 @@ export const LoginScreen: FC<LoginScreenProps> = () => {
           <VStack spacing="none">
             <HStack spacing="xs">
               <Body1>Al continuar aceptás nuestros</Body1>
-              <ButtonLink inline>Términos</ButtonLink>
+              <ButtonLink
+                inline
+                onPress={handleTermsPress}
+                testID="terms-link-1"
+              >
+                Términos
+              </ButtonLink>
             </HStack>
             <HStack spacing="xs">
               <Body1>y</Body1>
-              <ButtonLink inline>Política de privacidad.</ButtonLink>
+              <ButtonLink
+                inline
+                onPress={handlePrivacyPress}
+                testID="privacy-link-1"
+              >
+                Política de privacidad.
+              </ButtonLink>
             </HStack>
           </VStack>
         </VStack>

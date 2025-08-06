@@ -4,6 +4,8 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 export type RootStackParamList = {
   Auth: undefined;
   App: undefined;
+  TermsModal: undefined;
+  PrivacyModal: undefined;
 };
 
 export type AuthStackParamList = {

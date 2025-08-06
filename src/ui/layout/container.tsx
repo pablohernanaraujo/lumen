@@ -20,11 +20,12 @@ export const Container: FC<ContainerProps> = ({
   style,
   scrollViewProps = {},
   keyboardShouldPersistTaps = 'handled',
+  disableSafeArea = false,
 }) => {
   const styles = useStyles();
 
   return (
-    <ScreenWrapper style={style}>
+    <ScreenWrapper style={style} disableSafeArea={disableSafeArea}>
       <ScrollView
         style={[styles.scrollView, style]}
         contentContainerStyle={styles.contentContainer}

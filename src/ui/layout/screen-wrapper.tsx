@@ -15,8 +15,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const ScreenWrapper: FC<ScreenWrapperProps> = ({ children, style }) => {
+export const ScreenWrapper: FC<ScreenWrapperProps> = ({
+  children,
+  style,
+  disableSafeArea = false,
+}) => {
   const styles = useStyles();
+
+  if (disableSafeArea) {
+    return (
+      <View style={[styles.container, style]}>
+        <View style={styles.safeArea}>{children}</View>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, style]}>

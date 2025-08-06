@@ -26,9 +26,11 @@ export type {
   CryptoDetailScreenProps,
   CryptoListScreenProps,
   LoginScreenProps,
+  PrivacyModalScreenProps,
   RootNavigationProp,
   RootRouteProp,
   RootStackParamList,
+  TermsModalScreenProps,
 } from './types';
 
 // Screens
@@ -39,3 +41,4 @@ export type {
   LoginScreenState,
 } from '../screens';
 export { CryptoDetailScreen, CryptoListScreen, LoginScreen } from '../screens';
+export { PrivacyModalScreen, TermsModalScreen } from '../screens/modals';

@@ -10,11 +10,13 @@ export interface ContainerProps {
   style?: ViewStyle;
   scrollViewProps?: Omit<ScrollViewProps, 'children'>;
   keyboardShouldPersistTaps?: 'always' | 'never' | 'handled';
+  disableSafeArea?: boolean;
 }
 
 export interface ScreenWrapperProps {
   children: ReactNode;
   style?: ViewStyle;
+  disableSafeArea?: boolean;
 }
 
 export type ContentWrapperVariant = 'screen' | 'header' | 'body' | 'footer';
