@@ -72,10 +72,10 @@ interface FilterContextType {
   getActiveFilterCount: () => number;
   applyFiltersToData: <
     T extends {
-      current_price: number;
-      market_cap: number;
-      total_volume: number;
-      price_change_percentage_24h: number;
+      current_price: number | null;
+      market_cap: number | null;
+      total_volume: number | null;
+      price_change_percentage_24h: number | null;
       market_cap_rank: number;
     },
   >(
@@ -240,10 +240,10 @@ export const FilterProvider: FC<{ children: ReactNode }> = ({ children }) => {
 
   const applyFiltersToData = <
     T extends {
-      current_price: number;
-      market_cap: number;
-      total_volume: number;
-      price_change_percentage_24h: number;
+      current_price: number | null;
+      market_cap: number | null;
+      total_volume: number | null;
+      price_change_percentage_24h: number | null;
       market_cap_rank: number;
     },
   >(
@@ -254,6 +254,11 @@ export const FilterProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // Apply price filter
     if (filters.price?.enabled) {
       filteredData = filteredData.filter((item) => {
+        // Skip items with null prices
+        if (item.current_price === null) {
+          return false;
+        }
+
         if (
           filters.price?.min !== undefined &&
           item.current_price < filters.price.min
@@ -273,6 +278,11 @@ export const FilterProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // Apply market cap filter
     if (filters.marketCap?.enabled) {
       filteredData = filteredData.filter((item) => {
+        // Skip items with null market cap
+        if (item.market_cap === null) {
+          return false;
+        }
+
         if (filters.marketCap?.category) {
           switch (filters.marketCap.category) {
             case 'small':
@@ -308,6 +318,11 @@ export const FilterProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // Apply volume filter
     if (filters.volume?.enabled) {
       filteredData = filteredData.filter((item) => {
+        // Skip items with null volume
+        if (item.total_volume === null) {
+          return false;
+        }
+
         if (
           filters.volume?.min !== undefined &&
           item.total_volume < filters.volume.min
@@ -327,6 +342,11 @@ export const FilterProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // Apply 24h change filter
     if (filters.change24h?.enabled) {
       filteredData = filteredData.filter((item) => {
+        // Skip items with null price change
+        if (item.price_change_percentage_24h === null) {
+          return false;
+        }
+
         if (filters.change24h?.type) {
           switch (filters.change24h.type) {
             case 'gainers':
@@ -365,14 +385,20 @@ export const FilterProvider: FC<{ children: ReactNode }> = ({ children }) => {
     // Apply quick filters
     if (filters.quickFilters?.highVolume) {
       // Filter for high volume (top 20% by volume)
-      const sortedByVolume = [...filteredData].sort(
-        (a, b) => b.total_volume - a.total_volume,
+      // First filter out null volumes
+      const validVolumeData = filteredData.filter(
+        (item) => item.total_volume !== null,
+      );
+      const sortedByVolume = [...validVolumeData].sort(
+        (a, b) => (b.total_volume || 0) - (a.total_volume || 0),
       );
       const top20Percent = Math.ceil(sortedByVolume.length * 0.2);
       const highVolumeThreshold =
         sortedByVolume[top20Percent - 1]?.total_volume || 0;
       filteredData = filteredData.filter(
-        (item) => item.total_volume >= highVolumeThreshold,
+        (item) =>
+          item.total_volume !== null &&
+          item.total_volume >= highVolumeThreshold,
       );
     }
 

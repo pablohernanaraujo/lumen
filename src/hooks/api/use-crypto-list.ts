@@ -1,4 +1,6 @@
-import { useQuery } from '@tanstack/react-query';
+/* eslint-disable complexity */
+import { useCallback } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
 import {
   apiService,
@@ -8,6 +10,7 @@ import {
 
 export interface UseCryptoListOptions extends CoinsMarketsParams {
   enabled?: boolean;
+  enableInfiniteScroll?: boolean;
 }
 
 export interface CryptoListQueryResult {
@@ -18,6 +21,9 @@ export interface CryptoListQueryResult {
   refetch: () => void;
   data: CryptoCurrency[] | undefined;
   status: 'pending' | 'error' | 'success';
+  loadMore?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
 }
 
 export const CRYPTO_LIST_QUERY_KEY = 'crypto-list';
@@ -27,6 +33,7 @@ export const useCryptoList = (
 ): CryptoListQueryResult => {
   const {
     enabled = true,
+    enableInfiniteScroll = false,
     vs_currency = 'usd',
     order = 'market_cap_desc',
     per_page = 20,
@@ -36,21 +43,55 @@ export const useCryptoList = (
     ...restOptions
   } = options;
 
-  const queryKey = [
-    CRYPTO_LIST_QUERY_KEY,
-    {
-      vs_currency,
-      order,
-      per_page,
-      page,
-      sparkline,
-      price_change_percentage,
-      ...restOptions,
+  // Always call both hooks but conditionally enable them
+  const infiniteQuery = useInfiniteQuery<CryptoCurrency[], Error>({
+    queryKey: [
+      CRYPTO_LIST_QUERY_KEY,
+      'infinite',
+      {
+        vs_currency,
+        order,
+        per_page,
+        sparkline,
+        price_change_percentage,
+        ...restOptions,
+      },
+    ],
+    queryFn: ({ pageParam = 1 }) =>
+      apiService.getCoinsMarkets({
+        vs_currency,
+        order,
+        per_page,
+        page: pageParam as number,
+        sparkline,
+        price_change_percentage,
+        ...restOptions,
+      }),
+    enabled: enabled && enableInfiniteScroll,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.length < per_page) {
+        return;
+      }
+      return allPages.length + 1;
     },
-  ];
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
+  });
 
   const queryResult = useQuery<CryptoCurrency[], Error>({
-    queryKey,
+    queryKey: [
+      CRYPTO_LIST_QUERY_KEY,
+      {
+        vs_currency,
+        order,
+        per_page,
+        page,
+        sparkline,
+        price_change_percentage,
+        ...restOptions,
+      },
+    ],
     queryFn: () =>
       apiService.getCoinsMarkets({
         vs_currency,
@@ -61,10 +102,33 @@ export const useCryptoList = (
         price_change_percentage,
         ...restOptions,
       }),
-    enabled,
-    staleTime: 1000 * 60 * 2, // 2 minutes - crypto prices change frequently
-    gcTime: 1000 * 60 * 5, // 5 minutes cache time
+    enabled: enabled && !enableInfiniteScroll,
+    staleTime: 1000 * 60 * 2,
+    gcTime: 1000 * 60 * 5,
   });
+
+  const loadMore = useCallback(() => {
+    if (infiniteQuery.hasNextPage && !infiniteQuery.isFetchingNextPage) {
+      infiniteQuery.fetchNextPage();
+    }
+  }, [infiniteQuery]);
+
+  if (enableInfiniteScroll) {
+    const allData = infiniteQuery.data?.pages.flat();
+
+    return {
+      cryptos: allData,
+      isLoading: infiniteQuery.isLoading,
+      isError: infiniteQuery.isError,
+      error: infiniteQuery.error,
+      refetch: infiniteQuery.refetch,
+      data: allData,
+      status: infiniteQuery.status,
+      loadMore,
+      hasNextPage: infiniteQuery.hasNextPage,
+      isFetchingNextPage: infiniteQuery.isFetchingNextPage,
+    };
+  }
 
   return {
     cryptos: queryResult.data,

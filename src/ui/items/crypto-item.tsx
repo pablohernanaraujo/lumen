@@ -1,11 +1,16 @@
-import React, { type FC } from 'react';
+/* eslint-disable react-native/no-unused-styles */
+import React, { type FC, memo, useMemo } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import { Image } from '../image';
 import type { CryptoItemProps, CryptoItemShimmerProps } from './types';
 
-const formatPrice = (price: number): string => {
+const formatPrice = (price: number | null): string => {
+  if (price === null || price === undefined) {
+    return '--';
+  }
+
   if (price >= 1000000) {
     return `$${(price / 1000000).toFixed(2)}M`;
   }
@@ -19,6 +24,22 @@ const formatPrice = (price: number): string => {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
+};
+
+const formatChange = (change: number | null): string => {
+  if (change === null || change === undefined) {
+    return 'N/A';
+  }
+
+  const sign = change >= 0 ? '+' : '';
+  return `${sign}${change.toFixed(2)}%`;
+};
+
+const isPositiveChange = (change: number | null): boolean => {
+  if (change === null || change === undefined) {
+    return false; // Default to negative styling for null values
+  }
+  return change >= 0;
 };
 
 const CryptoItemShimmer: FC<CryptoItemShimmerProps> = ({ style, testID }) => {
@@ -105,7 +126,7 @@ const CryptoItemShimmer: FC<CryptoItemShimmerProps> = ({ style, testID }) => {
   );
 };
 
-export const CryptoItem: FC<CryptoItemProps> = ({
+const CryptoItemComponent: FC<CryptoItemProps> = ({
   crypto,
   onPress,
   showShimmer = false,
@@ -114,77 +135,89 @@ export const CryptoItem: FC<CryptoItemProps> = ({
 }) => {
   const { theme } = useTheme();
 
-  if (showShimmer) {
-    return <CryptoItemShimmer style={style} testID={testID} />;
-  }
+  const styles = useMemo(
+    () =>
+      StyleSheet.create({
+        container: {
+          backgroundColor: theme.colors.surface,
+          borderRadius: theme.radii.lg,
+          padding: theme.spacing.lg,
+          marginBottom: theme.spacing.sm,
+          borderWidth: 1,
+          borderColor: theme.colors.border,
+          height: 80,
+          ...theme.shadows.sm,
+        },
+        row: {
+          flexDirection: 'row',
+          alignItems: 'center',
+          height: '100%',
+        },
+        cryptoImage: {
+          width: 40,
+          height: 40,
+          borderRadius: 20,
+        },
+        leftContent: {
+          flex: 1,
+          marginLeft: theme.spacing.md,
+        },
+        rightContent: {
+          alignItems: 'flex-end',
+        },
+        nameText: {
+          color: theme.colors.text.primary,
+          fontSize: theme.typography.size.lg,
+          fontWeight: theme.typography.weight.bold,
+          fontFamily: theme.typography.family.bold,
+        },
+        symbolText: {
+          color: theme.colors.text.secondary,
+          fontSize: theme.typography.size.sm,
+          fontWeight: theme.typography.weight.medium,
+          fontFamily: theme.typography.family.medium,
+          textTransform: 'uppercase',
+        },
+        priceText: {
+          color: theme.colors.text.primary,
+          fontSize: theme.typography.size.lg,
+          fontWeight: theme.typography.weight.bold,
+          fontFamily: theme.typography.family.bold,
+          textAlign: 'right',
+        },
+        changeText: {
+          fontSize: theme.typography.size.sm,
+          fontWeight: theme.typography.weight.semibold,
+          fontFamily: theme.typography.family.semibold,
+          textAlign: 'right',
+        },
+        positiveChange: {
+          color: theme.colors.success.main,
+        },
+        negativeChange: {
+          color: theme.colors.error.main,
+        },
+      }),
+    [theme],
+  );
 
   const handlePress = (): void => {
     onPress?.(crypto.id);
   };
 
-  const isPositiveChange = crypto.price_change_percentage_24h >= 0;
+  const changeIsPositive = isPositiveChange(crypto.price_change_percentage_24h);
+  const formattedPrice = useMemo(
+    () => formatPrice(crypto.current_price),
+    [crypto.current_price],
+  );
+  const formattedChange = useMemo(
+    () => formatChange(crypto.price_change_percentage_24h),
+    [crypto.price_change_percentage_24h],
+  );
 
-  const styles = StyleSheet.create({
-    container: {
-      backgroundColor: theme.colors.surface,
-      borderRadius: theme.radii.lg,
-      padding: theme.spacing.lg,
-      marginBottom: theme.spacing.sm,
-      borderWidth: 1,
-      borderColor: theme.colors.border,
-      height: 80,
-      ...theme.shadows.sm,
-    },
-    row: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      height: '100%',
-    },
-    cryptoImage: {
-      width: 40,
-      height: 40,
-      borderRadius: 20,
-    },
-    leftContent: {
-      flex: 1,
-      marginLeft: theme.spacing.md,
-    },
-    rightContent: {
-      alignItems: 'flex-end',
-    },
-    nameText: {
-      color: theme.colors.text.primary,
-      fontSize: theme.typography.size.lg,
-      fontWeight: theme.typography.weight.bold,
-      fontFamily: theme.typography.family.bold,
-    },
-    symbolText: {
-      color: theme.colors.text.secondary,
-      fontSize: theme.typography.size.sm,
-      fontWeight: theme.typography.weight.medium,
-      fontFamily: theme.typography.family.medium,
-      textTransform: 'uppercase',
-    },
-    priceText: {
-      color: theme.colors.text.primary,
-      fontSize: theme.typography.size.lg,
-      fontWeight: theme.typography.weight.bold,
-      fontFamily: theme.typography.family.bold,
-      textAlign: 'right',
-    },
-    changeText: {
-      fontSize: theme.typography.size.sm,
-      fontWeight: theme.typography.weight.semibold,
-      fontFamily: theme.typography.family.semibold,
-      textAlign: 'right',
-    },
-    positiveChange: {
-      color: theme.colors.success.main,
-    },
-    negativeChange: {
-      color: theme.colors.error.main,
-    },
-  });
+  if (showShimmer) {
+    return <CryptoItemShimmer style={style} testID={testID} />;
+  }
 
   return (
     <TouchableOpacity
@@ -221,20 +254,39 @@ export const CryptoItem: FC<CryptoItemProps> = ({
             style={styles.priceText}
             testID={testID ? `${testID}-price` : undefined}
           >
-            {formatPrice(crypto.current_price)}
+            {formattedPrice}
           </Text>
 
           <Text
             style={[
               styles.changeText,
-              isPositiveChange ? styles.positiveChange : styles.negativeChange,
+              changeIsPositive ? styles.positiveChange : styles.negativeChange,
             ]}
             testID={testID ? `${testID}-change` : undefined}
           >
-            {`${isPositiveChange ? '+' : ''}${crypto.price_change_percentage_24h.toFixed(2)}%`}
+            {formattedChange}
           </Text>
         </View>
       </View>
     </TouchableOpacity>
   );
 };
+
+export const CryptoItem = memo(CryptoItemComponent, (prevProps, nextProps) => {
+  // Custom comparison for better memoization with null safety
+  const prevCrypto = prevProps.crypto;
+  const nextCrypto = nextProps.crypto;
+
+  return (
+    prevCrypto.id === nextCrypto.id &&
+    prevCrypto.current_price === nextCrypto.current_price &&
+    prevCrypto.price_change_percentage_24h ===
+      nextCrypto.price_change_percentage_24h &&
+    prevCrypto.market_cap_rank === nextCrypto.market_cap_rank &&
+    prevCrypto.name === nextCrypto.name &&
+    prevCrypto.symbol === nextCrypto.symbol &&
+    prevCrypto.image === nextCrypto.image &&
+    prevProps.showShimmer === nextProps.showShimmer &&
+    prevProps.testID === nextProps.testID
+  );
+});

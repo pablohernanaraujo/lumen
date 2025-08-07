@@ -1,8 +1,9 @@
 /* eslint-disable complexity */
 /* eslint-disable max-statements */
-import React, { type FC, type ReactElement } from 'react';
+import React, { type FC, type ReactElement, useCallback, useMemo } from 'react';
 import {
   FlatList,
+  type ListRenderItem,
   RefreshControl,
   Text,
   TouchableOpacity,
@@ -26,6 +27,16 @@ import {
   VStack,
 } from '../../../ui';
 import { useCryptoScreenData } from './use-crypto-screen-data';
+
+// FlatList optimization constants
+const ITEM_HEIGHT = 80; // Fixed height from CryptoItem
+const ITEM_MARGIN_BOTTOM = 8; // margin from theme.spacing.sm
+const TOTAL_ITEM_HEIGHT = ITEM_HEIGHT + ITEM_MARGIN_BOTTOM;
+const INITIAL_NUM_TO_RENDER = 10;
+const WINDOW_SIZE = 10;
+const MAX_TO_RENDER_PER_BATCH = 10;
+const UPDATE_CELLS_BATCHING_PERIOD = 50;
+const ON_END_REACHED_THRESHOLD = 0.5;
 
 const useStyles = makeStyles((theme) => ({
   emptyState: {
@@ -101,6 +112,9 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.secondary,
     fontWeight: theme.typography.weight.medium,
   },
+  footerContainer: {
+    paddingVertical: theme.spacing.lg,
+  },
 }));
 
 export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
@@ -122,9 +136,11 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     handleClearSearch,
     sortBy,
     setSortBy,
+    loadMore,
+    isFetchingNextPage,
   } = useCryptoScreenData(navigation, filters);
 
-  const renderFilterBadges = (): ReactElement | null => {
+  const renderFilterBadges = useMemo((): ReactElement | null => {
     if (!filters.hasActiveFilters) return null;
 
     const badges = [];
@@ -211,21 +227,20 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
         </TouchableOpacity>
       </View>
     );
-  };
+  }, [filters, styles]);
 
-  const renderCryptoItem = ({
-    item,
-  }: {
-    item: CryptoCurrency;
-  }): ReactElement => (
-    <CryptoItem
-      crypto={item}
-      onPress={handleCryptoPress}
-      testID={`crypto-item-${item.id}`}
-    />
+  const renderCryptoItem: ListRenderItem<CryptoCurrency> = useCallback(
+    ({ item }) => (
+      <CryptoItem
+        crypto={item}
+        onPress={handleCryptoPress}
+        testID={`crypto-item-${item.id}`}
+      />
+    ),
+    [handleCryptoPress],
   );
 
-  const renderEmptyComponent = (): ReactElement => {
+  const renderEmptyComponent = useCallback((): ReactElement => {
     if (hasSearchQuery) {
       if (isSearching) {
         return (
@@ -277,7 +292,46 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
         testID="list-empty"
       />
     );
-  };
+  }, [hasSearchQuery, isSearching, searchError, searchQuery, filters]);
+
+  const getItemLayout = useCallback(
+    (_: ArrayLike<CryptoCurrency> | null | undefined, index: number) => ({
+      length: TOTAL_ITEM_HEIGHT,
+      offset: TOTAL_ITEM_HEIGHT * index,
+      index,
+    }),
+    [],
+  );
+
+  const keyExtractor = useCallback((item: CryptoCurrency) => item.id, []);
+
+  const handleEndReached = useCallback(() => {
+    if (hasSearchQuery || !loadMore) return;
+    loadMore();
+  }, [hasSearchQuery, loadMore]);
+
+  const renderFooter = useCallback((): ReactElement | null => {
+    if (hasSearchQuery || !isFetchingNextPage) return null;
+
+    return (
+      <LoadingIndicator
+        size="small"
+        showLabel
+        label="Cargando más criptomonedas..."
+        testID="load-more-indicator"
+        style={styles.footerContainer}
+      />
+    );
+  }, [hasSearchQuery, isFetchingNextPage, styles.footerContainer]);
+
+  const viewabilityConfig = useMemo(
+    () => ({
+      viewAreaCoveragePercentThreshold: 50,
+      minimumViewTime: 100,
+      waitForInteraction: true,
+    }),
+    [],
+  );
 
   if (isLoading && !cryptos) {
     return (
@@ -298,7 +352,7 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
               placeholder="Buscar criptomonedas..."
               testID="crypto-search-bar"
             />
-            {renderFilterBadges()}
+            {renderFilterBadges}
           </VStack>
         </ContentWrapper>
         <SkeletonList
@@ -348,20 +402,34 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
             placeholder="Buscar criptomonedas..."
             testID="crypto-search-bar"
           />
-          {renderFilterBadges()}
+          {renderFilterBadges}
         </VStack>
       </ContentWrapper>
 
       <FlatList
         data={displayData}
         renderItem={renderCryptoItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={keyExtractor}
+        getItemLayout={getItemLayout}
+        initialNumToRender={INITIAL_NUM_TO_RENDER}
+        windowSize={WINDOW_SIZE}
+        removeClippedSubviews
+        maxToRenderPerBatch={MAX_TO_RENDER_PER_BATCH}
+        updateCellsBatchingPeriod={UPDATE_CELLS_BATCHING_PERIOD}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={ON_END_REACHED_THRESHOLD}
+        ListFooterComponent={renderFooter}
+        viewabilityConfig={viewabilityConfig}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+          autoscrollToTopThreshold: 10,
+        }}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContainer}
         refreshControl={
           !hasSearchQuery ? (
             <RefreshControl
-              refreshing={isLoading}
+              refreshing={isLoading && !isFetchingNextPage}
               onRefresh={refetch}
               testID="refresh-control"
             />

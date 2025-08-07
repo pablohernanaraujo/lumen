@@ -27,15 +27,27 @@ interface UseCryptoScreenDataReturn {
   filteredData: CryptoCurrency[] | undefined;
   sortBy: string;
   setSortBy: (sortId: string) => void;
+  loadMore?: () => void;
+  hasNextPage?: boolean;
+  isFetchingNextPage?: boolean;
 }
 
 export const useCryptoScreenData = (
   navigation: NavigationProp,
   filters: ReturnType<typeof useCryptoFilters>,
 ): UseCryptoScreenDataReturn => {
-  const { cryptos, isLoading, isError, refetch } = useCryptoList({
-    per_page: 20,
+  const {
+    cryptos,
+    isLoading,
+    isError,
+    refetch,
+    loadMore,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useCryptoList({
+    per_page: 50, // Increased for better infinite scroll performance
     order: 'market_cap_desc',
+    enableInfiniteScroll: true,
   });
 
   const {
@@ -93,5 +105,8 @@ export const useCryptoScreenData = (
     filteredData,
     sortBy,
     setSortBy,
+    loadMore,
+    hasNextPage,
+    isFetchingNextPage,
   };
 };

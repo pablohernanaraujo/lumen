@@ -1,3 +1,4 @@
+/* eslint-disable max-statements */
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react-native';
 
@@ -166,5 +167,52 @@ describe('CryptoItem', () => {
 
     // assert
     expect(getByTestId('crypto-item-test-image')).toBeTruthy();
+  });
+
+  it('should handle null price gracefully', () => {
+    // arrange
+    const cryptoWithNullPrice = {
+      ...mockCrypto,
+      current_price: null,
+    };
+
+    const { getByText } = renderWithTheme(
+      <CryptoItem crypto={cryptoWithNullPrice} testID="crypto-item-test" />,
+    );
+
+    // assert
+    expect(getByText('--')).toBeTruthy();
+  });
+
+  it('should handle null price change gracefully', () => {
+    // arrange
+    const cryptoWithNullChange = {
+      ...mockCrypto,
+      price_change_percentage_24h: null,
+    };
+
+    const { getByText } = renderWithTheme(
+      <CryptoItem crypto={cryptoWithNullChange} testID="crypto-item-test" />,
+    );
+
+    // assert
+    expect(getByText('N/A')).toBeTruthy();
+  });
+
+  it('should handle both null price and change gracefully', () => {
+    // arrange
+    const cryptoWithNullValues = {
+      ...mockCrypto,
+      current_price: null,
+      price_change_percentage_24h: null,
+    };
+
+    const { getByText } = renderWithTheme(
+      <CryptoItem crypto={cryptoWithNullValues} testID="crypto-item-test" />,
+    );
+
+    // assert
+    expect(getByText('--')).toBeTruthy(); // price
+    expect(getByText('N/A')).toBeTruthy(); // change
   });
 });
