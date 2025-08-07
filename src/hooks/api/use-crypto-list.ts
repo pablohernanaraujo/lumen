@@ -87,10 +87,30 @@ export const useCryptoList = (
     enabled: enabled && enableInfiniteScroll,
     initialPageParam: 1,
     getNextPageParam: (lastPage, allPages) => {
+      // If the last page is empty or has no data, no more pages
+      if (!lastPage || lastPage.length === 0) {
+        return;
+      }
+
+      // If the last page has fewer items than requested, it's likely the last page
+      // But allow one more request to be sure (API might return exactly per_page on last page)
       if (lastPage.length < per_page) {
         return;
       }
-      return allPages.length + 1;
+
+      // Add safety limit to prevent infinite pagination (max 20 pages = 1000 cryptos)
+      if (allPages.length >= 20) {
+        console.warn('[useCryptoList] Reached maximum page limit (20 pages)');
+        return;
+      }
+
+      const nextPage = allPages.length + 1;
+      if (__DEV__) {
+        console.log(
+          `[useCryptoList] Loading page ${nextPage}, last page had ${lastPage.length} items`,
+        );
+      }
+      return nextPage;
     },
     staleTime: getStaleTime(infiniteQueryKey),
     gcTime: getCacheTime(infiniteQueryKey),
@@ -140,39 +160,48 @@ export const useCryptoList = (
   });
 
   const loadMore = useCallback(() => {
-    if (infiniteQuery.hasNextPage && !infiniteQuery.isFetchingNextPage) {
-      infiniteQuery.fetchNextPage();
+    if (!infiniteQuery.hasNextPage) {
+      if (__DEV__) {
+        console.log(
+          '[useCryptoList] loadMore called but no more pages available',
+        );
+      }
+      return;
     }
+
+    if (infiniteQuery.isFetchingNextPage) {
+      if (__DEV__) {
+        console.log(
+          '[useCryptoList] loadMore called but already fetching next page',
+        );
+      }
+      return;
+    }
+
+    if (__DEV__) {
+      const currentPages = infiniteQuery.data?.pages.length || 0;
+      console.log(
+        `[useCryptoList] loadMore triggered - fetching page ${currentPages + 1}`,
+      );
+    }
+
+    infiniteQuery.fetchNextPage();
   }, [infiniteQuery]);
 
-  // Preload next page for infinite scroll to improve UX
+  // Preload next page for infinite scroll (DISABLED - was causing loading issues)
+  // This automatic preloading was interfering with manual load-more functionality
+  // and triggering rate limiting. Manual loadMore() via onEndReached is preferred.
   useEffect(() => {
-    if (
-      enableInfiniteScroll &&
-      infiniteQuery.data &&
-      infiniteQuery.hasNextPage &&
-      !infiniteQuery.isFetchingNextPage
-    ) {
+    // Preloading disabled to prevent interference with manual scroll loading
+    // and to avoid triggering rate limiting
+    if (__DEV__ && enableInfiniteScroll && infiniteQuery.data) {
       const allPages = infiniteQuery.data.pages;
-      const lastPage = allPages[allPages.length - 1];
-
-      // Preload next page when user is close to the end
-      if (lastPage && lastPage.length >= per_page * 0.8) {
-        setTimeout(() => {
-          if (AppState.currentState === 'active' && infiniteQuery.hasNextPage) {
-            infiniteQuery.fetchNextPage();
-          }
-        }, 1000); // Small delay to avoid aggressive prefetching
-      }
+      const totalItems = allPages.reduce((sum, page) => sum + page.length, 0);
+      console.log(
+        `[useCryptoList] ${allPages.length} pages loaded, ${totalItems} total items, hasNext: ${infiniteQuery.hasNextPage}`,
+      );
     }
-  }, [
-    enableInfiniteScroll,
-    infiniteQuery.data,
-    infiniteQuery.hasNextPage,
-    infiniteQuery.isFetchingNextPage,
-    infiniteQuery,
-    per_page,
-  ]);
+  }, [enableInfiniteScroll, infiniteQuery.data, infiniteQuery.hasNextPage]);
 
   if (enableInfiniteScroll) {
     const allData = infiniteQuery.data?.pages.flat();

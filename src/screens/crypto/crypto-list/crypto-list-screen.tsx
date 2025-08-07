@@ -306,23 +306,65 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
   const keyExtractor = useCallback((item: CryptoCurrency) => item.id, []);
 
   const handleEndReached = useCallback(() => {
-    if (hasSearchQuery || !loadMore) return;
+    if (hasSearchQuery || !loadMore) {
+      if (__DEV__ && hasSearchQuery) {
+        console.log('[CryptoListScreen] onEndReached skipped - search active');
+      }
+      return;
+    }
+
+    if (__DEV__) {
+      console.log(
+        '[CryptoListScreen] onEndReached triggered - calling loadMore()',
+      );
+    }
+
     loadMore();
   }, [hasSearchQuery, loadMore]);
 
   const renderFooter = useCallback((): ReactElement | null => {
-    if (hasSearchQuery || !isFetchingNextPage) return null;
+    if (hasSearchQuery) return null;
 
-    return (
-      <LoadingIndicator
-        size="small"
-        showLabel
-        label="Cargando más criptomonedas..."
-        testID="load-more-indicator"
-        style={styles.footerContainer}
-      />
-    );
-  }, [hasSearchQuery, isFetchingNextPage, styles.footerContainer]);
+    // Show loading indicator when fetching next page
+    if (isFetchingNextPage) {
+      if (__DEV__) {
+        console.log('[CryptoListScreen] Showing load-more indicator');
+      }
+      return (
+        <LoadingIndicator
+          size="small"
+          showLabel
+          label="Cargando más criptomonedas..."
+          testID="load-more-indicator"
+          style={styles.footerContainer}
+        />
+      );
+    }
+
+    // Show "end of list" message if no more pages and we have data
+    if (displayData && displayData.length > 20 && loadMore) {
+      // Check if we actually tried to load more but there are no more pages
+      // This helps indicate we've reached the end instead of infinite loading
+      return (
+        <View style={[styles.footerContainer, { alignItems: 'center' }]}>
+          <Text style={styles.emptyState}>
+            {displayData.length >= 1000
+              ? 'Mostrando top 1000 criptomonedas'
+              : ''}
+          </Text>
+        </View>
+      );
+    }
+
+    return null;
+  }, [
+    hasSearchQuery,
+    isFetchingNextPage,
+    displayData,
+    loadMore,
+    styles.footerContainer,
+    styles.emptyState,
+  ]);
 
   const viewabilityConfig = useMemo(
     () => ({

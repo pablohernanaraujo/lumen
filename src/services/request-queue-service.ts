@@ -52,23 +52,23 @@ class RequestQueueService {
   private processing = new Set<string>();
   private readonly maxConcurrent: number = 5;
 
-  // Rate limiting
+  // Rate limiting (relaxed for better UX)
   private requestHistory: number[] = [];
   private readonly rateLimitConfig: RateLimitConfig = {
-    maxRequests: 8, // Conservative CoinGecko free tier limit (10/min with buffer)
+    maxRequests: 15, // Increased from 8 to 15 (still below CoinGecko's 50/min limit)
     windowMs: 60 * 1000, // 1 minute window
-    retryAfterMs: 5000, // 5 second delay on rate limit
+    retryAfterMs: 3000, // Reduced from 5s to 3s delay on rate limit
   };
 
-  // Burst protection
+  // Burst protection (relaxed)
   private readonly burstConfig = {
-    maxBurstRequests: 2, // Max 2 requests per burst window
+    maxBurstRequests: 4, // Increased from 2 to 4 requests per burst window
     burstWindowMs: 10 * 1000, // 10 second burst window
   };
 
   private burstHistory: number[] = [];
   private lastRequestTime = 0;
-  private readonly MIN_REQUEST_SPACING = 2000; // Minimum 2 seconds between requests
+  private readonly MIN_REQUEST_SPACING = 1000; // Reduced from 2s to 1s between requests
 
   // Processing state to prevent infinite loops
   private isProcessingPaused = false;
@@ -152,9 +152,9 @@ class RequestQueueService {
   private circuitBreakerState: 'closed' | 'open' | 'half-open' = 'closed';
   private circuitBreakerFailures = 0;
   private circuitBreakerLastFailure = 0;
-  private readonly CIRCUIT_BREAKER_THRESHOLD = 3; // Open after 3 consecutive rate limits
+  private readonly CIRCUIT_BREAKER_THRESHOLD = 5; // Increased from 3 to 5 consecutive rate limits
   private readonly CIRCUIT_BREAKER_TIMEOUT = 60000; // 1 minute timeout
-  private readonly CIRCUIT_BREAKER_RECOVERY_TIMEOUT = 300000; // 5 minutes recovery
+  private readonly CIRCUIT_BREAKER_RECOVERY_TIMEOUT = 120000; // Reduced from 5min to 2min recovery
 
   // Emergency reset thresholds
   private readonly MAX_CONSECUTIVE_PREVENTIVE_LIMITS = 10;
@@ -219,9 +219,11 @@ class RequestQueueService {
     const waitTime = startTime - request.timestamp;
     this.totalWaitTime += waitTime;
 
-    console.log(
-      `[RequestQueue] Processing request ${request.id} (${request.config.method} ${request.config.url}) - Priority: ${request.priority}, Wait time: ${waitTime}ms`,
-    );
+    if (__DEV__) {
+      console.log(
+        `[RequestQueue] Processing request ${request.id} (${request.config.method} ${request.config.url}) - Priority: ${request.priority}, Wait time: ${waitTime}ms, Queue size: ${this.queue.length}`,
+      );
+    }
 
     try {
       const result = await request.executor();
@@ -358,9 +360,11 @@ class RequestQueueService {
       10000,
     );
 
-    console.warn(
-      `[RequestQueue] Preventive rate limit (${this.preventiveRateLimitHits} hits), pausing for ${backoffDelay}ms`,
-    );
+    if (__DEV__) {
+      console.warn(
+        `[RequestQueue] Preventive rate limit (${this.preventiveRateLimitHits} hits), pausing for ${backoffDelay}ms. Requests in window: ${this.requestHistory.length}/${this.rateLimitConfig.maxRequests}`,
+      );
+    }
 
     // Pause processing instead of scheduling individual timeouts
     this.pauseProcessing(
@@ -433,8 +437,8 @@ class RequestQueueService {
     this.rateLimitHits = 0;
 
     // Reset rate limits to original values
-    this.rateLimitConfig.maxRequests = 8;
-    this.burstConfig.maxBurstRequests = 2;
+    this.rateLimitConfig.maxRequests = 15; // Updated to match new relaxed config
+    this.burstConfig.maxBurstRequests = 4; // Updated to match new relaxed config
 
     // Pause for emergency reset period
     this.pauseProcessing(
