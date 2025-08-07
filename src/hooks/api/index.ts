@@ -10,3 +10,9 @@ export {
   useCryptoList,
   type UseCryptoListOptions,
 } from './use-crypto-list';
+export {
+  type SearchCryptosResult,
+  type SearchResult,
+  useSearchCryptos,
+  type UseSearchCryptosOptions,
+} from './use-search-cryptos';

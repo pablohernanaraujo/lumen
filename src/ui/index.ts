@@ -38,6 +38,12 @@ export {
   VStack,
 } from './layout';
 export type {
+  SearchBarProps,
+  UseDebounceOptions,
+  UseDebounceResult,
+} from './search';
+export { SearchBar, useDebounce } from './search';
+export type {
   BaseTypographyProps,
   Body1Props,
   Body2Props,
