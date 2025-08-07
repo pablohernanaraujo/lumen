@@ -42,6 +42,6 @@ export interface HStackProps {
   children?: ReactNode;
   spacing?: SpacingSize;
   style?: ViewStyle;
-  align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
+  align?: 'flex-start' | 'center' | 'flex-end' | 'stretch' | 'space-between';
   textAlign?: TextAlign;
 }
