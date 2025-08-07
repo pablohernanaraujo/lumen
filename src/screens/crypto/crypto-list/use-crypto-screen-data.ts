@@ -1,4 +1,4 @@
-import { useCryptoList, useSearchCryptos } from '../../../hooks';
+import { useCryptoList, useSearchCryptos, useSortData } from '../../../hooks';
 import { useCryptoFilters } from '../../../screens/modals/filter-modal';
 import type { CryptoCurrency } from '../../../services/api-service';
 
@@ -25,6 +25,8 @@ interface UseCryptoScreenDataReturn {
   handleInputChange: (query: string) => void;
   handleClearSearch: () => void;
   filteredData: CryptoCurrency[] | undefined;
+  sortBy: string;
+  setSortBy: (sortId: string) => void;
 }
 
 export const useCryptoScreenData = (
@@ -48,12 +50,16 @@ export const useCryptoScreenData = (
     allCryptos: cryptos || [],
   });
 
+  const { sortBy, setSortBy, sortData } = useSortData('marketCap-desc');
+
   // Apply filters to data
   const baseData = hasSearchQuery ? searchResults : cryptos;
   const filteredData = baseData
     ? filters.applyFiltersToData(baseData)
     : undefined;
-  const displayData = filteredData;
+
+  // Apply sorting to filtered data
+  const displayData = filteredData ? sortData(filteredData) : undefined;
   const isDataLoading = hasSearchQuery ? isSearching : isLoading;
 
   const handleCryptoPress = (cryptoId: string): void => {
@@ -85,5 +91,7 @@ export const useCryptoScreenData = (
     handleInputChange,
     handleClearSearch,
     filteredData,
+    sortBy,
+    setSortBy,
   };
 };

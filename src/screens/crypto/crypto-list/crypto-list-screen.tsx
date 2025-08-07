@@ -153,6 +153,8 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     handleCryptoPress,
     handleInputChange,
     handleClearSearch,
+    sortBy,
+    setSortBy,
   } = useCryptoScreenData(navigation, filters);
 
   const renderCryptoItem = ({
@@ -311,6 +313,9 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
       <Header
         showFilterButton
         activeFilterCount={filters.getActiveFilterCount()}
+        showSortButton
+        sortBy={sortBy}
+        onSortChange={setSortBy}
       />
       <ContentWrapper variant="body">
         <VStack>

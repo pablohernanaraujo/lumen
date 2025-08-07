@@ -12,12 +12,15 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from '../contexts';
 import type { RootStackParamList } from '../routing';
 import { makeStyles } from '../theme';
-import { ContentWrapper, Icon, Image } from '../ui';
+import { ContentWrapper, Icon, Image, SortButton } from '../ui';
 
 export interface HeaderProps {
   titleStyle?: TextStyle;
   showFilterButton?: boolean;
   activeFilterCount?: number;
+  showSortButton?: boolean;
+  sortBy?: string;
+  onSortChange?: (sortId: string) => void;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -81,6 +84,9 @@ export const Header: FC<HeaderProps> = ({
   titleStyle,
   showFilterButton = false,
   activeFilterCount = 0,
+  showSortButton = false,
+  sortBy = 'marketCap-desc',
+  onSortChange,
 }) => {
   const styles = useStyles();
   const { user } = useAuth();
@@ -137,6 +143,14 @@ export const Header: FC<HeaderProps> = ({
         )}
 
         <Text style={[styles.greetingText, titleStyle]}>{getGreeting()}</Text>
+
+        {showSortButton && onSortChange && (
+          <SortButton
+            value={sortBy}
+            onValueChange={onSortChange}
+            testID="header-sort-button"
+          />
+        )}
 
         {showFilterButton && (
           <TouchableOpacity
