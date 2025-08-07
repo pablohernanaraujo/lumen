@@ -258,8 +258,19 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
           <EmptyState
             icon="search-off"
             title="Error al buscar"
-            message="No se pudo completar la búsqueda. Inténtalo de nuevo."
+            message={
+              searchError.message === 'Search timeout'
+                ? 'La búsqueda tardó demasiado. Intenta con un término más corto.'
+                : 'No se pudo conectar con el servidor. Mostrando resultados locales.'
+            }
             variant="search"
+            actionText="Reintentar"
+            onAction={() => {
+              // Clear and retry search
+              handleClearSearch();
+              // Force a new search after clearing
+              setTimeout(() => handleInputChange(searchQuery), 100);
+            }}
             testID="search-error"
           />
         );
@@ -292,7 +303,15 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
         testID="list-empty"
       />
     );
-  }, [hasSearchQuery, isSearching, searchError, searchQuery, filters]);
+  }, [
+    hasSearchQuery,
+    isSearching,
+    searchError,
+    searchQuery,
+    filters,
+    handleClearSearch,
+    handleInputChange,
+  ]);
 
   const getItemLayout = useCallback(
     (_: ArrayLike<CryptoCurrency> | null | undefined, index: number) => ({

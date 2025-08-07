@@ -1,5 +1,5 @@
 /* eslint-disable max-statements */
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { AppState } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
@@ -39,12 +39,13 @@ export const useSearchCryptos = (
 ): SearchCryptosResult => {
   const { allCryptos = [], enabled = true } = options;
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isSearchTimeout, setIsSearchTimeout] = useState<boolean>(false);
 
   // Debounce search query to reduce API calls
   const { debouncedValue: debouncedSearchQuery, isDebouncing } = useDebounce(
     searchQuery,
     {
-      delay: 300, // 300ms delay
+      delay: 500, // Increased to 500ms to reduce API calls
     },
   );
 
@@ -53,17 +54,38 @@ export const useSearchCryptos = (
 
   const searchQueryKey = [SEARCH_QUERY_KEY, debouncedSearchQuery];
 
-  // Remote search using API
+  // Remote search using API with error handling
   const {
     data: remoteSearchData,
     isLoading: isRemoteSearchLoading,
     error: remoteSearchError,
+    isError: isRemoteSearchError,
   } = useQuery({
     queryKey: searchQueryKey,
     queryFn: async () => {
       if (!shouldSearchRemote) return null;
-      const response = await apiService.searchCoins(debouncedSearchQuery);
-      return response.coins;
+
+      try {
+        if (__DEV__) {
+          console.log(
+            `[SearchCryptos] Searching for: "${debouncedSearchQuery}"`,
+          );
+        }
+
+        const response = await apiService.searchCoins(debouncedSearchQuery);
+
+        if (__DEV__) {
+          console.log(
+            `[SearchCryptos] Found ${response.coins?.length || 0} results`,
+          );
+        }
+
+        return response.coins;
+      } catch (error) {
+        console.error('[SearchCryptos] Search API error:', error);
+        // Return null to fallback to local search
+        return null;
+      }
     },
     enabled: enabled && shouldSearchRemote && !isDebouncing,
     staleTime: getStaleTime(searchQueryKey),
@@ -72,11 +94,32 @@ export const useSearchCryptos = (
     refetchOnMount: false, // Don't refetch search results on mount
     refetchOnWindowFocus: false,
     refetchOnReconnect: false, // Don't refetch search on reconnect
+    retry: 1, // Only retry once for searches
+    retryDelay: 1000, // 1 second retry delay
     meta: {
       errorMessage: `Failed to search for "${debouncedSearchQuery}"`,
       persist: true, // Cache search results
     },
   });
+
+  // Reset timeout when search query changes
+  useEffect(() => {
+    setIsSearchTimeout(false);
+  }, [debouncedSearchQuery]);
+
+  // Set timeout for search (10 seconds max)
+  useEffect(() => {
+    if (!shouldSearchRemote || !enabled) return;
+
+    const timeoutId = setTimeout(() => {
+      if (isRemoteSearchLoading) {
+        console.warn('[SearchCryptos] Search timeout after 10 seconds');
+        setIsSearchTimeout(true);
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeoutId);
+  }, [shouldSearchRemote, enabled, isRemoteSearchLoading]);
 
   // Local search for short queries with improved matching
   const localSearchResults = useMemo(() => {
@@ -154,12 +197,28 @@ export const useSearchCryptos = (
     );
   }, [remoteSearchData]);
 
-  // Determine which results to show
+  // Determine which results to show with fallback logic
   const searchResults = useMemo(() => {
     if (!hasSearchQuery) return [];
 
+    // If search timed out or errored, use local search as fallback
+    if (isSearchTimeout || (isRemoteSearchError && shouldSearchRemote)) {
+      if (__DEV__) {
+        console.log('[SearchCryptos] Using local search as fallback');
+      }
+      return localSearchResults;
+    }
+
     if (shouldSearchRemote && !isDebouncing) {
-      return convertedRemoteResults;
+      // If remote search returned results, use them
+      if (convertedRemoteResults.length > 0) {
+        return convertedRemoteResults;
+      }
+
+      // If remote search returned empty but not loading, show empty
+      if (!isRemoteSearchLoading && remoteSearchData !== undefined) {
+        return [];
+      }
     }
 
     // Show local results while debouncing or for short queries
@@ -170,11 +229,16 @@ export const useSearchCryptos = (
     isDebouncing,
     convertedRemoteResults,
     localSearchResults,
+    isSearchTimeout,
+    isRemoteSearchError,
+    isRemoteSearchLoading,
+    remoteSearchData,
   ]);
 
-  const clearSearch = (): void => {
+  const clearSearch = useCallback((): void => {
     setSearchQuery('');
-  };
+    setIsSearchTimeout(false);
+  }, []);
 
   // Disabled popular search preloading to prevent rate limits
   // Will only search when user actively searches
@@ -187,10 +251,31 @@ export const useSearchCryptos = (
     }
   }, [enabled]);
 
+  // Calculate isSearching with timeout protection
+  const isSearching = useMemo(() => {
+    // If timed out, not searching anymore
+    if (isSearchTimeout) return false;
+
+    // If debouncing, show as searching
+    if (isDebouncing) return true;
+
+    // If should search remotely and is loading
+    if (shouldSearchRemote && isRemoteSearchLoading) return true;
+
+    return false;
+  }, [
+    isSearchTimeout,
+    isDebouncing,
+    shouldSearchRemote,
+    isRemoteSearchLoading,
+  ]);
+
   return {
     searchResults,
-    isSearching: (shouldSearchRemote && isRemoteSearchLoading) || isDebouncing,
-    searchError: remoteSearchError as Error | null,
+    isSearching,
+    searchError: (isSearchTimeout
+      ? new Error('Search timeout')
+      : remoteSearchError) as Error | null,
     hasSearchQuery,
     searchQuery,
     setSearchQuery,

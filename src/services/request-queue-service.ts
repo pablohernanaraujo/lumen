@@ -54,10 +54,18 @@ class RequestQueueService {
 
   // Rate limiting (relaxed for better UX)
   private requestHistory: number[] = [];
+  private searchRequestHistory: number[] = []; // Separate tracking for search requests
   private readonly rateLimitConfig: RateLimitConfig = {
     maxRequests: 15, // Increased from 8 to 15 (still below CoinGecko's 50/min limit)
     windowMs: 60 * 1000, // 1 minute window
     retryAfterMs: 3000, // Reduced from 5s to 3s delay on rate limit
+  };
+
+  // Separate rate limit for search requests (more generous)
+  private readonly searchRateLimitConfig: RateLimitConfig = {
+    maxRequests: 30, // More generous for searches
+    windowMs: 60 * 1000, // 1 minute window
+    retryAfterMs: 1000, // Only 1s delay for searches
   };
 
   // Burst protection (relaxed)
@@ -68,7 +76,9 @@ class RequestQueueService {
 
   private burstHistory: number[] = [];
   private lastRequestTime = 0;
+  private lastSearchRequestTime = 0; // Separate tracking for searches
   private readonly MIN_REQUEST_SPACING = 1000; // Reduced from 2s to 1s between requests
+  private readonly MIN_SEARCH_SPACING = 200; // Much shorter for searches (200ms)
 
   // Processing state to prevent infinite loops
   private isProcessingPaused = false;
@@ -98,38 +108,70 @@ class RequestQueueService {
     return `req_${Date.now()}_${Math.random().toString(36).slice(2, 11)}`;
   }
 
-  private isRateLimited(): boolean {
-    const now = Date.now();
-
-    // Check minimum request spacing
-    if (now - this.lastRequestTime < this.MIN_REQUEST_SPACING) {
-      return true;
-    }
-
-    // Check burst protection
-    const burstWindowStart = now - this.burstConfig.burstWindowMs;
-    this.burstHistory = this.burstHistory.filter(
-      (time) => time > burstWindowStart,
-    );
-
-    if (this.burstHistory.length >= this.burstConfig.maxBurstRequests) {
-      return true;
-    }
-
-    // Check regular rate limit
-    const windowStart = now - this.rateLimitConfig.windowMs;
-    this.requestHistory = this.requestHistory.filter(
-      (time) => time > windowStart,
-    );
-
-    return this.requestHistory.length >= this.rateLimitConfig.maxRequests;
+  private isSearchRequest(config: RequestConfig): boolean {
+    // Check if this is a search request by URL
+    return config.url.includes('/search') || config.url.includes('search');
   }
 
-  private addToRequestHistory(): void {
+  private isRateLimited(request?: QueuedRequest): boolean {
     const now = Date.now();
-    this.requestHistory.push(now);
-    this.burstHistory.push(now);
-    this.lastRequestTime = now;
+    const isSearch = request && this.isSearchRequest(request.config);
+
+    // Different spacing for search vs regular requests
+    if (isSearch) {
+      // Search requests have their own spacing
+      if (now - this.lastSearchRequestTime < this.MIN_SEARCH_SPACING) {
+        return true;
+      }
+
+      // Check search-specific rate limit
+      const searchWindowStart = now - this.searchRateLimitConfig.windowMs;
+      this.searchRequestHistory = this.searchRequestHistory.filter(
+        (time) => time > searchWindowStart,
+      );
+
+      return (
+        this.searchRequestHistory.length >=
+        this.searchRateLimitConfig.maxRequests
+      );
+    } else {
+      // Regular requests
+      // Check minimum request spacing
+      if (now - this.lastRequestTime < this.MIN_REQUEST_SPACING) {
+        return true;
+      }
+
+      // Check burst protection (not for searches)
+      const burstWindowStart = now - this.burstConfig.burstWindowMs;
+      this.burstHistory = this.burstHistory.filter(
+        (time) => time > burstWindowStart,
+      );
+
+      if (this.burstHistory.length >= this.burstConfig.maxBurstRequests) {
+        return true;
+      }
+
+      // Check regular rate limit
+      const windowStart = now - this.rateLimitConfig.windowMs;
+      this.requestHistory = this.requestHistory.filter(
+        (time) => time > windowStart,
+      );
+
+      return this.requestHistory.length >= this.rateLimitConfig.maxRequests;
+    }
+  }
+
+  private addToRequestHistory(isSearch: boolean = false): void {
+    const now = Date.now();
+
+    if (isSearch) {
+      this.searchRequestHistory.push(now);
+      this.lastSearchRequestTime = now;
+    } else {
+      this.requestHistory.push(now);
+      this.burstHistory.push(now);
+      this.lastRequestTime = now;
+    }
   }
 
   private sortQueue(): void {
@@ -194,8 +236,16 @@ class RequestQueueService {
       return;
     }
 
-    if (this.isRateLimited()) {
-      this.handlePreventiveRateLimit();
+    // Check the first request in queue to determine if it's a search
+    const nextRequest = this.queue[0];
+    if (this.isRateLimited(nextRequest)) {
+      // Different handling for search requests
+      if (nextRequest && this.isSearchRequest(nextRequest.config)) {
+        // For searches, use shorter delay
+        this.handlePreventiveRateLimit(true);
+      } else {
+        this.handlePreventiveRateLimit(false);
+      }
       return;
     }
 
@@ -213,7 +263,8 @@ class RequestQueueService {
     if (!request) return;
 
     this.processing.add(request.id);
-    this.addToRequestHistory();
+    const isSearch = this.isSearchRequest(request.config);
+    this.addToRequestHistory(isSearch);
 
     const startTime = Date.now();
     const waitTime = startTime - request.timestamp;
@@ -343,7 +394,7 @@ class RequestQueueService {
     }
   }
 
-  private handlePreventiveRateLimit(): void {
+  private handlePreventiveRateLimit(isSearch: boolean = false): void {
     this.preventiveRateLimitHits++;
 
     // Check for emergency reset if we have too many consecutive preventive hits
@@ -354,22 +405,30 @@ class RequestQueueService {
       return;
     }
 
-    const retryAfterMs = this.rateLimitConfig.retryAfterMs ?? 5000;
+    // Use different delays for search vs regular requests
+    const config = isSearch ? this.searchRateLimitConfig : this.rateLimitConfig;
+    const retryAfterMs = config.retryAfterMs ?? (isSearch ? 1000 : 5000);
     const backoffDelay = Math.min(
       retryAfterMs * (this.preventiveRateLimitHits * 0.5),
-      10000,
+      isSearch ? 2000 : 10000, // Max 2s for searches, 10s for others
     );
 
     if (__DEV__) {
+      const history = isSearch
+        ? this.searchRequestHistory
+        : this.requestHistory;
+      const maxReqs = isSearch
+        ? this.searchRateLimitConfig.maxRequests
+        : this.rateLimitConfig.maxRequests;
       console.warn(
-        `[RequestQueue] Preventive rate limit (${this.preventiveRateLimitHits} hits), pausing for ${backoffDelay}ms. Requests in window: ${this.requestHistory.length}/${this.rateLimitConfig.maxRequests}`,
+        `[RequestQueue] ${isSearch ? 'Search' : 'Regular'} preventive rate limit (${this.preventiveRateLimitHits} hits), pausing for ${backoffDelay}ms. Requests in window: ${history.length}/${maxReqs}`,
       );
     }
 
     // Pause processing instead of scheduling individual timeouts
     this.pauseProcessing(
       backoffDelay,
-      `Preventive rate limiting - ${this.preventiveRateLimitHits} hits`,
+      `${isSearch ? 'Search' : 'Regular'} preventive rate limiting - ${this.preventiveRateLimitHits} hits`,
     );
     this.rateLimitHits++;
   }

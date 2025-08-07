@@ -384,12 +384,12 @@ class ApiService {
         url: '/search',
         method: 'GET',
         params: { query } as Record<string, unknown>,
-        priority: 'medium', // Search is medium priority
+        priority: 'high', // Changed to high priority for better UX
       },
-      'crypto-search',
+      `crypto-search-${query}`, // Unique cache key per query
       {
-        ttl: 10 * 60 * 1000, // 10 minutes for search results
-        priority: 'medium',
+        ttl: 30 * 60 * 1000, // Increased to 30 minutes for search results
+        priority: 'high', // High priority cache for searches
         persistToDisk: true,
       },
     );
