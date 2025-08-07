@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import { useAuth } from '../contexts';
+import { FilterModalScreen } from '../screens/modals/filter-modal';
 import { PrivacyModalScreen } from '../screens/modals/privacy-modal';
 import { ProfileModalScreen } from '../screens/modals/profile-modal';
 import { TermsModalScreen } from '../screens/modals/terms-modal';
@@ -129,6 +130,29 @@ export const RootNavigator: FC = () => {
                 onPress={() => navigation.goBack()}
                 accessibilityLabel="Volver"
                 testID="back-button-3"
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="FilterModal"
+          component={FilterModalScreen}
+          options={({ navigation }): NativeStackNavigationOptions => ({
+            title: 'Filtros',
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: theme.colors.background,
+            },
+            headerTintColor: theme.colors.text.primary,
+            headerLeft: () => (
+              <Icon
+                name="chevron-left"
+                family="MaterialIcons"
+                size={32}
+                color={theme.colors.text.primary}
+                onPress={() => navigation.goBack()}
+                accessibilityLabel="Volver"
+                testID="back-button-4"
               />
             ),
           })}

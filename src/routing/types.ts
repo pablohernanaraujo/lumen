@@ -11,6 +11,7 @@ export type RootStackParamList = {
   TermsModal: undefined;
   PrivacyModal: undefined;
   ProfileModal: undefined;
+  FilterModal: undefined;
 };
 
 export type AuthStackParamList = {

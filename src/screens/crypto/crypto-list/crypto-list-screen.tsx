@@ -1,9 +1,18 @@
+/* eslint-disable complexity */
+/* eslint-disable max-statements */
 import React, { type FC, type ReactElement } from 'react';
-import { FlatList, RefreshControl, Text, TouchableOpacity } from 'react-native';
+import {
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { Header } from '../../../components';
 import { useCryptoList, useSearchCryptos } from '../../../hooks';
 import type { CryptoListScreenProps } from '../../../routing';
+import { useCryptoFilters } from '../../../screens/modals/filter-modal';
 import type { CryptoCurrency } from '../../../services/api-service';
 import { makeStyles } from '../../../theme';
 import {
@@ -53,6 +62,42 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     marginTop: 40,
   },
+  filterBadgeContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: theme.spacing.md,
+    paddingBottom: theme.spacing.sm,
+  },
+  filterBadge: {
+    backgroundColor: theme.colors.primary.light,
+    borderRadius: 999,
+    paddingVertical: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.sm,
+    marginRight: theme.spacing.xs,
+    marginBottom: theme.spacing.xs,
+    borderWidth: 1,
+    borderColor: theme.colors.primary.main,
+  },
+  filterBadgeText: {
+    fontSize: theme.typography.size.xs,
+    color: theme.colors.primary.main,
+    fontWeight: theme.typography.weight.medium,
+  },
+  clearFiltersButton: {
+    backgroundColor: theme.colors.surface,
+    borderRadius: 999,
+    paddingVertical: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.sm,
+    marginRight: theme.spacing.xs,
+    marginBottom: theme.spacing.xs,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  clearFiltersText: {
+    fontSize: theme.typography.size.xs,
+    color: theme.colors.text.secondary,
+    fontWeight: theme.typography.weight.medium,
+  },
 }));
 
 const SearchEmptyState: FC<{
@@ -93,6 +138,7 @@ const SearchEmptyState: FC<{
 
 const useCryptoScreenData = (
   navigation: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+  filters: ReturnType<typeof useCryptoFilters>,
 ): {
   cryptos: CryptoCurrency[] | undefined;
   isLoading: boolean;
@@ -109,6 +155,7 @@ const useCryptoScreenData = (
   handleCryptoPress: (cryptoId: string) => void;
   handleInputChange: (query: string) => void;
   handleClearSearch: () => void;
+  filteredData: CryptoCurrency[] | undefined;
 } => {
   const { cryptos, isLoading, isError, refetch } = useCryptoList({
     per_page: 20,
@@ -127,7 +174,12 @@ const useCryptoScreenData = (
     allCryptos: cryptos || [],
   });
 
-  const displayData = hasSearchQuery ? searchResults : cryptos;
+  // Apply filters to data
+  const baseData = hasSearchQuery ? searchResults : cryptos;
+  const filteredData = baseData
+    ? filters.applyFiltersToData(baseData)
+    : undefined;
+  const displayData = filteredData;
   const isDataLoading = hasSearchQuery ? isSearching : isLoading;
 
   const handleCryptoPress = (cryptoId: string): void => {
@@ -158,11 +210,13 @@ const useCryptoScreenData = (
     handleCryptoPress,
     handleInputChange,
     handleClearSearch,
+    filteredData,
   };
 };
 
 export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
   const styles = useStyles();
+  const filters = useCryptoFilters();
 
   const {
     cryptos,
@@ -177,7 +231,7 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     handleCryptoPress,
     handleInputChange,
     handleClearSearch,
-  } = useCryptoScreenData(navigation);
+  } = useCryptoScreenData(navigation, filters);
 
   const renderCryptoItem = ({
     item,
@@ -241,9 +295,101 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     );
   }
 
+  const renderFilterBadges = (): ReactElement | null => {
+    if (!filters.hasActiveFilters) return null;
+
+    const badges = [];
+
+    if (filters.filters.price?.enabled) {
+      const min = filters.filters.price.min;
+      const max = filters.filters.price.max;
+      let label = 'Precio';
+      if (min !== undefined && max !== undefined) {
+        label = `$${min} - $${max}`;
+      } else if (min !== undefined) {
+        label = `> $${min}`;
+      } else if (max !== undefined) {
+        label = `< $${max}`;
+      }
+      badges.push({
+        key: 'price',
+        label,
+      });
+    }
+
+    if (filters.filters.marketCap?.enabled) {
+      const category = filters.filters.marketCap.category;
+      badges.push({
+        key: 'marketCap',
+        label:
+          category === 'small'
+            ? 'Small Cap'
+            : category === 'mid'
+              ? 'Mid Cap'
+              : category === 'large'
+                ? 'Large Cap'
+                : 'Market Cap',
+      });
+    }
+
+    if (filters.filters.change24h?.enabled) {
+      const type = filters.filters.change24h.type;
+      badges.push({
+        key: 'change',
+        label:
+          type === 'gainers'
+            ? 'Ganadores'
+            : type === 'losers'
+              ? 'Perdedores'
+              : 'Cambio 24h',
+      });
+    }
+
+    if (filters.filters.ranking?.enabled && filters.filters.ranking.topN) {
+      badges.push({
+        key: 'ranking',
+        label: `Top ${filters.filters.ranking.topN}`,
+      });
+    }
+
+    if (filters.filters.quickFilters?.trending) {
+      badges.push({
+        key: 'trending',
+        label: 'Tendencia',
+      });
+    }
+
+    if (filters.filters.quickFilters?.highVolume) {
+      badges.push({
+        key: 'highVolume',
+        label: 'Alto Volumen',
+      });
+    }
+
+    return (
+      <View style={styles.filterBadgeContainer}>
+        {badges.map((badge) => (
+          <View key={badge.key} style={styles.filterBadge}>
+            <Text style={styles.filterBadgeText}>{badge.label}</Text>
+          </View>
+        ))}
+        <TouchableOpacity
+          style={styles.clearFiltersButton}
+          onPress={() => filters.clearFilters()}
+          testID="clear-filters-badge"
+        >
+          <Text style={styles.clearFiltersText}>Limpiar filtros</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   return (
     <ScreenWrapper>
-      <Header />
+      <Header
+        showFilterButton
+        activeFilterCount={filters.getActiveFilterCount()}
+      />
       <ContentWrapper variant="body">
         <SearchBar
           value={searchQuery}
@@ -252,6 +398,7 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
           placeholder="Buscar criptomonedas..."
           testID="crypto-search-bar"
         />
+        {renderFilterBadges()}
       </ContentWrapper>
 
       <FlatList

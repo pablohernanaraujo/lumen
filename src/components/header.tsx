@@ -12,10 +12,12 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useAuth } from '../contexts';
 import type { RootStackParamList } from '../routing';
 import { makeStyles } from '../theme';
-import { ContentWrapper, Image } from '../ui';
+import { ContentWrapper, Icon, Image } from '../ui';
 
 export interface HeaderProps {
   titleStyle?: TextStyle;
+  showFilterButton?: boolean;
+  activeFilterCount?: number;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   avatarText: {
-    color: '#FFFFFF',
+    color: theme.colors.white,
     fontSize: theme.typography.size.lg,
     fontWeight: theme.typography.weight.bold,
   },
@@ -52,9 +54,34 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.primary,
     flex: 1,
   },
+  filterButton: {
+    position: 'relative',
+    padding: theme.spacing.sm,
+  },
+  filterBadge: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    backgroundColor: theme.colors.primary.main,
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 4,
+  },
+  filterBadgeText: {
+    color: theme.colors.white,
+    fontSize: 10,
+    fontWeight: theme.typography.weight.bold,
+  },
 }));
 
-export const Header: FC<HeaderProps> = ({ titleStyle }) => {
+export const Header: FC<HeaderProps> = ({
+  titleStyle,
+  showFilterButton = false,
+  activeFilterCount = 0,
+}) => {
   const styles = useStyles();
   const { user } = useAuth();
   const navigation =
@@ -63,6 +90,10 @@ export const Header: FC<HeaderProps> = ({ titleStyle }) => {
   const handleProfilePress = (): void => {
     if (!user) return;
     navigation.navigate('ProfileModal');
+  };
+
+  const handleFilterPress = (): void => {
+    navigation.navigate('FilterModal');
   };
 
   const getInitials = (): string => {
@@ -106,6 +137,26 @@ export const Header: FC<HeaderProps> = ({ titleStyle }) => {
         )}
 
         <Text style={[styles.greetingText, titleStyle]}>{getGreeting()}</Text>
+
+        {showFilterButton && (
+          <TouchableOpacity
+            onPress={handleFilterPress}
+            style={styles.filterButton}
+            testID="filter-button"
+          >
+            <Icon
+              name="filter-list"
+              family="MaterialIcons"
+              size={28}
+              color="text.primary"
+            />
+            {activeFilterCount > 0 && (
+              <View style={styles.filterBadge}>
+                <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        )}
       </View>
     </ContentWrapper>
   );

@@ -66,6 +66,7 @@ export const colorTokens = {
     borderLight: '#F3F4F6',
     borderDark: '#D1D5DB',
     overlay: 'rgba(0, 0, 0, 0.5)',
+    white: '#FFFFFF',
   },
   dark: {
     background: '#000000',
@@ -134,5 +135,6 @@ export const colorTokens = {
     borderLight: '#4B5563',
     borderDark: '#1F2937',
     overlay: 'rgba(0, 0, 0, 0.8)',
+    white: '#FFFFFF',
   },
 } as const;
