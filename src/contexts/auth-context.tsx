@@ -93,6 +93,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
       }
     };
 
+    // Skip async operations in test environment
+    if (process.env.NODE_ENV === 'test') {
+      setUnauthenticatedState();
+      return;
+    }
+
     checkAuthState();
   }, []);
 

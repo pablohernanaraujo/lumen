@@ -18,9 +18,20 @@ export const computeImageStyle = (
   width?: number,
   height?: number,
   style?: StyleProp<ImageStyle>,
-): any[] =>
-  [
-    width !== undefined && { width },
-    height !== undefined && { height },
-    style,
-  ].filter(Boolean);
+): any[] => {
+  const styles: any[] = [];
+
+  if (width !== undefined) {
+    styles.push({ width });
+  }
+
+  if (height !== undefined) {
+    styles.push({ height });
+  }
+
+  if (style) {
+    styles.push(style);
+  }
+
+  return styles;
+};

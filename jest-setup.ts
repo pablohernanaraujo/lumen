@@ -96,15 +96,15 @@ jest.mock('@react-navigation/native', () => ({
 
 jest.mock('@react-navigation/native-stack', () => ({
   createNativeStackNavigator: () => ({
-    Navigator: ({ children }: { children: ReactNode }) => children,
-    Screen: ({ children }: { children: ReactNode }) => children,
+    Navigator: 'Navigator',
+    Screen: 'Screen',
   }),
 }));
 
 jest.mock('@react-navigation/bottom-tabs', () => ({
   createBottomTabNavigator: () => ({
-    Navigator: ({ children }: { children: ReactNode }) => children,
-    Screen: ({ children }: { children: ReactNode }) => children,
+    Navigator: 'Navigator',
+    Screen: 'Screen',
   }),
 }));
 

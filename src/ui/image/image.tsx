@@ -8,6 +8,12 @@ import { FallbackImage } from './fallback-image';
 import { computeImageStyle, createPlaceholderStyles } from './image-helpers';
 import type { ImageProps } from './types';
 
+const styles = StyleSheet.create({
+  circularContainer: {
+    overflow: 'hidden',
+  },
+});
+
 const ImageComponent: FC<ImageProps> = ({
   width,
   height,
@@ -19,6 +25,7 @@ const ImageComponent: FC<ImageProps> = ({
   resizeMode = FastImage.resizeMode.cover,
   showPlaceholder = true,
   placeholderColor,
+  circular = false,
   onError,
   onLoadStart,
   onLoadEnd,
@@ -65,14 +72,15 @@ const ImageComponent: FC<ImageProps> = ({
   function renderFallback(): React.JSX.Element {
     if (fallbackSource) {
       return (
-        <FastImage
-          {...props}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          source={fallbackSource as any}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          style={computedStyle as any}
-          resizeMode={resizeMode}
-        />
+        <View style={[computedStyle, circular && styles.circularContainer]}>
+          <FastImage
+            {...props}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            source={fallbackSource as any}
+            style={circular ? StyleSheet.absoluteFill : computedStyle}
+            resizeMode={resizeMode}
+          />
+        </View>
       );
     }
 
@@ -86,31 +94,45 @@ const ImageComponent: FC<ImageProps> = ({
   }
 
   function renderMainImage(): React.JSX.Element {
-    return (
-      <View style={computedStyle}>
-        {/* Show placeholder while loading */}
-        {isLoading && showPlaceholder && (
-          <View
-            style={[
-              StyleSheet.absoluteFill,
-              placeholderStyles.container,
-              { borderRadius: (width || height || 40) / 2 },
-            ]}
-          >
-            <FallbackImage size={(width || height || 40) * 0.6} />
-          </View>
-        )}
+    const containerStyle = [
+      computedStyle,
+      circular && styles.circularContainer,
+    ];
+    const imageStyle = StyleSheet.absoluteFill;
 
+    return (
+      <View style={containerStyle}>
+        {renderPlaceholder()}
         <FastImage
           {...props}
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           source={source as any}
-          style={StyleSheet.absoluteFill}
+          style={imageStyle}
           resizeMode={resizeMode}
           onLoadStart={handleLoadStart}
           onLoadEnd={handleLoadEnd}
           onError={handleError}
         />
+      </View>
+    );
+  }
+
+  function renderPlaceholder(): React.JSX.Element | null {
+    if (!isLoading || !showPlaceholder) {
+      return null;
+    }
+
+    const flattenedStyle = StyleSheet.flatten(computedStyle);
+    const borderRadius = flattenedStyle?.borderRadius;
+    const placeholderStyle = [
+      StyleSheet.absoluteFill,
+      placeholderStyles.container,
+      circular && { borderRadius: borderRadius || (width || height || 40) / 2 },
+    ];
+
+    return (
+      <View style={placeholderStyle}>
+        <FallbackImage size={(width || height || 40) * 0.6} />
       </View>
     );
   }

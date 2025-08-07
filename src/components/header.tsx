@@ -133,6 +133,7 @@ export const Header: FC<HeaderProps> = ({
                 source={{ uri: user.user.photo }}
                 style={styles.profileImage as ImageStyle}
                 resizeMode="cover"
+                circular
               />
             ) : (
               <View style={styles.defaultAvatar}>

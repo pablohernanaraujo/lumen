@@ -17,4 +17,5 @@ export interface ImageProps extends Omit<FastImageProps, 'style'> {
   resizeMode?: keyof typeof FastImage.resizeMode;
   showPlaceholder?: boolean;
   placeholderColor?: string;
+  circular?: boolean;
 }
