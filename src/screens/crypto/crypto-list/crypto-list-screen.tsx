@@ -1,8 +1,16 @@
-import React, { type FC, type ReactElement, useEffect, useState } from 'react';
-import { Alert, FlatList, Text, TouchableOpacity } from 'react-native';
+import React, { type FC, type ReactElement } from 'react';
+import {
+  Alert,
+  FlatList,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 
 import { useAuth } from '../../../contexts';
+import { useCryptoList } from '../../../hooks';
 import type { CryptoListScreenProps } from '../../../routing';
+import type { CryptoCurrency } from '../../../services/api-service';
 import { makeStyles } from '../../../theme';
 import {
   Body2,
@@ -13,7 +21,6 @@ import {
   ScreenWrapper,
   VStack,
 } from '../../../ui';
-import type { CryptoItem } from './types';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -70,52 +77,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// Mock data for demonstration
-const mockCryptos: CryptoItem[] = [
-  {
-    id: 'bitcoin',
-    name: 'Bitcoin',
-    symbol: 'BTC',
-    price: 45230.5,
-    change24h: 2.45,
-    marketCap: 850000000000,
-    volume24h: 25000000000,
-  },
-  {
-    id: 'ethereum',
-    name: 'Ethereum',
-    symbol: 'ETH',
-    price: 3125.75,
-    change24h: -1.23,
-    marketCap: 375000000000,
-    volume24h: 15000000000,
-  },
-  {
-    id: 'cardano',
-    name: 'Cardano',
-    symbol: 'ADA',
-    price: 0.52,
-    change24h: 5.67,
-    marketCap: 17500000000,
-    volume24h: 1200000000,
-  },
-];
-
 export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
   const styles = useStyles();
   const { signOut, user } = useAuth();
-  const [cryptos, setCryptos] = useState<CryptoItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    // Simulate API call
-    const timer = setTimeout(() => {
-      setCryptos(mockCryptos);
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const { cryptos, isLoading, isError, refetch } = useCryptoList({
+    per_page: 20,
+    order: 'market_cap_desc',
+  });
 
   const handleCryptoPress = (cryptoId: string): void => {
     navigation.navigate('CryptoDetail', { cryptoId });
@@ -145,7 +114,11 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     );
   };
 
-  const renderCryptoItem = ({ item }: { item: CryptoItem }): ReactElement => (
+  const renderCryptoItem = ({
+    item,
+  }: {
+    item: CryptoCurrency;
+  }): ReactElement => (
     <TouchableOpacity
       style={styles.cryptoCard}
       onPress={() => handleCryptoPress(item.id)}
@@ -160,32 +133,58 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
 
         <VStack spacing="xs">
           <H3 emphasis="high">{item.name}</H3>
-          <Body2 emphasis="medium">{item.symbol}</Body2>
+          <Body2 emphasis="medium">{item.symbol.toUpperCase()}</Body2>
         </VStack>
 
         <VStack spacing="xs">
-          <Text style={styles.cryptoPrice}>${item.price.toLocaleString()}</Text>
+          <Text style={styles.cryptoPrice}>
+            ${item.current_price.toLocaleString()}
+          </Text>
           <Text
             style={[
               styles.cryptoChange,
-              item.change24h >= 0 ? styles.positive : styles.negative,
+              item.price_change_percentage_24h >= 0
+                ? styles.positive
+                : styles.negative,
             ]}
           >
-            {item.change24h >= 0 ? '+' : ''}
-            {item.change24h.toFixed(2)}%
+            {item.price_change_percentage_24h >= 0 ? '+' : ''}
+            {item.price_change_percentage_24h.toFixed(2)}%
           </Text>
         </VStack>
       </HStack>
     </TouchableOpacity>
   );
 
-  if (isLoading) {
+  if (isLoading && !cryptos) {
     return (
       <ScreenWrapper>
         <ContentWrapper variant="screen">
           <VStack spacing="xl">
             <Icon name="hourglass-empty" family="MaterialIcons" size="xxxl" />
             <Text style={styles.emptyState}>Loading cryptocurrencies...</Text>
+          </VStack>
+        </ContentWrapper>
+      </ScreenWrapper>
+    );
+  }
+
+  if (isError && !cryptos) {
+    return (
+      <ScreenWrapper>
+        <ContentWrapper variant="screen">
+          <VStack spacing="xl">
+            <Icon name="error-outline" family="MaterialIcons" size="xxxl" />
+            <Text style={styles.emptyState}>
+              Failed to load cryptocurrencies
+            </Text>
+            <TouchableOpacity
+              onPress={() => refetch()}
+              style={styles.cryptoCard}
+              testID="retry-button"
+            >
+              <Text style={styles.cryptoName}>Tap to retry</Text>
+            </TouchableOpacity>
           </VStack>
         </ContentWrapper>
       </ScreenWrapper>
@@ -217,6 +216,13 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ padding: styles.cryptoCard.padding }}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading}
+            onRefresh={refetch}
+            testID="refresh-control"
+          />
+        }
         ListEmptyComponent={
           <Text style={styles.emptyState}>No cryptocurrencies found</Text>
         }

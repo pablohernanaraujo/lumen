@@ -32,7 +32,9 @@ export const ScreenWrapper: FC<ScreenWrapperProps> = ({
 
   return (
     <View style={[styles.container, style]}>
-      <SafeAreaView style={styles.safeArea}>{children}</SafeAreaView>
+      <SafeAreaView edges={['top']} style={styles.safeArea}>
+        {children}
+      </SafeAreaView>
     </View>
   );
 };

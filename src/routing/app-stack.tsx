@@ -25,7 +25,7 @@ export const AppStack: FC = () => {
         name="MainTabs"
         component={TabNavigator}
         options={{
-          title: 'Main',
+          title: 'Crypto Portfolio',
         }}
       />
       <Stack.Screen
