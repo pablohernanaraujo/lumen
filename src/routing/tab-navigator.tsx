@@ -6,7 +6,7 @@ import { CryptoListScreen } from '../screens/crypto/crypto-list';
 import { ExchangeScreen } from '../screens/exchange';
 import { ScannerScreen } from '../screens/scanner';
 import { useTheme } from '../theme';
-import { Image } from '../ui';
+import { Icon } from '../ui';
 import type { TabStackParamList } from './types';
 
 const Tab = createBottomTabNavigator<TabStackParamList>();
@@ -37,15 +37,12 @@ export const TabNavigator: FC = () => {
         component={CryptoListScreen}
         options={{
           title: 'Portfolio',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('../assets/images/tabs/portfolio-selected.png')
-                  : require('../assets/images/tabs/portfolio-unselected.png')
-              }
-              width={36}
-              height={36}
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="account-balance-wallet"
+              family="MaterialIcons"
+              size={30}
+              color={color}
             />
           ),
         }}
@@ -55,15 +52,12 @@ export const TabNavigator: FC = () => {
         component={ExchangeScreen}
         options={{
           title: 'Exchange',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('../assets/images/tabs/exchange-selected.png')
-                  : require('../assets/images/tabs/exchange-unselected.png')
-              }
-              width={36}
-              height={36}
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="swap-horiz"
+              family="MaterialIcons"
+              size={30}
+              color={color}
             />
           ),
         }}
@@ -73,15 +67,12 @@ export const TabNavigator: FC = () => {
         component={ScannerScreen}
         options={{
           title: 'Scanner',
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={
-                focused
-                  ? require('../assets/images/tabs/scanner-selected.png')
-                  : require('../assets/images/tabs/scanner-unselected.png')
-              }
-              width={36}
-              height={36}
+          tabBarIcon: ({ color }) => (
+            <Icon
+              name="qr-code-scanner"
+              family="MaterialIcons"
+              size={30}
+              color={color}
             />
           ),
         }}
