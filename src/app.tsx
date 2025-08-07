@@ -3,10 +3,16 @@ import { StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { AuthProvider, FilterProvider, QueryProvider } from './contexts';
+import {
+  AuthProvider,
+  FilterProvider,
+  NetworkProvider,
+  QueryProvider,
+} from './contexts';
 import { RootNavigator } from './routing';
 import { navigationRef } from './routing/routing-service';
 import { ThemeProvider, useTheme } from './theme';
+import { NetworkBanner } from './ui';
 
 const AppContent: FC = () => {
   const { theme, mode } = useTheme();
@@ -20,6 +26,7 @@ const AppContent: FC = () => {
       <NavigationContainer ref={navigationRef}>
         <RootNavigator />
       </NavigationContainer>
+      <NetworkBanner />
     </SafeAreaProvider>
   );
 };
@@ -28,11 +35,13 @@ export const App: FC = () => (
   <StrictMode>
     <QueryProvider>
       <ThemeProvider>
-        <AuthProvider>
-          <FilterProvider>
-            <AppContent />
-          </FilterProvider>
-        </AuthProvider>
+        <NetworkProvider>
+          <AuthProvider>
+            <FilterProvider>
+              <AppContent />
+            </FilterProvider>
+          </AuthProvider>
+        </NetworkProvider>
       </ThemeProvider>
     </QueryProvider>
   </StrictMode>

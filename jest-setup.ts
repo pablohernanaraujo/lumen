@@ -165,6 +165,26 @@ jest.mock('@react-native-google-signin/google-signin', () => ({
   },
 }));
 
+// Mock NetInfo
+jest.mock('@react-native-community/netinfo', () => ({
+  __esModule: true,
+  default: {
+    fetch: jest.fn(() =>
+      Promise.resolve({
+        type: 'wifi',
+        isConnected: true,
+        isInternetReachable: true,
+        details: {
+          isConnectionExpensive: false,
+          effectiveConnectionType: '4g',
+        },
+      }),
+    ),
+    addEventListener: jest.fn(() => jest.fn()),
+    removeEventListener: jest.fn(),
+  },
+}));
+
 // Mock AuthService
 jest.mock('./src/services/auth-service', () => ({
   AuthService: {

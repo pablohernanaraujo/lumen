@@ -7,18 +7,22 @@
 - 🔐 **Authentication System** - Secure login and registration
 - 📊 **Crypto Portfolio Tracking** - Monitor your cryptocurrency investments
 - 💱 **Real-time Crypto Data** - View current prices and market changes
+- 🚀 **API Optimizations** - Advanced rate limiting, caching, and request optimization
 - 🎨 **Dynamic Theming** - Light and dark mode support
 - 📱 **Cross-platform** - Works on both iOS and Android
 - ⚡ **New Architecture** - Built with React Native's latest Fabric and TurboModules
 - 🎯 **TypeScript** - Full type safety throughout the application
+- 🛡️ **Circuit Breaker Pattern** - Auto-recovery from API failures with intelligent backoff
 
 ## 🚀 Technology Stack
 
 - **React Native 0.80.2** with New Architecture
 - **TypeScript** for type safety
+- **TanStack React Query** for data fetching and caching
 - **React Navigation 7** for routing
 - **Fabric** rendering system
 - **TurboModules** for native modules
+- **Advanced API Optimizations** - Rate limiting, deduplication, intelligent caching
 - **Vector Icons** for beautiful iconography
 - **Keyboard handling** for better UX
 - **ESLint + Prettier** for code quality
@@ -185,6 +189,8 @@ The app includes a comprehensive design system with:
 
 - [`NEW_ARCHITECTURE.md`](./NEW_ARCHITECTURE.md) - Detailed New Architecture migration guide
 - [`CLAUDE.md`](./CLAUDE.md) - Development guidelines for AI assistance
+- [`API_OPTIMIZATION.md`](./API_OPTIMIZATION.md) - Comprehensive API optimization and rate limiting guide
+- [`PERFORMANCE_OPTIMIZATIONS.md`](./PERFORMANCE_OPTIMIZATIONS.md) - FlatList performance optimizations
 
 ## 🐛 Troubleshooting
 
@@ -212,6 +218,30 @@ The app includes a comprehensive design system with:
    - Ensure all environment variables are set
    - Clean and rebuild the project
    - Check [`NEW_ARCHITECTURE.md`](./NEW_ARCHITECTURE.md) for detailed guidance
+
+5. **API Rate Limit Errors (429)**
+
+   The app includes comprehensive API optimizations to prevent rate limit errors:
+
+   ```bash
+   # Check current rate limiting metrics
+   console.log(requestQueueService.getMetrics());
+
+   # Verify circuit breaker status
+   console.log('Circuit breaker state:', circuitBreakerState);
+
+   # Monitor API cache effectiveness
+   console.log(apiCacheService.getMetrics());
+   ```
+
+   **Key protection features:**
+   - Conservative 8 requests/minute rate limit
+   - Circuit breaker pattern with auto-recovery
+   - Intelligent caching with appropriate TTL strategies
+   - Request deduplication to prevent duplicate API calls
+   - Network-aware refresh strategies
+
+   For detailed information, see [`API_OPTIMIZATION.md`](./API_OPTIMIZATION.md).
 
 For more troubleshooting, visit the [React Native Troubleshooting Guide](https://reactnative.dev/docs/troubleshooting).
 

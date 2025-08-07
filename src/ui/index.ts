@@ -23,6 +23,8 @@ export type {
   SortOption,
 } from './dropdown';
 export { DEFAULT_SORT_OPTIONS, SortButton, SortDropdown } from './dropdown';
+export type { NetworkBannerProps } from './feedback';
+export { NetworkBanner } from './feedback';
 export type { IconFamily, IconProps, IconSize } from './icon';
 export { Icon } from './icon';
 export type { ImageProps } from './image';

@@ -1,7 +1,9 @@
 /* eslint-disable complexity */
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
+import { AppState } from 'react-native';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 
+import { getCacheTime, getStaleTime } from '../../contexts/query-context';
 import {
   apiService,
   type CoinsMarketsParams,
@@ -43,20 +45,35 @@ export const useCryptoList = (
     ...restOptions
   } = options;
 
+  const infiniteQueryKey = [
+    CRYPTO_LIST_QUERY_KEY,
+    'infinite',
+    {
+      vs_currency,
+      order,
+      per_page,
+      sparkline,
+      price_change_percentage,
+      ...restOptions,
+    },
+  ];
+
+  const regularQueryKey = [
+    CRYPTO_LIST_QUERY_KEY,
+    {
+      vs_currency,
+      order,
+      per_page,
+      page,
+      sparkline,
+      price_change_percentage,
+      ...restOptions,
+    },
+  ];
+
   // Always call both hooks but conditionally enable them
   const infiniteQuery = useInfiniteQuery<CryptoCurrency[], Error>({
-    queryKey: [
-      CRYPTO_LIST_QUERY_KEY,
-      'infinite',
-      {
-        vs_currency,
-        order,
-        per_page,
-        sparkline,
-        price_change_percentage,
-        ...restOptions,
-      },
-    ],
+    queryKey: infiniteQueryKey,
     queryFn: ({ pageParam = 1 }) =>
       apiService.getCoinsMarkets({
         vs_currency,
@@ -75,23 +92,23 @@ export const useCryptoList = (
       }
       return allPages.length + 1;
     },
-    staleTime: 1000 * 60 * 2,
-    gcTime: 1000 * 60 * 5,
+    staleTime: getStaleTime(infiniteQueryKey),
+    gcTime: getCacheTime(infiniteQueryKey),
+    // Optimized for infinite scrolling
+    refetchOnMount: false, // Don't refetch entire list on mount
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,
+    // Background refresh for market data (reduced to prevent rate limits)
+    refetchInterval: 10 * 60 * 1000, // 10 minutes for market data (reduced from 3 minutes)
+    refetchIntervalInBackground: false,
+    meta: {
+      errorMessage: 'Failed to fetch cryptocurrency list',
+      persist: true,
+    },
   });
 
   const queryResult = useQuery<CryptoCurrency[], Error>({
-    queryKey: [
-      CRYPTO_LIST_QUERY_KEY,
-      {
-        vs_currency,
-        order,
-        per_page,
-        page,
-        sparkline,
-        price_change_percentage,
-        ...restOptions,
-      },
-    ],
+    queryKey: regularQueryKey,
     queryFn: () =>
       apiService.getCoinsMarkets({
         vs_currency,
@@ -103,8 +120,23 @@ export const useCryptoList = (
         ...restOptions,
       }),
     enabled: enabled && !enableInfiniteScroll,
-    staleTime: 1000 * 60 * 2,
-    gcTime: 1000 * 60 * 5,
+    staleTime: getStaleTime(regularQueryKey),
+    gcTime: getCacheTime(regularQueryKey),
+    // Network-aware refetch
+    refetchOnMount: (query) => {
+      const isStale =
+        Date.now() - query.state.dataUpdatedAt > getStaleTime(regularQueryKey);
+      return isStale && AppState.currentState === 'active';
+    },
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: true,
+    // Background refresh for market data (reduced to prevent rate limits)
+    refetchInterval: 8 * 60 * 1000, // 8 minutes for paginated market data (reduced from 2 minutes)
+    refetchIntervalInBackground: false,
+    meta: {
+      errorMessage: 'Failed to fetch cryptocurrency list',
+      persist: true,
+    },
   });
 
   const loadMore = useCallback(() => {
@@ -112,6 +144,35 @@ export const useCryptoList = (
       infiniteQuery.fetchNextPage();
     }
   }, [infiniteQuery]);
+
+  // Preload next page for infinite scroll to improve UX
+  useEffect(() => {
+    if (
+      enableInfiniteScroll &&
+      infiniteQuery.data &&
+      infiniteQuery.hasNextPage &&
+      !infiniteQuery.isFetchingNextPage
+    ) {
+      const allPages = infiniteQuery.data.pages;
+      const lastPage = allPages[allPages.length - 1];
+
+      // Preload next page when user is close to the end
+      if (lastPage && lastPage.length >= per_page * 0.8) {
+        setTimeout(() => {
+          if (AppState.currentState === 'active' && infiniteQuery.hasNextPage) {
+            infiniteQuery.fetchNextPage();
+          }
+        }, 1000); // Small delay to avoid aggressive prefetching
+      }
+    }
+  }, [
+    enableInfiniteScroll,
+    infiniteQuery.data,
+    infiniteQuery.hasNextPage,
+    infiniteQuery.isFetchingNextPage,
+    infiniteQuery,
+    per_page,
+  ]);
 
   if (enableInfiniteScroll) {
     const allData = infiniteQuery.data?.pages.flat();

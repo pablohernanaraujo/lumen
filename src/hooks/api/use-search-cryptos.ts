@@ -1,7 +1,11 @@
-import { useMemo, useState } from 'react';
+/* eslint-disable max-statements */
+import { useEffect, useMemo, useState } from 'react';
+import { AppState } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
+import { getCacheTime, getStaleTime } from '../../contexts/query-context';
 import { apiService, type CryptoCurrency } from '../../services/api-service';
+import { useDebounce } from '../../ui/search/use-debounce';
 
 export interface SearchResult {
   id: string;
@@ -36,8 +40,18 @@ export const useSearchCryptos = (
   const { allCryptos = [], enabled = true } = options;
   const [searchQuery, setSearchQuery] = useState<string>('');
 
+  // Debounce search query to reduce API calls
+  const { debouncedValue: debouncedSearchQuery, isDebouncing } = useDebounce(
+    searchQuery,
+    {
+      delay: 300, // 300ms delay
+    },
+  );
+
   const hasSearchQuery = searchQuery.length > 0;
-  const shouldSearchRemote = searchQuery.length >= MIN_SEARCH_LENGTH;
+  const shouldSearchRemote = debouncedSearchQuery.length >= MIN_SEARCH_LENGTH;
+
+  const searchQueryKey = [SEARCH_QUERY_KEY, debouncedSearchQuery];
 
   // Remote search using API
   const {
@@ -45,29 +59,65 @@ export const useSearchCryptos = (
     isLoading: isRemoteSearchLoading,
     error: remoteSearchError,
   } = useQuery({
-    queryKey: [SEARCH_QUERY_KEY, searchQuery],
+    queryKey: searchQueryKey,
     queryFn: async () => {
       if (!shouldSearchRemote) return null;
-      const response = await apiService.searchCoins(searchQuery);
+      const response = await apiService.searchCoins(debouncedSearchQuery);
       return response.coins;
     },
-    enabled: enabled && shouldSearchRemote,
-    staleTime: 1000 * 60 * 1, // 1 minute
-    gcTime: 1000 * 60 * 5, // 5 minutes
+    enabled: enabled && shouldSearchRemote && !isDebouncing,
+    staleTime: getStaleTime(searchQueryKey),
+    gcTime: getCacheTime(searchQueryKey),
+    // Search-specific optimizations
+    refetchOnMount: false, // Don't refetch search results on mount
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false, // Don't refetch search on reconnect
+    meta: {
+      errorMessage: `Failed to search for "${debouncedSearchQuery}"`,
+      persist: true, // Cache search results
+    },
   });
 
-  // Local search for short queries
+  // Local search for short queries with improved matching
   const localSearchResults = useMemo(() => {
     if (!hasSearchQuery || shouldSearchRemote) return [];
 
-    const query = searchQuery.toLowerCase().trim();
-    return allCryptos.filter(
-      (crypto) =>
-        crypto.name.toLowerCase().includes(query) ||
-        crypto.symbol.toLowerCase().includes(query) ||
-        crypto.id.toLowerCase().includes(query),
-    );
-  }, [searchQuery, allCryptos, hasSearchQuery, shouldSearchRemote]);
+    const query = debouncedSearchQuery.toLowerCase().trim();
+    if (!query) return [];
+
+    // Enhanced search algorithm with scoring
+    const scoredResults = allCryptos
+      .map((crypto) => {
+        let score = 0;
+        const name = crypto.name.toLowerCase();
+        const symbol = crypto.symbol.toLowerCase();
+        const id = crypto.id.toLowerCase();
+
+        // Exact matches get highest score
+        if (symbol === query) score += 100;
+        else if (name === query) score += 90;
+        else if (id === query) score += 80;
+        // Starts with matches
+        else if (symbol.startsWith(query)) score += 70;
+        else if (name.startsWith(query)) score += 60;
+        else if (id.startsWith(query)) score += 50;
+        // Contains matches
+        else if (symbol.includes(query)) score += 30;
+        else if (name.includes(query)) score += 20;
+        else if (id.includes(query)) score += 10;
+
+        return {
+          crypto,
+          score,
+        };
+      })
+      .filter(({ score }) => score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 20) // Limit to top 20 results
+      .map(({ crypto }) => crypto);
+
+    return scoredResults;
+  }, [debouncedSearchQuery, allCryptos, hasSearchQuery, shouldSearchRemote]);
 
   // Convert remote search results to CryptoCurrency format
   const convertedRemoteResults = useMemo(() => {
@@ -108,14 +158,16 @@ export const useSearchCryptos = (
   const searchResults = useMemo(() => {
     if (!hasSearchQuery) return [];
 
-    if (shouldSearchRemote) {
+    if (shouldSearchRemote && !isDebouncing) {
       return convertedRemoteResults;
     }
 
+    // Show local results while debouncing or for short queries
     return localSearchResults;
   }, [
     hasSearchQuery,
     shouldSearchRemote,
+    isDebouncing,
     convertedRemoteResults,
     localSearchResults,
   ]);
@@ -124,9 +176,20 @@ export const useSearchCryptos = (
     setSearchQuery('');
   };
 
+  // Disabled popular search preloading to prevent rate limits
+  // Will only search when user actively searches
+  useEffect(() => {
+    if (enabled && AppState.currentState === 'active') {
+      // Preloading disabled to prevent rate limit issues
+      console.log(
+        '[SearchCryptos] Popular search preloading disabled to prevent rate limits',
+      );
+    }
+  }, [enabled]);
+
   return {
     searchResults,
-    isSearching: shouldSearchRemote && isRemoteSearchLoading,
+    isSearching: (shouldSearchRemote && isRemoteSearchLoading) || isDebouncing,
     searchError: remoteSearchError as Error | null,
     hasSearchQuery,
     searchQuery,

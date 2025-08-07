@@ -92,6 +92,82 @@ This project has React Native MCP Server configured for enhanced AI assistance:
 - **Capabilities**: Project initialization, version management, upgrade guidance, Expo integration
 - **Configuration**: Configured in Claude Code settings with project path
 
+## API Optimization & Rate Limiting
+
+This project implements comprehensive API optimizations to prevent rate limiting errors and improve performance:
+
+### Core Optimization Services
+
+- **Request Queue Service** (`src/services/request-queue-service.ts`) - Rate limiting with 8 requests/minute, burst protection, circuit breaker pattern
+- **API Cache Service** (`src/services/api-cache-service.ts`) - Tiered caching (memory + AsyncStorage) with intelligent TTL strategies
+- **Request Deduplication Service** (`src/services/request-deduplication-service.ts`) - Prevents duplicate concurrent requests
+- **Network Strategy Service** (`src/services/network-strategy-service.ts`) - Network-aware refresh strategies
+- **API Metrics Hook** (`src/hooks/api/use-api-metrics.ts`) - Real-time monitoring of API usage and optimization effectiveness
+
+### Key Configuration Values
+
+```typescript
+// Conservative rate limits to prevent 429 errors
+rateLimitConfig = {
+  maxRequests: 8, // 8 requests per minute (CoinGecko free tier safe)
+  windowMs: 60 * 1000, // 1 minute window
+  retryAfterMs: 5000, // 5 second delay on rate limit
+};
+
+// Burst protection
+burstConfig = {
+  maxBurstRequests: 2, // Max 2 requests per 10-second window
+  burstWindowMs: 10 * 1000, // 10 second burst window
+};
+
+// Cache TTL strategies by data type
+TTL_STRATEGIES = {
+  'crypto-list': 10 * 60 * 1000, // 10 minutes for market data
+  'crypto-detail': 15 * 60 * 1000, // 15 minutes for coin details
+  'crypto-search': 30 * 60 * 1000, // 30 minutes for search results
+};
+```
+
+### Usage Guidelines
+
+1. **Always use optimized API service**: All API calls go through `apiService.executeWithOptimizations()`
+2. **Disabled automatic preloading**: Preloading is disabled to prevent rate limit bypass
+3. **Reduced refresh frequencies**: Background refresh intervals increased significantly
+4. **Circuit breaker protection**: Auto-recovery from API failures with exponential backoff
+
+### Troubleshooting Rate Limits
+
+If you encounter rate limit issues:
+
+```bash
+# Check rate limiting metrics
+console.log(requestQueueService.getMetrics());
+
+# Verify circuit breaker state
+console.log('Circuit Breaker State:', circuitBreakerState);
+
+# Monitor cache effectiveness
+console.log(apiCacheService.getMetrics());
+
+# Reset rate limiting if needed (development only)
+requestQueueService.resetMetrics();
+```
+
+### Testing API Optimizations
+
+```bash
+# Run with New Architecture and monitoring enabled
+npm run android:new-arch
+
+# Monitor logs for optimization activity
+# Expected logs:
+# [RequestQueue] Rate limit reached, delaying requests for 5000ms
+# [ApiCache] Cache hit for crypto-list, serving from memory
+# [RequestDedup] Deduplicating request for /coins/markets
+```
+
+For detailed documentation, see [`API_OPTIMIZATION.md`](./API_OPTIMIZATION.md).
+
 ## Code Style Guide
 
 ### React Native Components

@@ -1,5 +1,7 @@
+import { AppState } from 'react-native';
 import { useQuery } from '@tanstack/react-query';
 
+import { getCacheTime, getStaleTime } from '../../contexts/query-context';
 import {
   apiService,
   type CryptoCurrencyDetail,
@@ -67,8 +69,25 @@ export const useCryptoDetail = (
         sparkline,
       }),
     enabled: enabled && Boolean(cryptoId),
-    staleTime: 1000 * 60 * 3, // 3 minutes - detailed data can be cached a bit longer
-    gcTime: 1000 * 60 * 10, // 10 minutes cache time
+    staleTime: getStaleTime(queryKey), // Dynamic stale time
+    gcTime: getCacheTime(queryKey), // Dynamic cache time
+    // Network-aware refetch settings
+    refetchOnMount: (query) => {
+      // Only refetch if data is stale and app is active
+      const isStale =
+        Date.now() - query.state.dataUpdatedAt > getStaleTime(queryKey);
+      return isStale && AppState.currentState === 'active';
+    },
+    refetchOnWindowFocus: false, // Disabled for mobile
+    refetchOnReconnect: 'always',
+    // Background refetch for critical data (reduced to prevent rate limits)
+    refetchInterval: market_data ? 15 * 60 * 1000 : false, // 15 minutes if market data is needed (reduced from 5 minutes)
+    refetchIntervalInBackground: false, // Don't refetch in background
+    // Optimistic updates and error boundaries
+    meta: {
+      errorMessage: `Failed to fetch details for ${cryptoId}`,
+      persist: true, // Persist this query to disk cache
+    },
   });
 
   return {

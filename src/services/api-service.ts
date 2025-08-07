@@ -1,8 +1,14 @@
+/* eslint-disable max-statements */
 import axios, {
   type AxiosError,
   type AxiosInstance,
   type AxiosResponse,
 } from 'axios';
+
+import { metricsTracker } from '../hooks/api/use-api-metrics';
+import { apiCacheService } from './api-cache-service';
+import { requestDeduplicationService } from './request-deduplication-service';
+import { requestQueueService } from './request-queue-service';
 
 export const API_CONFIG = {
   BASE_URL: 'https://api.coingecko.com/api/v3',
@@ -104,6 +110,94 @@ class ApiService {
     });
 
     this.setupInterceptors();
+  }
+
+  private async executeWithOptimizations<T>(
+    requestConfig: {
+      url: string;
+      method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+      params?: Record<string, unknown>;
+      data?: unknown;
+      priority?: 'low' | 'medium' | 'high' | 'critical';
+    },
+    cacheKey?: string,
+    cacheOptions?: {
+      ttl?: number;
+      priority?: 'low' | 'medium' | 'high';
+      persistToDisk?: boolean;
+    },
+  ): Promise<T> {
+    const startTime = Date.now();
+    let fromCache = false;
+
+    try {
+      // Try cache first for GET requests
+      if (requestConfig.method === 'GET' && cacheKey) {
+        const cached = await apiCacheService.get<T>(
+          cacheKey,
+          requestConfig.params,
+        );
+        if (cached) {
+          fromCache = true;
+          metricsTracker.addPerformanceEntry(
+            requestConfig.url,
+            Date.now() - startTime,
+            true,
+          );
+          return cached;
+        }
+      }
+
+      // Use request deduplication and queue for all requests
+      const result = await requestDeduplicationService.deduplicate<T>(
+        requestConfig,
+        async (abortSignal) =>
+          requestQueueService.enqueue<T>(
+            {
+              ...requestConfig,
+              maxRetries: 3,
+            },
+            async () => {
+              const response = await this.axiosInstance.request<T>({
+                url: requestConfig.url,
+                method: requestConfig.method,
+                params: requestConfig.params,
+                data: requestConfig.data,
+                signal: abortSignal,
+              });
+              return response.data;
+            },
+          ),
+      );
+
+      // Cache successful GET responses
+      if (requestConfig.method === 'GET' && cacheKey && !fromCache) {
+        await apiCacheService.set(
+          cacheKey,
+          result,
+          requestConfig.params,
+          cacheOptions,
+        );
+      }
+
+      // Track performance
+      metricsTracker.addPerformanceEntry(
+        requestConfig.url,
+        Date.now() - startTime,
+        true,
+      );
+
+      return result;
+    } catch (error) {
+      // Track failed requests
+      metricsTracker.addPerformanceEntry(
+        requestConfig.url,
+        Date.now() - startTime,
+        false,
+      );
+
+      throw error;
+    }
   }
 
   private setupInterceptors(): void {
@@ -213,14 +307,20 @@ class ApiService {
       ...params,
     };
 
-    const response = await this.axiosInstance.get<CryptoCurrency[]>(
-      '/coins/markets',
+    return this.executeWithOptimizations<CryptoCurrency[]>(
       {
-        params: defaultParams,
+        url: '/coins/markets',
+        method: 'GET',
+        params: defaultParams as Record<string, unknown>,
+        priority: 'high', // Market data is high priority
+      },
+      'crypto-list',
+      {
+        ttl: 2 * 60 * 1000, // 2 minutes for market data
+        priority: 'high',
+        persistToDisk: true, // Persist market data
       },
     );
-
-    return response.data;
   }
 
   async getCoinById(
@@ -244,14 +344,20 @@ class ApiService {
       ...params,
     };
 
-    const response = await this.axiosInstance.get<CryptoCurrencyDetail>(
-      `/coins/${id}`,
+    return this.executeWithOptimizations<CryptoCurrencyDetail>(
       {
-        params: defaultParams,
+        url: `/coins/${id}`,
+        method: 'GET',
+        params: defaultParams as Record<string, unknown>,
+        priority: 'medium', // Detail data is medium priority
+      },
+      'crypto-detail',
+      {
+        ttl: 5 * 60 * 1000, // 5 minutes for detailed data
+        priority: 'medium',
+        persistToDisk: true,
       },
     );
-
-    return response.data;
   }
 
   async searchCoins(query: string): Promise<{
@@ -264,19 +370,117 @@ class ApiService {
       large: string;
     }>;
   }> {
-    const response = await this.axiosInstance.get('/search', {
-      params: { query },
-    });
-
-    return response.data;
+    return this.executeWithOptimizations<{
+      coins: Array<{
+        id: string;
+        name: string;
+        symbol: string;
+        market_cap_rank: number;
+        thumb: string;
+        large: string;
+      }>;
+    }>(
+      {
+        url: '/search',
+        method: 'GET',
+        params: { query } as Record<string, unknown>,
+        priority: 'medium', // Search is medium priority
+      },
+      'crypto-search',
+      {
+        ttl: 10 * 60 * 1000, // 10 minutes for search results
+        priority: 'medium',
+        persistToDisk: true,
+      },
+    );
   }
 
   async getPing(): Promise<{ gecko_says: string }> {
+    // Ping doesn't need caching, deduplication, or queue optimization
     const response = await this.axiosInstance.get<{ gecko_says: string }>(
       '/ping',
     );
     return response.data;
   }
+
+  // Cache management methods
+  async invalidateCache(pattern?: string): Promise<void> {
+    await (pattern
+      ? apiCacheService.invalidatePattern(pattern)
+      : apiCacheService.clear());
+  }
+
+  // Preload critical data
+  async preloadCriticalData(): Promise<void> {
+    try {
+      // Preload top 50 cryptocurrencies
+      await apiCacheService.warmCache(
+        'crypto-list',
+        () =>
+          this.getCoinsMarkets({
+            per_page: 50,
+            page: 1,
+          }),
+        {
+          per_page: 50,
+          page: 1,
+        },
+        {
+          priority: 'high',
+          persistToDisk: true,
+        },
+      );
+
+      console.log('[API] Critical data preloaded successfully');
+    } catch (error) {
+      console.warn('[API] Failed to preload critical data:', error);
+    }
+  }
+
+  // Batch request method for efficiency
+  async batchRequest<T>(
+    requests: Array<{
+      key: string;
+      requestConfig: {
+        url: string;
+        method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+        params?: Record<string, unknown>;
+        data?: unknown;
+        priority?: 'low' | 'medium' | 'high' | 'critical';
+      };
+      cacheKey?: string;
+      cacheOptions?: {
+        ttl?: number;
+        priority?: 'low' | 'medium' | 'high';
+        persistToDisk?: boolean;
+      };
+    }>,
+  ): Promise<Record<string, T | null>> {
+    const results: Record<string, T | null> = {};
+
+    await Promise.allSettled(
+      requests.map(async ({ key, requestConfig, cacheKey, cacheOptions }) => {
+        try {
+          results[key] = await this.executeWithOptimizations<T>(
+            requestConfig,
+            cacheKey,
+            cacheOptions,
+          );
+        } catch (error) {
+          console.warn(`[API] Batch request failed for ${key}:`, error);
+          results[key] = null;
+        }
+      }),
+    );
+
+    return results;
+  }
 }
 
 export const apiService = new ApiService();
+
+// Disable automatic preloading to prevent rate limits
+// Preloading will only happen on user-initiated actions
+//
+// To manually preload: apiService.preloadCriticalData(true)
+console.log('[API] Automatic preloading disabled to prevent rate limits');
