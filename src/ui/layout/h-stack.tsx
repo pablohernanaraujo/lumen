@@ -34,12 +34,14 @@ export const HStack: FC<HStackProps> = ({
   // Helper function to convert textAlign to justifyContent for flex layout
   const getJustifyContent = (
     textAlignValue: string,
-  ): 'flex-start' | 'flex-end' | 'center' => {
+  ): 'flex-start' | 'flex-end' | 'center' | 'space-between' => {
     switch (textAlignValue) {
       case 'left':
         return 'flex-start';
       case 'right':
         return 'flex-end';
+      case 'space-between':
+        return 'space-between';
       case 'center':
       default:
         return 'center';

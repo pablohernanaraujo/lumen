@@ -10,6 +10,7 @@ export type RootStackParamList = {
   App: undefined;
   TermsModal: undefined;
   PrivacyModal: undefined;
+  ProfileModal: undefined;
 };
 
 export type AuthStackParamList = {

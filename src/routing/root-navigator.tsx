@@ -7,6 +7,7 @@ import {
 
 import { useAuth } from '../contexts';
 import { PrivacyModalScreen } from '../screens/modals/privacy-modal';
+import { ProfileModalScreen } from '../screens/modals/profile-modal';
 import { TermsModalScreen } from '../screens/modals/terms-modal';
 import { makeStyles, useTheme } from '../theme';
 import { Icon, Image } from '../ui';
@@ -105,6 +106,29 @@ export const RootNavigator: FC = () => {
                 onPress={() => navigation.goBack()}
                 accessibilityLabel="Volver"
                 testID="back-button-2"
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="ProfileModal"
+          component={ProfileModalScreen}
+          options={({ navigation }): NativeStackNavigationOptions => ({
+            title: 'Mi Perfil',
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: theme.colors.background,
+            },
+            headerTintColor: theme.colors.text.primary,
+            headerLeft: () => (
+              <Icon
+                name="chevron-left"
+                family="MaterialIcons"
+                size={32}
+                color={theme.colors.text.primary}
+                onPress={() => navigation.goBack()}
+                accessibilityLabel="Volver"
+                testID="back-button-3"
               />
             ),
           })}

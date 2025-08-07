@@ -1,13 +1,7 @@
 import React, { type FC, type ReactElement } from 'react';
-import {
-  Alert,
-  FlatList,
-  RefreshControl,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList, RefreshControl, Text, TouchableOpacity } from 'react-native';
 
-import { useAuth } from '../../../contexts';
+import { Header } from '../../../components';
 import { useCryptoList } from '../../../hooks';
 import type { CryptoListScreenProps } from '../../../routing';
 import type { CryptoCurrency } from '../../../services/api-service';
@@ -72,14 +66,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.colors.text.secondary,
     marginTop: theme.spacing.xl,
   },
-  logoutButton: {
-    padding: theme.spacing.xs,
-  },
 }));
 
 export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
   const styles = useStyles();
-  const { signOut, user } = useAuth();
 
   const { cryptos, isLoading, isError, refetch } = useCryptoList({
     per_page: 20,
@@ -88,30 +78,6 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
 
   const handleCryptoPress = (cryptoId: string): void => {
     navigation.navigate('CryptoDetail', { cryptoId });
-  };
-
-  const handleLogout = (): void => {
-    Alert.alert(
-      'Sign Out',
-      `Are you sure you want to sign out, ${user?.user.givenName || user?.user.name || 'User'}?`,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              await signOut();
-            } catch {
-              Alert.alert('Error', 'Failed to sign out. Please try again.');
-            }
-          },
-        },
-      ],
-    );
   };
 
   const renderCryptoItem = ({
@@ -193,22 +159,7 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
 
   return (
     <ScreenWrapper>
-      <ContentWrapper variant="header">
-        <HStack spacing="sm">
-          <HStack spacing="sm">
-            <Icon name="trending-up" family="MaterialIcons" size="xl" />
-            <Text style={styles.title}>Crypto Portfolio</Text>
-          </HStack>
-
-          <TouchableOpacity
-            onPress={handleLogout}
-            style={styles.logoutButton}
-            testID="logout-button"
-          >
-            <Icon name="logout" family="MaterialIcons" size="lg" />
-          </TouchableOpacity>
-        </HStack>
-      </ContentWrapper>
+      <Header titleStyle={styles.title} />
 
       <FlatList
         data={cryptos}
