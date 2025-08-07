@@ -16,12 +16,7 @@ exports[`App rendering should render correctly in dark mode: dark-mode 1`] = `
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../src/assets/images/lumen-logo-02.png",
-        }
-      }
+    <View
       style={
         [
           {
@@ -32,7 +27,94 @@ exports[`App rendering should render correctly in dark mode: dark-mode 1`] = `
           },
         ]
       }
-    />
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "alignItems": "center",
+              "backgroundColor": "#E5E7EB",
+              "justifyContent": "center",
+            },
+            {
+              "borderRadius": 40,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#E5E7EB",
+                "borderRadius": 24,
+                "height": 48,
+                "justifyContent": "center",
+                "width": 48,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#6B7280",
+                "borderRadius": 14.399999999999999,
+                "height": 28.799999999999997,
+                "width": 28.799999999999997,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "overflow": "hidden",
+            },
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource={null}
+          onFastImageError={[Function]}
+          onFastImageLoadEnd={[Function]}
+          onFastImageLoadStart={[Function]}
+          resizeMode="cover"
+          source={
+            {
+              "testUri": "../../../src/assets/images/lumen-logo-02.png",
+            }
+          }
+          style={
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
   </View>,
 ]
 `;
@@ -53,12 +135,7 @@ exports[`App rendering should render correctly in light mode: light-mode 1`] = `
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../src/assets/images/lumen-logo-02.png",
-        }
-      }
+    <View
       style={
         [
           {
@@ -69,7 +146,94 @@ exports[`App rendering should render correctly in light mode: light-mode 1`] = `
           },
         ]
       }
-    />
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "alignItems": "center",
+              "backgroundColor": "#E5E7EB",
+              "justifyContent": "center",
+            },
+            {
+              "borderRadius": 40,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#E5E7EB",
+                "borderRadius": 24,
+                "height": 48,
+                "justifyContent": "center",
+                "width": 48,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#6B7280",
+                "borderRadius": 14.399999999999999,
+                "height": 28.799999999999997,
+                "width": 28.799999999999997,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "overflow": "hidden",
+            },
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource={null}
+          onFastImageError={[Function]}
+          onFastImageLoadEnd={[Function]}
+          onFastImageLoadStart={[Function]}
+          resizeMode="cover"
+          source={
+            {
+              "testUri": "../../../src/assets/images/lumen-logo-02.png",
+            }
+          }
+          style={
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
   </View>,
 ]
 `;
@@ -90,12 +254,7 @@ exports[`App snapshots should render correctly in dark mode 1`] = `
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../src/assets/images/lumen-logo-02.png",
-        }
-      }
+    <View
       style={
         [
           {
@@ -106,7 +265,94 @@ exports[`App snapshots should render correctly in dark mode 1`] = `
           },
         ]
       }
-    />
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "alignItems": "center",
+              "backgroundColor": "#E5E7EB",
+              "justifyContent": "center",
+            },
+            {
+              "borderRadius": 40,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#E5E7EB",
+                "borderRadius": 24,
+                "height": 48,
+                "justifyContent": "center",
+                "width": 48,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#6B7280",
+                "borderRadius": 14.399999999999999,
+                "height": 28.799999999999997,
+                "width": 28.799999999999997,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "overflow": "hidden",
+            },
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource={null}
+          onFastImageError={[Function]}
+          onFastImageLoadEnd={[Function]}
+          onFastImageLoadStart={[Function]}
+          resizeMode="cover"
+          source={
+            {
+              "testUri": "../../../src/assets/images/lumen-logo-02.png",
+            }
+          }
+          style={
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
   </View>,
 ]
 `;
@@ -127,12 +373,7 @@ exports[`App snapshots should render correctly in light mode 1`] = `
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../src/assets/images/lumen-logo-02.png",
-        }
-      }
+    <View
       style={
         [
           {
@@ -143,7 +384,94 @@ exports[`App snapshots should render correctly in light mode 1`] = `
           },
         ]
       }
-    />
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "alignItems": "center",
+              "backgroundColor": "#E5E7EB",
+              "justifyContent": "center",
+            },
+            {
+              "borderRadius": 40,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#E5E7EB",
+                "borderRadius": 24,
+                "height": 48,
+                "justifyContent": "center",
+                "width": 48,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#6B7280",
+                "borderRadius": 14.399999999999999,
+                "height": 28.799999999999997,
+                "width": 28.799999999999997,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "overflow": "hidden",
+            },
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource={null}
+          onFastImageError={[Function]}
+          onFastImageLoadEnd={[Function]}
+          onFastImageLoadStart={[Function]}
+          resizeMode="cover"
+          source={
+            {
+              "testUri": "../../../src/assets/images/lumen-logo-02.png",
+            }
+          }
+          style={
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
   </View>,
 ]
 `;
@@ -164,12 +492,7 @@ exports[`App structure should render app structure correctly: app-structure 1`] 
       }
     }
   >
-    <Image
-      source={
-        {
-          "testUri": "../../../src/assets/images/lumen-logo-02.png",
-        }
-      }
+    <View
       style={
         [
           {
@@ -180,7 +503,94 @@ exports[`App structure should render app structure correctly: app-structure 1`] 
           },
         ]
       }
-    />
+    >
+      <View
+        style={
+          [
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+            {
+              "alignItems": "center",
+              "backgroundColor": "#E5E7EB",
+              "justifyContent": "center",
+            },
+            {
+              "borderRadius": 40,
+            },
+          ]
+        }
+      >
+        <View
+          style={
+            [
+              {
+                "alignItems": "center",
+                "backgroundColor": "#E5E7EB",
+                "borderRadius": 24,
+                "height": 48,
+                "justifyContent": "center",
+                "width": 48,
+              },
+              undefined,
+            ]
+          }
+        >
+          <View
+            style={
+              {
+                "backgroundColor": "#6B7280",
+                "borderRadius": 14.399999999999999,
+                "height": 28.799999999999997,
+                "width": 28.799999999999997,
+              }
+            }
+          />
+        </View>
+      </View>
+      <View
+        style={
+          [
+            {
+              "overflow": "hidden",
+            },
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+          ]
+        }
+      >
+        <FastImageView
+          defaultSource={null}
+          onFastImageError={[Function]}
+          onFastImageLoadEnd={[Function]}
+          onFastImageLoadStart={[Function]}
+          resizeMode="cover"
+          source={
+            {
+              "testUri": "../../../src/assets/images/lumen-logo-02.png",
+            }
+          }
+          style={
+            {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />
+      </View>
+    </View>
   </View>,
 ]
 `;

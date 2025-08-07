@@ -231,6 +231,10 @@ const CryptoItemComponent: FC<CryptoItemProps> = ({
           source={{ uri: crypto.image }}
           style={styles.cryptoImage}
           testID={testID ? `${testID}-image` : undefined}
+          enableFallback={true}
+          showPlaceholder={true}
+          width={40}
+          height={40}
         />
 
         <View style={styles.leftContent}>
