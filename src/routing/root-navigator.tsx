@@ -62,6 +62,7 @@ export const RootNavigator: FC = () => {
       <Stack.Group
         screenOptions={{
           presentation: 'modal',
+          animation: 'slide_from_bottom',
           headerShown: false,
         }}
       >
@@ -77,12 +78,12 @@ export const RootNavigator: FC = () => {
             headerTintColor: theme.colors.text.primary,
             headerLeft: () => (
               <Icon
-                name="chevron-left"
+                name="close"
                 family="MaterialIcons"
                 size={32}
                 color={theme.colors.text.primary}
                 onPress={() => navigation.goBack()}
-                accessibilityLabel="Volver"
+                accessibilityLabel="Cerrar"
                 testID="back-button-1"
               />
             ),
@@ -100,12 +101,12 @@ export const RootNavigator: FC = () => {
             headerTintColor: theme.colors.text.primary,
             headerLeft: () => (
               <Icon
-                name="chevron-left"
+                name="close"
                 family="MaterialIcons"
                 size={32}
                 color={theme.colors.text.primary}
                 onPress={() => navigation.goBack()}
-                accessibilityLabel="Volver"
+                accessibilityLabel="Cerrar"
                 testID="back-button-2"
               />
             ),
@@ -123,12 +124,12 @@ export const RootNavigator: FC = () => {
             headerTintColor: theme.colors.text.primary,
             headerLeft: () => (
               <Icon
-                name="chevron-left"
+                name="close"
                 family="MaterialIcons"
                 size={32}
                 color={theme.colors.text.primary}
                 onPress={() => navigation.goBack()}
-                accessibilityLabel="Volver"
+                accessibilityLabel="Cerrar"
                 testID="back-button-3"
               />
             ),
@@ -146,12 +147,12 @@ export const RootNavigator: FC = () => {
             headerTintColor: theme.colors.text.primary,
             headerLeft: () => (
               <Icon
-                name="chevron-left"
+                name="close"
                 family="MaterialIcons"
                 size={32}
                 color={theme.colors.text.primary}
                 onPress={() => navigation.goBack()}
-                accessibilityLabel="Volver"
+                accessibilityLabel="Cerrar"
                 testID="back-button-4"
               />
             ),
