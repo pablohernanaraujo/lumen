@@ -17,9 +17,12 @@ import { makeStyles } from '../../../theme';
 import {
   ContentWrapper,
   CryptoItem,
-  Icon,
+  EmptyState,
+  ErrorState,
+  LoadingIndicator,
   ScreenWrapper,
   SearchBar,
+  SkeletonList,
   VStack,
 } from '../../../ui';
 import { useCryptoScreenData } from './use-crypto-screen-data';
@@ -100,42 +103,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchEmptyState: FC<{
-  isSearching: boolean;
-  searchError: Error | null;
-  searchQuery: string;
-  styles: any; // eslint-disable-line @typescript-eslint/no-explicit-any
-}> = ({ isSearching, searchError, searchQuery, styles }) => {
-  if (isSearching) {
-    return (
-      <VStack spacing="md" style={styles.emptyStateContainer}>
-        <Icon name="search" family="MaterialIcons" size="xxxl" />
-        <Text style={styles.searchEmptyState}>Buscando criptomonedas...</Text>
-      </VStack>
-    );
-  }
-
-  if (searchError) {
-    return (
-      <VStack spacing="md" style={styles.emptyStateContainer}>
-        <Icon name="search-off" family="MaterialIcons" size="xxxl" />
-        <Text style={styles.searchEmptyState}>
-          Error al buscar. Inténtalo de nuevo.
-        </Text>
-      </VStack>
-    );
-  }
-
-  return (
-    <VStack spacing="md" style={styles.emptyStateContainer}>
-      <Icon name="search" family="MaterialIcons" size="xxxl" />
-      <Text style={styles.searchEmptyState}>
-        No se encontraron criptomonedas para "{searchQuery}"
-      </Text>
-    </VStack>
-  );
-};
-
 export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
   const styles = useStyles();
   const filters = useCryptoFilters();
@@ -156,68 +123,6 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
     sortBy,
     setSortBy,
   } = useCryptoScreenData(navigation, filters);
-
-  const renderCryptoItem = ({
-    item,
-  }: {
-    item: CryptoCurrency;
-  }): ReactElement => (
-    <CryptoItem
-      crypto={item}
-      onPress={handleCryptoPress}
-      testID={`crypto-item-${item.id}`}
-    />
-  );
-
-  const renderEmptyComponent = (): ReactElement => {
-    if (hasSearchQuery) {
-      return (
-        <SearchEmptyState
-          isSearching={isSearching}
-          searchError={searchError}
-          searchQuery={searchQuery}
-          styles={styles}
-        />
-      );
-    }
-
-    return <Text style={styles.emptyState}>No cryptocurrencies found</Text>;
-  };
-
-  if (isLoading && !cryptos) {
-    return (
-      <ScreenWrapper>
-        <ContentWrapper variant="screen">
-          <VStack spacing="xl">
-            <Icon name="hourglass-empty" family="MaterialIcons" size="xxxl" />
-            <Text style={styles.emptyState}>Loading cryptocurrencies...</Text>
-          </VStack>
-        </ContentWrapper>
-      </ScreenWrapper>
-    );
-  }
-
-  if (isError && !cryptos) {
-    return (
-      <ScreenWrapper>
-        <ContentWrapper variant="screen">
-          <VStack spacing="xl">
-            <Icon name="error-outline" family="MaterialIcons" size="xxxl" />
-            <Text style={styles.emptyState}>
-              Failed to load cryptocurrencies
-            </Text>
-            <TouchableOpacity
-              onPress={() => refetch()}
-              style={styles.retryButton}
-              testID="retry-button"
-            >
-              <Text style={styles.retryText}>Tap to retry</Text>
-            </TouchableOpacity>
-          </VStack>
-        </ContentWrapper>
-      </ScreenWrapper>
-    );
-  }
 
   const renderFilterBadges = (): ReactElement | null => {
     if (!filters.hasActiveFilters) return null;
@@ -307,6 +212,123 @@ export const CryptoListScreen: FC<CryptoListScreenProps> = ({ navigation }) => {
       </View>
     );
   };
+
+  const renderCryptoItem = ({
+    item,
+  }: {
+    item: CryptoCurrency;
+  }): ReactElement => (
+    <CryptoItem
+      crypto={item}
+      onPress={handleCryptoPress}
+      testID={`crypto-item-${item.id}`}
+    />
+  );
+
+  const renderEmptyComponent = (): ReactElement => {
+    if (hasSearchQuery) {
+      if (isSearching) {
+        return (
+          <LoadingIndicator
+            size="large"
+            showLabel
+            label="Buscando criptomonedas..."
+            testID="search-loading"
+          />
+        );
+      }
+
+      if (searchError) {
+        return (
+          <EmptyState
+            icon="search-off"
+            title="Error al buscar"
+            message="No se pudo completar la búsqueda. Inténtalo de nuevo."
+            variant="search"
+            testID="search-error"
+          />
+        );
+      }
+
+      return (
+        <EmptyState
+          variant="search"
+          message={`No se encontraron criptomonedas para "${searchQuery}"`}
+          testID="search-empty"
+        />
+      );
+    }
+
+    if (filters.hasActiveFilters) {
+      return (
+        <EmptyState
+          variant="filter"
+          actionText="Limpiar filtros"
+          onAction={() => filters.clearFilters()}
+          testID="filter-empty"
+        />
+      );
+    }
+
+    return (
+      <EmptyState
+        title="Sin criptomonedas"
+        message="No hay criptomonedas disponibles en este momento."
+        testID="list-empty"
+      />
+    );
+  };
+
+  if (isLoading && !cryptos) {
+    return (
+      <ScreenWrapper>
+        <Header
+          showFilterButton
+          activeFilterCount={filters.getActiveFilterCount()}
+          showSortButton
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
+        <ContentWrapper variant="body">
+          <VStack>
+            <SearchBar
+              value={searchQuery}
+              onChangeText={handleInputChange}
+              onClear={handleClearSearch}
+              placeholder="Buscar criptomonedas..."
+              testID="crypto-search-bar"
+            />
+            {renderFilterBadges()}
+          </VStack>
+        </ContentWrapper>
+        <SkeletonList
+          count={10}
+          variant="crypto-item"
+          testID="crypto-skeleton-list"
+        />
+      </ScreenWrapper>
+    );
+  }
+
+  if (isError && !cryptos) {
+    return (
+      <ScreenWrapper>
+        <Header
+          showFilterButton
+          activeFilterCount={filters.getActiveFilterCount()}
+          showSortButton
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
+        <ErrorState
+          title="Error de conexión"
+          message="No se pudieron cargar las criptomonedas. Verifica tu conexión a internet e intenta nuevamente."
+          onRetry={() => refetch()}
+          testID="crypto-error-state"
+        />
+      </ScreenWrapper>
+    );
+  }
 
   return (
     <ScreenWrapper>

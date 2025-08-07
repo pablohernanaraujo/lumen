@@ -68,3 +68,9 @@ export const createDualSnapshots = (component: ReactElement): void => {
     });
   });
 };
+
+// Export TestWrapper for use in tests
+export const TestWrapper: FC<{ children: React.ReactNode; mode?: Mode }> = ({
+  children,
+  mode = 'light',
+}) => <AllTheProviders mode={mode}>{children}</AllTheProviders>;
