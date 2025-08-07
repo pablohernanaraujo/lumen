@@ -110,17 +110,17 @@ class ApiService {
     // Request interceptor for logging
     this.axiosInstance.interceptors.request.use(
       (config) => {
-        if (__DEV__) {
-          console.log(
-            `[API Request] ${config.method?.toUpperCase()} ${config.url}`,
-          );
-        }
+        console.log(
+          `[API Request] ${config.method?.toUpperCase()} ${config.baseURL}${config.url}`,
+        );
+        console.log('[API Request Config]', {
+          params: config.params,
+          headers: config.headers,
+        });
         return config;
       },
       (error: AxiosError) => {
-        if (__DEV__) {
-          console.error('[API Request Error]', error);
-        }
+        console.error('[API Request Error]', error);
         return Promise.reject(error);
       },
     );

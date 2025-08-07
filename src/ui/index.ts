@@ -19,6 +19,8 @@ export type { IconFamily, IconProps, IconSize } from './icon';
 export { Icon } from './icon';
 export type { ImageProps } from './image';
 export { Image } from './image';
+export type { CryptoItemProps, CryptoItemShimmerProps } from './items';
+export { CryptoItem } from './items';
 export type {
   ContainerProps,
   ContentWrapperProps,
