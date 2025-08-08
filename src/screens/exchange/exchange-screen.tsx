@@ -1,4 +1,4 @@
-import React, { type FC, useEffect, useMemo, useState } from 'react';
+import React, { type FC, useMemo } from 'react';
 import {
   Keyboard,
   TouchableOpacity,
@@ -6,7 +6,14 @@ import {
   View,
 } from 'react-native';
 
+import type { FiatCurrencyItem } from '../../hooks/api/use-supported-fiats';
+import {
+  createCurrencyFromCrypto,
+  createCurrencyFromFiat,
+  useExchangeConverter,
+} from '../../hooks/exchange/use-exchange-converter';
 import { navigate } from '../../routing';
+import type { CryptoCurrency } from '../../services/api-service';
 import { makeStyles, useTheme } from '../../theme';
 import {
   AmountInput,
@@ -14,17 +21,15 @@ import {
   Body2,
   ButtonRegular,
   ContentWrapper,
-  EmptyState,
   ErrorState,
   H2,
   HStack,
   Icon,
+  Image,
   ScreenWrapper,
   SkeletonLoader,
   VStack,
 } from '../../ui';
-
-type ExchangeStatus = 'loading' | 'error' | 'empty' | 'ready';
 
 const useStyles = makeStyles((theme) => ({
   pageContainer: {
@@ -99,40 +104,107 @@ export const ExchangeScreen: FC = () => {
   const styles = useStyles();
   const { theme } = useTheme();
 
-  const [status, setStatus] = useState<ExchangeStatus>('loading');
-  const [rate, setRate] = useState<number | null>(null);
-  const [timestamp, setTimestamp] = useState<number | null>(null);
-  const [sourceAmountText, setSourceAmountText] = useState<string>('');
-  const [targetAmountText, setTargetAmountText] = useState<string>('');
+  const {
+    sourceAmount,
+    destinationAmount,
+    sourceCurrency,
+    destinationCurrency,
+    isLoadingRate,
+    rateError,
+    setSourceAmount,
+    setDestinationAmount,
+    setSourceCurrency,
+    setDestinationCurrency,
+    swapCurrencies,
+    rateDisplay,
+  } = useExchangeConverter();
 
-  // Mock initial load to demonstrate skeleton → ready
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      // Simulated success path
-      setRate(30250.35);
-      setTimestamp(Date.now());
-      setStatus('ready');
-    }, 600);
+  const handleSelectSourceCurrency = (payload: unknown): void => {
+    const selection = payload as { type: 'crypto' | 'fiat'; value: unknown };
+    if (selection.type === 'crypto') {
+      setSourceCurrency(
+        createCurrencyFromCrypto(selection.value as CryptoCurrency),
+      );
+    } else {
+      setSourceCurrency(
+        createCurrencyFromFiat(selection.value as FiatCurrencyItem),
+      );
+    }
+  };
 
-    return () => clearTimeout(timer);
-  }, []);
+  const handleSelectDestinationCurrency = (payload: unknown): void => {
+    const selection = payload as { type: 'crypto' | 'fiat'; value: unknown };
+    if (selection.type === 'crypto') {
+      setDestinationCurrency(
+        createCurrencyFromCrypto(selection.value as CryptoCurrency),
+      );
+    } else {
+      setDestinationCurrency(
+        createCurrencyFromFiat(selection.value as FiatCurrencyItem),
+      );
+    }
+  };
 
-  const formattedTime = useMemo(() => {
-    if (!timestamp) return '';
-    const date = new Date(timestamp);
-    const hh = String(date.getHours()).padStart(2, '0');
-    const mm = String(date.getMinutes()).padStart(2, '0');
-    const ss = String(date.getSeconds()).padStart(2, '0');
-    return `${hh}:${mm}:${ss}`;
-  }, [timestamp]);
+  const sourceCurrencyIcon = useMemo(() => {
+    if (sourceCurrency.type === 'crypto' && sourceCurrency.image) {
+      return (
+        <Image
+          source={{ uri: sourceCurrency.image }}
+          width={20}
+          height={20}
+          circular
+        />
+      );
+    }
+
+    const iconName =
+      sourceCurrency.type === 'crypto' ? 'currency-bitcoin' : 'payments';
+    const iconFamily =
+      sourceCurrency.type === 'crypto'
+        ? 'MaterialCommunityIcons'
+        : 'MaterialIcons';
+
+    return (
+      <Icon
+        name={iconName}
+        family={iconFamily}
+        size={20}
+        color={theme.colors.text.primary}
+      />
+    );
+  }, [sourceCurrency, theme.colors.text.primary]);
+
+  const destinationCurrencyIcon = useMemo(() => {
+    if (destinationCurrency.type === 'crypto' && destinationCurrency.image) {
+      return (
+        <Image
+          source={{ uri: destinationCurrency.image }}
+          width={20}
+          height={20}
+          circular
+        />
+      );
+    }
+
+    const iconName =
+      destinationCurrency.type === 'crypto' ? 'currency-bitcoin' : 'payments';
+    const iconFamily =
+      destinationCurrency.type === 'crypto'
+        ? 'MaterialCommunityIcons'
+        : 'MaterialIcons';
+
+    return (
+      <Icon
+        name={iconName}
+        family={iconFamily}
+        size={20}
+        color={theme.colors.text.primary}
+      />
+    );
+  }, [destinationCurrency, theme.colors.text.primary]);
 
   const handleRetry = (): void => {
-    setStatus('loading');
-    setTimeout(() => {
-      setRate(30250.35);
-      setTimestamp(Date.now());
-      setStatus('ready');
-    }, 600);
+    // No need for manual retry - the hook handles refetching automatically
   };
 
   return (
@@ -140,47 +212,12 @@ export const ExchangeScreen: FC = () => {
       <ContentWrapper variant="body" style={styles.pageContainer}>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.touchableContent}>
-            {status === 'loading' ? (
-              <VStack spacing="lg">
-                <SkeletonLoader width={180} height={32} />
-                <VStack spacing="md">
-                  <VStack spacing="sm" style={styles.row}>
-                    <SkeletonLoader width={'30%'} height={14} />
-                    <HStack spacing="md" textAlign="space-between">
-                      <SkeletonLoader width={'48%'} height={44} />
-                      <SkeletonLoader width={'48%'} height={44} />
-                    </HStack>
-                  </VStack>
-                  <VStack spacing="sm" style={styles.row}>
-                    <SkeletonLoader width={'30%'} height={14} />
-                    <HStack spacing="md" textAlign="space-between">
-                      <SkeletonLoader width={'48%'} height={44} />
-                      <SkeletonLoader width={'48%'} height={44} />
-                    </HStack>
-                  </VStack>
-                  <HStack style={styles.swapButtonContainer}>
-                    <SkeletonLoader width={160} height={44} />
-                  </HStack>
-                  <VStack spacing="sm" style={styles.card}>
-                    <SkeletonLoader width={'60%'} height={16} />
-                    <SkeletonLoader width={'40%'} height={14} />
-                  </VStack>
-                </VStack>
-              </VStack>
-            ) : status === 'error' ? (
+            {rateError ? (
               <ErrorState
                 title="Error de conexión"
-                message="No pudimos obtener la información. Intenta nuevamente."
+                message={rateError}
                 onRetry={handleRetry}
                 testID="exchange-error-state"
-              />
-            ) : status === 'empty' ? (
-              <EmptyState
-                title="Sin datos"
-                message="No hay información de tasas disponible en este momento."
-                actionText="Reintentar"
-                onAction={handleRetry}
-                testID="exchange-empty-state"
               />
             ) : (
               <VStack spacing="lg">
@@ -199,18 +236,14 @@ export const ExchangeScreen: FC = () => {
                         style={styles.tokenSelectorWrapper}
                         onPress={() =>
                           navigate('CurrencyPickerModal', {
-                            initialTab: 'crypto',
+                            initialTab: sourceCurrency.type,
+                            onSelect: handleSelectSourceCurrency,
                           })
                         }
                       >
                         <HStack spacing="sm" style={styles.tokenSelector}>
-                          <Icon
-                            name="currency-bitcoin"
-                            family="MaterialCommunityIcons"
-                            size={20}
-                            color={theme.colors.text.primary}
-                          />
-                          <Body1>BTC</Body1>
+                          {sourceCurrencyIcon}
+                          <Body1>{sourceCurrency.symbol}</Body1>
                           <Icon
                             name="expand-more"
                             family="MaterialIcons"
@@ -220,11 +253,9 @@ export const ExchangeScreen: FC = () => {
                         </HStack>
                       </TouchableOpacity>
                       <AmountInput
-                        value={sourceAmountText}
-                        onChange={(text: string) => {
-                          setSourceAmountText(text);
-                        }}
-                        maxFractionDigits={8}
+                        value={sourceAmount}
+                        onChange={setSourceAmount}
+                        maxFractionDigits={sourceCurrency.decimals}
                         placeholder="0"
                         testID="exchange-source-amount"
                         style={styles.amountInputFixed}
@@ -235,7 +266,7 @@ export const ExchangeScreen: FC = () => {
 
                   <HStack style={styles.swapButtonContainer}>
                     <ButtonRegular
-                      onPress={() => {}}
+                      onPress={swapCurrencies}
                       iconName="swap-vert"
                       iconFamily="MaterialIcons"
                       iconPosition="left"
@@ -252,18 +283,14 @@ export const ExchangeScreen: FC = () => {
                         style={styles.tokenSelectorWrapper}
                         onPress={() =>
                           navigate('CurrencyPickerModal', {
-                            initialTab: 'fiat',
+                            initialTab: destinationCurrency.type,
+                            onSelect: handleSelectDestinationCurrency,
                           })
                         }
                       >
                         <HStack spacing="sm" style={styles.tokenSelector}>
-                          <Icon
-                            name="currency-usd"
-                            family="MaterialCommunityIcons"
-                            size={20}
-                            color={theme.colors.text.primary}
-                          />
-                          <Body1>USDT</Body1>
+                          {destinationCurrencyIcon}
+                          <Body1>{destinationCurrency.symbol}</Body1>
                           <Icon
                             name="expand-more"
                             family="MaterialIcons"
@@ -273,11 +300,9 @@ export const ExchangeScreen: FC = () => {
                         </HStack>
                       </TouchableOpacity>
                       <AmountInput
-                        value={targetAmountText}
-                        onChange={(text: string) => {
-                          setTargetAmountText(text);
-                        }}
-                        maxFractionDigits={2}
+                        value={destinationAmount}
+                        onChange={setDestinationAmount}
+                        maxFractionDigits={destinationCurrency.decimals}
                         placeholder="0"
                         testID="exchange-target-amount"
                         style={styles.amountInputFixed}
@@ -287,14 +312,19 @@ export const ExchangeScreen: FC = () => {
                   </VStack>
 
                   <VStack spacing="xs" style={styles.card}>
-                    <Body1 style={styles.rateText}>
-                      {rate ? `1 BTC ≈ ${rate.toLocaleString()} USDT` : '—'}
-                    </Body1>
-                    <Body2 style={styles.timestampText}>
-                      {timestamp
-                        ? `Actualizado: ${formattedTime}`
-                        : 'Actualizando...'}
-                    </Body2>
+                    {isLoadingRate ? (
+                      <VStack spacing="xs">
+                        <SkeletonLoader width={'60%'} height={16} />
+                        <SkeletonLoader width={'40%'} height={14} />
+                      </VStack>
+                    ) : (
+                      <VStack spacing="xs">
+                        <Body1 style={styles.rateText}>{rateDisplay}</Body1>
+                        <Body2 style={styles.timestampText}>
+                          Actualizado cada minuto
+                        </Body2>
+                      </VStack>
+                    )}
                   </VStack>
                 </VStack>
               </VStack>
