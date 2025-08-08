@@ -54,7 +54,7 @@ export const TabNavigator: FC = () => {
           title: 'Exchange',
           tabBarIcon: ({ color }) => (
             <Icon
-              name="swap-horiz"
+              name="currency-exchange"
               family="MaterialIcons"
               size={30}
               color={color}
