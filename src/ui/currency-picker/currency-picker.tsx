@@ -31,6 +31,9 @@ export interface CurrencyPickerProps {
 }
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    flex: 1,
+  },
   tabs: {
     flexDirection: 'row',
     backgroundColor: theme.colors.surface,
@@ -46,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
   },
   tabActive: {
     backgroundColor: theme.colors.primary.light,
+  },
+  searchContainer: {
+    paddingVertical: theme.spacing.sm,
   },
   listItem: {
     paddingVertical: theme.spacing.sm,
@@ -121,7 +127,7 @@ export const CurrencyPicker: FC<CurrencyPickerProps> = ({
   );
 
   const renderSearch = (): ReactElement => (
-    <ContentWrapper variant="body">
+    <View style={styles.searchContainer}>
       <SearchBar
         value={query}
         onChangeText={(text) => {
@@ -137,7 +143,7 @@ export const CurrencyPicker: FC<CurrencyPickerProps> = ({
         }
         testID="currency-picker-search"
       />
-    </ContentWrapper>
+    </View>
   );
 
   const renderCryptoList = (): ReactElement => {
@@ -247,10 +253,10 @@ export const CurrencyPicker: FC<CurrencyPickerProps> = ({
   };
 
   return (
-    <VStack>
+    <View style={styles.container}>
       {renderTabs()}
-      {renderSearch()}
+      <ContentWrapper variant="body">{renderSearch()}</ContentWrapper>
       {activeTab === 'crypto' ? renderCryptoList() : renderFiatList()}
-    </VStack>
+    </View>
   );
 };

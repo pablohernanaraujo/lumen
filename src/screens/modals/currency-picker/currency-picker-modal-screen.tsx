@@ -1,14 +1,10 @@
 import React, { type FC } from 'react';
+import { View } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import type { RootStackParamList } from '../../../routing';
 import { makeStyles } from '../../../theme';
-import {
-  ContentWrapper,
-  CurrencyPicker,
-  ScreenWrapper,
-  VStack,
-} from '../../../ui';
+import { CurrencyPicker } from '../../../ui';
 
 export interface CurrencyPickerModalParams {
   initialTab?: 'crypto' | 'fiat';
@@ -21,7 +17,10 @@ export type CurrencyPickerModalScreenProps = NativeStackScreenProps<
 >;
 
 const useStyles = makeStyles(() => ({
-  container: { flex: 1 },
+  container: {
+    flex: 1,
+    paddingTop: 16,
+  },
 }));
 
 export const CurrencyPickerModalScreen: FC<CurrencyPickerModalScreenProps> = ({
@@ -33,28 +32,24 @@ export const CurrencyPickerModalScreen: FC<CurrencyPickerModalScreenProps> = ({
   const onSelect = route.params?.onSelect;
 
   return (
-    <ScreenWrapper disableSafeArea>
-      <ContentWrapper variant="body" style={styles.container}>
-        <VStack>
-          <CurrencyPicker
-            initialTab={initialTab}
-            onSelectCrypto={(c) => {
-              onSelect?.({
-                type: 'crypto',
-                value: c,
-              });
-              navigation.goBack();
-            }}
-            onSelectFiat={(f) => {
-              onSelect?.({
-                type: 'fiat',
-                value: f,
-              });
-              navigation.goBack();
-            }}
-          />
-        </VStack>
-      </ContentWrapper>
-    </ScreenWrapper>
+    <View style={styles.container}>
+      <CurrencyPicker
+        initialTab={initialTab}
+        onSelectCrypto={(c) => {
+          onSelect?.({
+            type: 'crypto',
+            value: c,
+          });
+          navigation.goBack();
+        }}
+        onSelectFiat={(f) => {
+          onSelect?.({
+            type: 'fiat',
+            value: f,
+          });
+          navigation.goBack();
+        }}
+      />
+    </View>
   );
 };
