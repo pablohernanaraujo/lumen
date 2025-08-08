@@ -120,7 +120,7 @@ export const Header: FC<HeaderProps> = ({
   };
 
   return (
-    <ContentWrapper variant="header">
+    <ContentWrapper variant="body">
       <View style={styles.container}>
         {user && (
           <TouchableOpacity

@@ -403,6 +403,22 @@ class ApiService {
     return response.data;
   }
 
+  async getSupportedVsCurrencies(): Promise<string[]> {
+    return this.executeWithOptimizations<string[]>(
+      {
+        url: '/simple/supported_vs_currencies',
+        method: 'GET',
+        priority: 'low',
+      },
+      'supported-vs-currencies',
+      {
+        ttl: 24 * 60 * 60 * 1000, // 24 hours
+        priority: 'low',
+        persistToDisk: true,
+      },
+    );
+  }
+
   // Cache management methods
   async invalidateCache(pattern?: string): Promise<void> {
     await (pattern

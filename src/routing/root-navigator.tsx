@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import { useAuth } from '../contexts';
+import { CurrencyPickerModalScreen } from '../screens/modals/currency-picker';
 import { FilterModalScreen } from '../screens/modals/filter-modal';
 import { PrivacyModalScreen } from '../screens/modals/privacy-modal';
 import { ProfileModalScreen } from '../screens/modals/profile-modal';
@@ -154,6 +155,29 @@ export const RootNavigator: FC = () => {
                 onPress={() => navigation.goBack()}
                 accessibilityLabel="Cerrar"
                 testID="back-button-4"
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="CurrencyPickerModal"
+          component={CurrencyPickerModalScreen}
+          options={({ navigation }): NativeStackNavigationOptions => ({
+            title: 'Elegir moneda',
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: theme.colors.background,
+            },
+            headerTintColor: theme.colors.text.primary,
+            headerLeft: () => (
+              <Icon
+                name="close"
+                family="MaterialIcons"
+                size={32}
+                color={theme.colors.text.primary}
+                onPress={() => navigation.goBack()}
+                accessibilityLabel="Cerrar"
+                testID="back-button-5"
               />
             ),
           })}

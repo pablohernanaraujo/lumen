@@ -12,6 +12,12 @@ export type RootStackParamList = {
   PrivacyModal: undefined;
   ProfileModal: undefined;
   FilterModal: undefined;
+  CurrencyPickerModal:
+    | {
+        initialTab?: 'crypto' | 'fiat';
+        onSelect?: (payload: unknown) => void;
+      }
+    | undefined;
 };
 
 export type AuthStackParamList = {
