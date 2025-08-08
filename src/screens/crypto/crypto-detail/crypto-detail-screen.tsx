@@ -1,9 +1,17 @@
-import { type FC, useEffect, useState } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { type FC, type ReactElement, useEffect, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 import type { CryptoDetailScreenProps } from '../../../routing';
 import { makeStyles } from '../../../theme';
-import { Container, ContentWrapper, HStack, Icon, VStack } from '../../../ui';
+import {
+  Container,
+  ContentWrapper,
+  H2,
+  HStack,
+  Icon,
+  VStack,
+} from '../../../ui';
+import { EmptyState, SkeletonLoader } from '../../../ui';
 import type { CryptoDetail } from './types';
 
 const useStyles = makeStyles((theme) => ({
@@ -69,6 +77,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.size.lg,
     color: theme.colors.text.secondary,
     marginTop: theme.spacing.xl,
+  },
+  alignCenter: {
+    alignItems: 'center',
+  },
+  marginBottomXs: {
+    marginBottom: theme.spacing.xs,
   },
 }));
 
@@ -148,110 +162,157 @@ export const CryptoDetailScreen: FC<CryptoDetailScreenProps> = ({
     navigation.goBack();
   };
 
-  if (isLoading) {
-    return (
-      <Container>
-        <ContentWrapper variant="screen">
-          <VStack spacing="xl">
-            <Icon name="hourglass-empty" family="MaterialIcons" size="xxxl" />
-            <Text style={styles.emptyState}>Loading details...</Text>
-          </VStack>
-        </ContentWrapper>
-      </Container>
-    );
-  }
+  const renderHeader = (): ReactElement => (
+    <HStack spacing="md" textAlign="left">
+      <Icon
+        name="arrow-back"
+        family="MaterialIcons"
+        size={32}
+        onPress={handleBack}
+      />
+      <H2>Criptomoneda</H2>
+    </HStack>
+  );
 
-  if (!crypto) {
+  const renderLoading = (): ReactElement => (
+    <VStack spacing="xl">
+      <VStack spacing="sm" style={styles.alignCenter}>
+        <SkeletonLoader width={220} height={48} />
+        <SkeletonLoader width={140} height={20} />
+      </VStack>
+
+      <VStack spacing="md">
+        <HStack spacing="md">
+          <View style={styles.statCard}>
+            <SkeletonLoader
+              width={'50%'}
+              height={14}
+              style={styles.marginBottomXs}
+            />
+            <SkeletonLoader width={100} height={18} />
+          </View>
+          <View style={styles.statCard}>
+            <SkeletonLoader
+              width={'60%'}
+              height={14}
+              style={styles.marginBottomXs}
+            />
+            <SkeletonLoader width={100} height={18} />
+          </View>
+        </HStack>
+        <HStack spacing="md">
+          <View style={styles.statCard}>
+            <SkeletonLoader
+              width={'40%'}
+              height={14}
+              style={styles.marginBottomXs}
+            />
+            <SkeletonLoader width={80} height={18} />
+          </View>
+          <View style={styles.statCard}>
+            <SkeletonLoader
+              width={'50%'}
+              height={14}
+              style={styles.marginBottomXs}
+            />
+            <SkeletonLoader width={80} height={18} />
+          </View>
+        </HStack>
+      </VStack>
+
+      <VStack spacing="sm">
+        <SkeletonLoader width={180} height={28} />
+        <SkeletonLoader width={'100%'} height={16} />
+        <SkeletonLoader width={'90%'} height={16} />
+        <SkeletonLoader width={'80%'} height={16} />
+      </VStack>
+    </VStack>
+  );
+
+  const renderNotFound = (): ReactElement => (
+    <EmptyState
+      title="Criptomoneda no encontrada"
+      message="No pudimos encontrar información para este activo. Puede haber sido removido o no estar disponible."
+      icon="error-outline"
+      actionText="Volver"
+      onAction={handleBack}
+    />
+  );
+
+  const renderContent = (): ReactElement => {
+    if (!crypto) return <></>;
     return (
-      <Container>
-        <ContentWrapper variant="screen">
-          <VStack spacing="xl">
-            <Icon name="error-outline" family="MaterialIcons" size="xxxl" />
-            <Text style={styles.emptyState}>Cryptocurrency not found</Text>
-          </VStack>
-        </ContentWrapper>
-      </Container>
+      <VStack spacing="xl">
+        <VStack spacing="sm">
+          {!!crypto?.name && <Text style={styles.title}>{crypto.name}</Text>}
+          {!!crypto?.symbol && (
+            <Text style={styles.subtitle}>{crypto.symbol}</Text>
+          )}
+          <Text style={styles.price}>${crypto.price.toLocaleString()}</Text>
+          <Text
+            style={[
+              styles.change,
+              crypto.change24h >= 0 ? styles.positive : styles.negative,
+            ]}
+          >
+            {crypto.change24h >= 0 ? '+' : ''}
+            {crypto.change24h.toFixed(2)}% (24h)
+          </Text>
+        </VStack>
+
+        <VStack spacing="md">
+          <HStack spacing="md">
+            <VStack spacing="xs" style={styles.statCard}>
+              <Text style={styles.statLabel}>Market Cap</Text>
+              <Text style={styles.statValue}>
+                ${(crypto.marketCap / 1000000000).toFixed(2)}B
+              </Text>
+            </VStack>
+
+            <VStack spacing="xs" style={styles.statCard}>
+              <Text style={styles.statLabel}>Volume (24h)</Text>
+              <Text style={styles.statValue}>
+                ${(crypto.volume24h / 1000000000).toFixed(2)}B
+              </Text>
+            </VStack>
+          </HStack>
+
+          <HStack spacing="md">
+            <VStack spacing="xs" style={styles.statCard}>
+              <Text style={styles.statLabel}>Supply</Text>
+              <Text style={styles.statValue}>
+                {(crypto.supply / 1000000).toFixed(2)}M
+              </Text>
+            </VStack>
+
+            <VStack spacing="xs" style={styles.statCard}>
+              <Text style={styles.statLabel}>Max Supply</Text>
+              <Text style={styles.statValue}>
+                {crypto.maxSupply
+                  ? `${(crypto.maxSupply / 1000000).toFixed(2)}M`
+                  : 'No Limit'}
+              </Text>
+            </VStack>
+          </HStack>
+        </VStack>
+
+        <VStack spacing="sm">
+          <Text style={styles.title}>About {crypto.name}</Text>
+          <Text style={styles.description}>{crypto.description}</Text>
+        </VStack>
+      </VStack>
     );
-  }
+  };
 
   return (
     <Container>
-      <ContentWrapper variant="header">
-        <HStack spacing="md">
-          <TouchableOpacity
-            style={styles.backButton}
-            onPress={handleBack}
-            testID="back-button"
-          >
-            <Icon name="arrow-back" family="MaterialIcons" size="lg" />
-          </TouchableOpacity>
-
-          <VStack spacing="xs">
-            <Text style={styles.title}>{crypto.name}</Text>
-            <Text style={styles.subtitle}>{crypto.symbol}</Text>
-          </VStack>
-        </HStack>
-      </ContentWrapper>
-
+      <ContentWrapper variant="body">{renderHeader()}</ContentWrapper>
       <ContentWrapper variant="body">
-        <VStack spacing="xl">
-          {/* Price Section */}
-          <VStack spacing="sm">
-            <Text style={styles.price}>${crypto.price.toLocaleString()}</Text>
-            <Text
-              style={[
-                styles.change,
-                crypto.change24h >= 0 ? styles.positive : styles.negative,
-              ]}
-            >
-              {crypto.change24h >= 0 ? '+' : ''}
-              {crypto.change24h.toFixed(2)}% (24h)
-            </Text>
-          </VStack>
-
-          {/* Stats Grid */}
-          <VStack spacing="md">
-            <HStack spacing="md">
-              <VStack spacing="xs" style={styles.statCard}>
-                <Text style={styles.statLabel}>Market Cap</Text>
-                <Text style={styles.statValue}>
-                  ${(crypto.marketCap / 1000000000).toFixed(2)}B
-                </Text>
-              </VStack>
-
-              <VStack spacing="xs" style={styles.statCard}>
-                <Text style={styles.statLabel}>Volume (24h)</Text>
-                <Text style={styles.statValue}>
-                  ${(crypto.volume24h / 1000000000).toFixed(2)}B
-                </Text>
-              </VStack>
-            </HStack>
-
-            <HStack spacing="md">
-              <VStack spacing="xs" style={styles.statCard}>
-                <Text style={styles.statLabel}>Supply</Text>
-                <Text style={styles.statValue}>
-                  {(crypto.supply / 1000000).toFixed(2)}M
-                </Text>
-              </VStack>
-
-              <VStack spacing="xs" style={styles.statCard}>
-                <Text style={styles.statLabel}>Max Supply</Text>
-                <Text style={styles.statValue}>
-                  {crypto.maxSupply
-                    ? `${(crypto.maxSupply / 1000000).toFixed(2)}M`
-                    : 'No Limit'}
-                </Text>
-              </VStack>
-            </HStack>
-          </VStack>
-
-          {/* Description */}
-          <VStack spacing="sm">
-            <Text style={styles.title}>About {crypto.name}</Text>
-            <Text style={styles.description}>{crypto.description}</Text>
-          </VStack>
-        </VStack>
+        {isLoading
+          ? renderLoading()
+          : !crypto
+            ? renderNotFound()
+            : renderContent()}
       </ContentWrapper>
     </Container>
   );
