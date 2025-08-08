@@ -94,11 +94,20 @@ export const AmountInput: FC<AmountInputProps> = ({
   const displayValue = useMemo(() => {
     if (!value) return '';
     if (isFocused) return value; // avoid grouping while typing
+
     const numeric = parseLocaleNumber(value, locale);
     if (numeric === null) return value;
+
+    // Use the actual decimal places present in the value instead of maxFractionDigits
+    // This prevents formatting issues when the value has fewer decimals than maxFractionDigits
+    const decimalPlaces = value.includes('.')
+      ? value.split('.')[1]?.length || 0
+      : 0;
+    const effectiveMaxDigits = Math.min(decimalPlaces, maxFractionDigits);
+
     return formatNumberLocale(numeric, {
       locale,
-      maximumFractionDigits: maxFractionDigits,
+      maximumFractionDigits: effectiveMaxDigits,
       useGrouping: true,
     });
   }, [isFocused, locale, maxFractionDigits, value]);
