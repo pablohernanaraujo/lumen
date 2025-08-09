@@ -13,7 +13,6 @@ import type { VStackProps } from './types';
 const useStyles = makeStyles(() => ({
   container: {
     flexDirection: 'column',
-    width: '100%',
   },
 }));
 
@@ -22,6 +21,7 @@ export const VStack: FC<VStackProps> = ({
   spacing = 'md',
   align = 'center',
   textAlign = 'center',
+  fullWidth = false,
   style,
 }) => {
   const styles = useStyles();
@@ -53,6 +53,7 @@ export const VStack: FC<VStackProps> = ({
         {
           alignItems: align,
           justifyContent: getJustifyContent(textAlign),
+          ...(fullWidth && { width: '100%' }),
         },
         style,
       ]}

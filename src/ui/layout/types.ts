@@ -35,13 +35,15 @@ export interface VStackProps {
   spacing?: SpacingSize;
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   textAlign?: TextAlign;
+  fullWidth?: boolean;
   style?: ViewStyle;
 }
 
 export interface HStackProps {
   children?: ReactNode;
   spacing?: SpacingSize;
-  style?: ViewStyle;
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   textAlign?: TextAlign;
+  fullWidth?: boolean;
+  style?: ViewStyle;
 }

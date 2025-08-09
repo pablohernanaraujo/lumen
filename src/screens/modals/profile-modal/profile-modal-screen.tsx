@@ -1,10 +1,10 @@
 import React, { type FC } from 'react';
-import { Alert, type ImageStyle, View } from 'react-native';
+import { Alert, type ImageStyle, Switch, View } from 'react-native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAuth } from '../../../contexts';
 import type { RootStackParamList } from '../../../routing';
-import { makeStyles } from '../../../theme';
+import { makeStyles, useTheme } from '../../../theme';
 import {
   Body1,
   Body2,
@@ -12,6 +12,7 @@ import {
   ContentWrapper,
   H1,
   HStack,
+  Icon,
   Image,
   ScreenWrapper,
   VStack,
@@ -48,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: theme.typography.size.xxxl,
     fontWeight: theme.typography.weight.bold,
   },
+  switchContainer: {
+    alignItems: 'center',
+  },
 }));
 
 export const ProfileModalScreen: FC<ProfileModalScreenProps> = ({
@@ -55,6 +59,7 @@ export const ProfileModalScreen: FC<ProfileModalScreenProps> = ({
 }) => {
   const styles = useStyles();
   const { user, signOut } = useAuth();
+  const { mode, toggleMode } = useTheme();
 
   if (!user) {
     navigation.goBack();
@@ -110,49 +115,68 @@ export const ProfileModalScreen: FC<ProfileModalScreenProps> = ({
   return (
     <ScreenWrapper disableSafeArea>
       <ContentWrapper variant="header">
-        <View style={styles.profileContainer}>
-          <View style={styles.avatarContainer}>
-            {user.user.photo ? (
-              <Image
-                source={{ uri: user.user.photo }}
-                style={styles.profileImage as ImageStyle}
-                resizeMode="cover"
-                circular
-              />
-            ) : (
-              <View style={styles.defaultAvatar}>
-                <H1 style={styles.avatarText}>{getInitials()}</H1>
-              </View>
-            )}
-          </View>
+        <VStack>
+          {user.user.photo ? (
+            <Image
+              source={{ uri: user.user.photo }}
+              style={styles.profileImage as ImageStyle}
+              resizeMode="cover"
+              circular
+            />
+          ) : (
+            <View style={styles.defaultAvatar}>
+              <H1 style={styles.avatarText}>{getInitials()}</H1>
+            </View>
+          )}
 
           <VStack spacing="xs">
             <H1>{user.user.name || 'Usuario de Lumen'}</H1>
             <Body2 emphasis="medium">{user.user.email}</Body2>
           </VStack>
-        </View>
+        </VStack>
       </ContentWrapper>
       <ContentWrapper variant="body">
-        <VStack>
-          <HStack textAlign="space-between">
+        <VStack align="flex-start">
+          <HStack textAlign="space-between" fullWidth>
             <Body2>Nombre</Body2>
             <Body1>{user.user.name || 'No proporcionado'}</Body1>
           </HStack>
-          <HStack textAlign="space-between">
+          <HStack textAlign="space-between" fullWidth>
             <Body2>Email</Body2>
             <Body1>{user.user.email}</Body1>
           </HStack>
-          <HStack textAlign="space-between">
+          <HStack textAlign="space-between" fullWidth>
             <Body2>Nombre</Body2>
             <Body1>{user.user.givenName || 'No disponible'}</Body1>
           </HStack>
-          <HStack textAlign="space-between">
+          <HStack textAlign="space-between" fullWidth>
             <Body2>Apellido</Body2>
             <Body1>{user.user.familyName || 'No disponible'}</Body1>
           </HStack>
-          <HStack textAlign="space-between">
+          <HStack textAlign="space-between" fullWidth>
             <Body2>Google ID</Body2>
             <Body1>{formatGoogleId(user.user.id)}</Body1>
+          </HStack>
+          <HStack textAlign="space-between" fullWidth>
+            <HStack spacing="sm">
+              <Icon
+                name={mode === 'light' ? 'sun' : 'moon'}
+                family="Feather"
+                size="md"
+                color="text.primary"
+              />
+              <Body2>Modo {mode === 'light' ? 'claro' : 'oscuro'}</Body2>
+            </HStack>
+            <Switch
+              value={mode === 'dark'}
+              onValueChange={toggleMode}
+              trackColor={{
+                false: '#767577',
+                true: '#81b0ff',
+              }}
+              thumbColor={mode === 'dark' ? '#4169e1' : '#f4f3f4'}
+              testID="theme-toggle-switch"
+            />
           </HStack>
         </VStack>
       </ContentWrapper>

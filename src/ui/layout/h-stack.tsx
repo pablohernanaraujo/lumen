@@ -21,6 +21,7 @@ export const HStack: FC<HStackProps> = ({
   spacing = 'md',
   align = 'center',
   textAlign = 'center',
+  fullWidth = false,
   style,
 }) => {
   const styles = useStyles();
@@ -54,6 +55,7 @@ export const HStack: FC<HStackProps> = ({
         {
           alignItems: align,
           justifyContent: getJustifyContent(textAlign),
+          ...(fullWidth && { width: '100%' }),
         },
         style,
       ]}
