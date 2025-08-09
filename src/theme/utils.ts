@@ -118,3 +118,31 @@ export const isLightColor = (color: string): boolean => {
 
 export const getContrastColor = (backgroundColor: string): string =>
   isLightColor(backgroundColor) ? '#000000' : '#FFFFFF';
+
+export const resolveColorPath = (colorOrPath: string, theme: Theme): string => {
+  // If it's not a path (doesn't contain a dot), return as is
+  if (!colorOrPath.includes('.')) {
+    return colorOrPath;
+  }
+
+  // Split the path and navigate through the theme colors object
+  const pathParts = colorOrPath.split('.');
+  let current: unknown = theme.colors;
+
+  for (const part of pathParts) {
+    if (current && typeof current === 'object' && part in current) {
+      current = (current as Record<string, unknown>)[part];
+    } else {
+      // Path not found, return the original string
+      return colorOrPath;
+    }
+  }
+
+  // If we found a valid color value, return it
+  if (typeof current === 'string') {
+    return current;
+  }
+
+  // Otherwise return the original string
+  return colorOrPath;
+};

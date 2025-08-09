@@ -98,11 +98,12 @@ export { EmptyState, ErrorState } from './states';
 export type { EmptyStateProps, ErrorStateProps } from './states';
 
 // typography (T)
-export { Body1, Body2, H1, H2, H3 } from './typography';
+export { Body1, Body2, Body3, H1, H2, H3 } from './typography';
 export type {
   BaseTypographyProps,
   Body1Props,
   Body2Props,
+  Body3Props,
   EmphasisLevel,
   H1Props,
   H2Props,

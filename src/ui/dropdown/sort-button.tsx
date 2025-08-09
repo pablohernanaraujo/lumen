@@ -102,7 +102,6 @@ export const SortButton: FC<SortButtonProps> = ({
   const slideAnim = useRef(new Animated.Value(300)).current;
 
   const isDefaultSort = value === 'marketCap-desc';
-  const selectedOption = options.find((opt) => opt.id === value);
 
   const openModal = (): void => {
     setIsOpen(true);

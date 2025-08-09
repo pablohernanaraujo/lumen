@@ -23,3 +23,9 @@ export interface H3Props extends BaseTypographyProps {}
 export interface Body1Props extends BaseTypographyProps {}
 
 export interface Body2Props extends BaseTypographyProps {}
+
+export type FontWeight = 'light' | 'regular' | 'medium' | 'semibold' | 'bold';
+
+export interface Body3Props extends BaseTypographyProps {
+  fontWeight?: FontWeight;
+}

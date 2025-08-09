@@ -1,21 +1,22 @@
 import React, { type FC } from 'react';
-import {
-  type ImageStyle,
-  Text,
-  type TextStyle,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { type ImageStyle, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 import { useAuth } from '../contexts';
 import type { RootStackParamList } from '../routing';
 import { makeStyles } from '../theme';
-import { ContentWrapper, Icon, Image, SortButton } from '../ui';
+import {
+  Body3,
+  ContentWrapper,
+  H2,
+  HStack,
+  Icon,
+  Image,
+  SortButton,
+} from '../ui';
 
 export interface HeaderProps {
-  titleStyle?: TextStyle;
   showFilterButton?: boolean;
   activeFilterCount?: number;
   showSortButton?: boolean;
@@ -24,11 +25,6 @@ export interface HeaderProps {
 }
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-  },
   avatarSection: {
     marginRight: theme.spacing.md,
   },
@@ -46,17 +42,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  avatarText: {
-    color: theme.colors.white,
-    fontSize: theme.typography.size.lg,
-    fontWeight: theme.typography.weight.bold,
-  },
-  greetingText: {
-    fontSize: theme.typography.size.xl,
-    fontWeight: theme.typography.weight.semibold,
-    color: theme.colors.text.primary,
-    flex: 1,
-  },
   filterButton: {
     position: 'relative',
     padding: theme.spacing.sm,
@@ -73,15 +58,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     paddingHorizontal: 4,
   },
-  filterBadgeText: {
-    color: theme.colors.white,
-    fontSize: 10,
-    fontWeight: theme.typography.weight.bold,
-  },
 }));
 
 export const Header: FC<HeaderProps> = ({
-  titleStyle,
   showFilterButton = false,
   activeFilterCount = 0,
   showSortButton = false,
@@ -121,58 +100,64 @@ export const Header: FC<HeaderProps> = ({
 
   return (
     <ContentWrapper variant="body">
-      <View style={styles.container}>
-        {user && (
-          <TouchableOpacity
-            onPress={handleProfilePress}
-            testID="profile-avatar-button"
-            style={styles.avatarSection}
-          >
-            {user.user.photo ? (
-              <Image
-                source={{ uri: user.user.photo }}
-                style={styles.profileImage as ImageStyle}
-                resizeMode="cover"
-                circular
-              />
-            ) : (
-              <View style={styles.defaultAvatar}>
-                <Text style={styles.avatarText}>{getInitials()}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        )}
+      <HStack textAlign="space-between">
+        <HStack>
+          {user && (
+            <TouchableOpacity
+              onPress={handleProfilePress}
+              testID="profile-avatar-button"
+              style={styles.avatarSection}
+            >
+              {user.user.photo ? (
+                <Image
+                  source={{ uri: user.user.photo }}
+                  style={styles.profileImage as ImageStyle}
+                  resizeMode="cover"
+                  circular
+                />
+              ) : (
+                <View style={styles.defaultAvatar}>
+                  <H2>{getInitials()}</H2>
+                </View>
+              )}
+            </TouchableOpacity>
+          )}
 
-        <Text style={[styles.greetingText, titleStyle]}>{getGreeting()}</Text>
+          <H2>{getGreeting()}</H2>
+        </HStack>
 
-        {showSortButton && onSortChange && (
-          <SortButton
-            value={sortBy}
-            onValueChange={onSortChange}
-            testID="header-sort-button"
-          />
-        )}
-
-        {showFilterButton && (
-          <TouchableOpacity
-            onPress={handleFilterPress}
-            style={styles.filterButton}
-            testID="filter-button"
-          >
-            <Icon
-              name="filter-list"
-              family="MaterialIcons"
-              size={28}
-              color="text.primary"
+        <HStack>
+          {showSortButton && onSortChange && (
+            <SortButton
+              value={sortBy}
+              onValueChange={onSortChange}
+              testID="header-sort-button"
             />
-            {activeFilterCount > 0 && (
-              <View style={styles.filterBadge}>
-                <Text style={styles.filterBadgeText}>{activeFilterCount}</Text>
-              </View>
-            )}
-          </TouchableOpacity>
-        )}
-      </View>
+          )}
+
+          {showFilterButton && (
+            <TouchableOpacity
+              onPress={handleFilterPress}
+              style={styles.filterButton}
+              testID="filter-button"
+            >
+              <Icon
+                name="filter-list"
+                family="MaterialIcons"
+                size={28}
+                color="text.primary"
+              />
+              {activeFilterCount > 0 && (
+                <View style={styles.filterBadge}>
+                  <Body3 color="inverse" emphasis="pure" fontWeight="bold">
+                    {activeFilterCount}
+                  </Body3>
+                </View>
+              )}
+            </TouchableOpacity>
+          )}
+        </HStack>
+      </HStack>
     </ContentWrapper>
   );
 };

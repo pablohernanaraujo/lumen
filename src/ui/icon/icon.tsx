@@ -15,7 +15,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import Zocial from 'react-native-vector-icons/Zocial';
 
-import { useTheme } from '../../theme';
+import { resolveColorPath, useTheme } from '../../theme';
 import type { IconFamily, IconProps } from './types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +70,9 @@ export const Icon: FC<IconProps> = ({
 
   const iconSize =
     typeof size === 'number' ? size : theme.typography.size[size];
-  const iconColor = color || theme.colors.text.primary;
+  const iconColor = color
+    ? resolveColorPath(color, theme)
+    : theme.colors.text.primary;
 
   const iconElement = (
     <IconComponent

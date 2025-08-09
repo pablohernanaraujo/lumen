@@ -25,4 +25,5 @@ export {
   getColorOpacity,
   getContrastColor,
   isLightColor,
+  resolveColorPath,
 } from './utils';

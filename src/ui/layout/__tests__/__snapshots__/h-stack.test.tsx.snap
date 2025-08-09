@@ -6,7 +6,6 @@ exports[`HStack edge cases should render correctly with children without keys 1`
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -47,7 +46,6 @@ exports[`HStack edge cases should render correctly with empty children 1`] = `
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -65,7 +63,6 @@ exports[`HStack edge cases should render correctly with no children 1`] = `
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -83,7 +80,6 @@ exports[`HStack snapshots should render correctly in dark mode 1`] = `
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -136,7 +132,6 @@ exports[`HStack snapshots should render correctly in light mode 1`] = `
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -189,7 +184,6 @@ exports[`HStack spacing behavior should apply correct spacing between multiple c
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -254,7 +248,6 @@ exports[`HStack spacing behavior should not apply margin to last child 1`] = `
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -295,7 +288,6 @@ exports[`HStack with custom styling should render correctly with custom style 1`
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -351,7 +343,6 @@ exports[`HStack with custom styling should render correctly with custom style an
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -406,7 +397,6 @@ exports[`HStack with different alignment should render correctly with center ali
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -459,7 +449,6 @@ exports[`HStack with different alignment should render correctly with flex-end a
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "flex-end",
@@ -512,7 +501,6 @@ exports[`HStack with different alignment should render correctly with flex-start
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "flex-start",
@@ -565,7 +553,6 @@ exports[`HStack with different alignment should render correctly with stretch al
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "stretch",
@@ -618,7 +605,6 @@ exports[`HStack with different children types should render correctly with child
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -680,7 +666,6 @@ exports[`HStack with different children types should render correctly with mixed
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -735,7 +720,6 @@ exports[`HStack with different children types should render correctly with null/
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -776,7 +760,6 @@ exports[`HStack with different children types should render correctly with singl
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -805,7 +788,6 @@ exports[`HStack with different children types should render correctly with strin
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -845,7 +827,6 @@ exports[`HStack with different spacing should render correctly with lg spacing 1
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -898,7 +879,6 @@ exports[`HStack with different spacing should render correctly with md spacing 1
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -951,7 +931,6 @@ exports[`HStack with different spacing should render correctly with sm spacing 1
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -1004,7 +983,6 @@ exports[`HStack with different spacing should render correctly with xl spacing 1
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
@@ -1057,7 +1035,6 @@ exports[`HStack with different spacing should render correctly with xs spacing 1
     [
       {
         "flexDirection": "row",
-        "width": "100%",
       },
       {
         "alignItems": "center",
