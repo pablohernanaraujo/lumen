@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { ScrollViewProps, ViewStyle } from 'react-native';
+import type { ScrollViewProps, StyleProp, ViewStyle } from 'react-native';
 
 import type { Theme } from '../../theme';
 
@@ -7,7 +7,7 @@ export type SpacingSize = keyof Theme['spacing'];
 
 export interface ContainerProps {
   children: ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   scrollViewProps?: Omit<ScrollViewProps, 'children'>;
   keyboardShouldPersistTaps?: 'always' | 'never' | 'handled';
   disableSafeArea?: boolean;
@@ -15,7 +15,7 @@ export interface ContainerProps {
 
 export interface ScreenWrapperProps {
   children: ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   disableSafeArea?: boolean;
 }
 
@@ -25,7 +25,7 @@ export interface ContentWrapperProps {
   children: ReactNode;
   variant?: ContentWrapperVariant;
   borderless?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export type TextAlign = 'left' | 'center' | 'right' | 'space-between';
@@ -36,7 +36,7 @@ export interface VStackProps {
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   textAlign?: TextAlign;
   fullWidth?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 export interface HStackProps {
@@ -45,5 +45,5 @@ export interface HStackProps {
   align?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
   textAlign?: TextAlign;
   fullWidth?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }

@@ -18,6 +18,12 @@ export type RootStackParamList = {
         onSelect?: (payload: unknown) => void;
       }
     | undefined;
+  PermissionEducationModal:
+    | {
+        onRequestPermission?: () => void;
+        onCancel?: () => void;
+      }
+    | undefined;
 };
 
 export type AuthStackParamList = {
