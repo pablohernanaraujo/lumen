@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 
 import { makeStyles, useTheme } from '../../theme';
-import { ButtonRegular } from '../../ui/buttons';
+import { ButtonOutline, ButtonRegular } from '../../ui/buttons';
 import { Icon } from '../../ui/icon';
 import { ContentWrapper, ScreenWrapper, VStack } from '../../ui/layout';
 import { Body1, H2 } from '../../ui/typography';
@@ -71,20 +71,21 @@ export const PermissionDeniedState: FC<PermissionDeniedStateProps> = ({
 
           <VStack spacing="md" style={styles.buttonContainer}>
             <ButtonRegular
-              title={primaryButtonText}
               onPress={primaryButtonAction}
               testID="permission-primary-button-1"
               accessibilityLabel={primaryButtonText}
-            />
+            >
+              {primaryButtonText}
+            </ButtonRegular>
 
             {isBlocked && (
-              <ButtonRegular
-                title="Try Again"
-                variant="outline"
+              <ButtonOutline
                 onPress={onRetryPermission}
                 testID="permission-retry-button-1"
                 accessibilityLabel="Try camera permission again"
-              />
+              >
+                Try Again
+              </ButtonOutline>
             )}
           </VStack>
         </VStack>
