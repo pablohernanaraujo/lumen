@@ -222,7 +222,7 @@ export const ScannerErrorModalScreen: FC = () => {
             <Icon
               name="check-circle"
               size={16}
-              color={theme.colors.success.main}
+              color={theme.theme.colors.success.main}
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
@@ -233,7 +233,7 @@ export const ScannerErrorModalScreen: FC = () => {
             <Icon
               name="check-circle"
               size={16}
-              color={theme.colors.success.main}
+              color={theme.theme.colors.success.main}
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
@@ -244,7 +244,7 @@ export const ScannerErrorModalScreen: FC = () => {
             <Icon
               name="check-circle"
               size={16}
-              color={theme.colors.success.main}
+              color={theme.theme.colors.success.main}
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
@@ -255,7 +255,7 @@ export const ScannerErrorModalScreen: FC = () => {
             <Icon
               name="check-circle"
               size={16}
-              color={theme.colors.success.main}
+              color={theme.theme.colors.success.main}
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
@@ -288,7 +288,7 @@ export const ScannerErrorModalScreen: FC = () => {
             <Icon
               name={getIconForSeverity(errorConfig.severity)}
               size={32}
-              color={getIconColorForSeverity(errorConfig.severity, theme)}
+              color={getIconColorForSeverity(errorConfig.severity, theme.theme)}
             />
           </View>
 

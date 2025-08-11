@@ -77,12 +77,12 @@ const getProgressColorStyle = (
 
 const getTextColor = (timeLeft: number, theme: ThemeContextValue): string => {
   if (timeLeft <= 5) {
-    return theme.colors.error.main;
+    return theme.theme.colors.error.main;
   }
   if (timeLeft <= 10) {
-    return theme.colors.warning.main;
+    return theme.theme.colors.warning.main;
   }
-  return theme.colors.text.primary;
+  return theme.theme.colors.text.primary;
 };
 
 export const TimeoutIndicator: FC<TimeoutIndicatorProps> = ({
