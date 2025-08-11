@@ -1,6 +1,8 @@
+/* eslint-disable max-statements */
 import React, { type FC, useCallback, useState } from 'react';
 import { Alert, Clipboard, StyleSheet, View } from 'react-native';
 import type { NavigationProp } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import {
   CameraView,
@@ -29,6 +31,7 @@ const useStyles = makeStyles(() => ({
 
 export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
   const styles = useStyles();
+  const isFocused = useIsFocused();
 
   const [flashMode, setFlashMode] = useState<'off' | 'on'>('off');
   const [isProcessingClipboard, setIsProcessingClipboard] = useState(false);
@@ -56,6 +59,19 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
     enableHapticFeedback: true,
   });
 
+  // Camera lifecycle management
+  useFocusEffect(
+    useCallback(() => {
+      // Camera will be activated when screen gains focus
+      console.log('Scanner screen focused - camera will activate');
+
+      return () => {
+        // Camera will be deactivated when screen loses focus
+        console.log('Scanner screen blurred - camera will deactivate');
+      };
+    }, []),
+  );
+
   const handleFlashlightToggle = useCallback(() => {
     setFlashMode((prevMode) => (prevMode === 'off' ? 'on' : 'off'));
   }, []);
@@ -66,12 +82,12 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
     Alert.alert('History', 'Scan history feature coming soon!');
   }, []);
 
-  const handlePastePress = useCallback(async () => {
+  const handlePastePress = useCallback(async (): Promise<void> => {
     try {
       setIsProcessingClipboard(true);
       const clipboardData = await Clipboard.getString();
 
-      if (clipboardData && clipboardData.trim()) {
+      if (clipboardData?.trim()) {
         console.log('Clipboard data:', clipboardData);
         handleScanSuccess(clipboardData.trim());
       } else {
@@ -105,6 +121,7 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
           onBarCodeRead={onBarCodeRead}
           flashMode={flashMode}
           isScanning={isScanning}
+          isActive={isFocused}
           style={styles.container}
         />
 

@@ -12,6 +12,7 @@ interface CameraViewProps {
   onBarCodeRead: (data: string) => void;
   flashMode: 'off' | 'on';
   isScanning: boolean;
+  isActive?: boolean;
   style?: object;
 }
 
@@ -19,6 +20,7 @@ export const CameraView: FC<CameraViewProps> = ({
   onBarCodeRead,
   flashMode,
   isScanning,
+  isActive = true,
   style,
 }) => {
   const device = useCameraDevice('back');
@@ -66,7 +68,7 @@ export const CameraView: FC<CameraViewProps> = ({
       ref={cameraRef}
       style={[StyleSheet.absoluteFill, style]}
       device={device}
-      isActive={true}
+      isActive={isActive}
       codeScanner={codeScanner}
       torch={flashMode}
       photo={false}
