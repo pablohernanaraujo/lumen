@@ -135,7 +135,7 @@ describe('QrErrorService', () => {
         QrErrorType.UNSUPPORTED_NETWORK,
       );
       expect(suggestion).toContain(
-        'Currently, we support Bitcoin and Ethereum',
+        'Actualmente, soportamos Bitcoin y Ethereum',
       );
     });
   });
@@ -147,7 +147,7 @@ describe('QrErrorService', () => {
         'Custom error message',
       );
 
-      expect(formatted.title).toBe('Invalid Address Format');
+      expect(formatted.title).toBe('Formato de dirección inválido');
       expect(formatted.message).toBe('Custom error message');
       expect(formatted.suggestion).toBeDefined();
     });
@@ -157,9 +157,9 @@ describe('QrErrorService', () => {
         QrErrorType.PERMISSION_DENIED,
       );
 
-      expect(formatted.title).toBe('Camera Permission Required');
+      expect(formatted.title).toBe('Permiso de cámara requerido');
       expect(formatted.message).toBe(
-        'Camera access is needed to scan QR codes.',
+        'Se necesita acceso a la cámara para escanear códigos QR.',
       );
     });
   });

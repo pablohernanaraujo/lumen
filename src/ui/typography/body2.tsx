@@ -9,6 +9,7 @@ export const Body2: FC<Body2Props> = ({
   children,
   emphasis = 'high',
   color,
+  textAlign,
   style,
   testID,
 }) => {
@@ -31,6 +32,7 @@ export const Body2: FC<Body2Props> = ({
             theme.typography.lineHeight.normal * theme.typography.size.sm,
           color: finalColor,
           fontFamily: theme.typography.family.regular,
+          textAlign,
         },
         style,
       ]}

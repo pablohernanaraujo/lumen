@@ -10,5 +10,8 @@ export { CryptoListScreen } from './crypto/crypto-list';
 // Exchange Screen
 export { ExchangeScreen } from './exchange';
 
+// History Screens
+export { FavoritesScreen, HistoryScreen } from './history';
+
 // Scanner Screen
 export { ScannerScreen } from './scanner';

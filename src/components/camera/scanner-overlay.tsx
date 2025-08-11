@@ -1,7 +1,7 @@
 import React, { type FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { makeStyles, useTheme } from '../../theme';
+import { makeStyles } from '../../theme';
 import { ButtonIcon } from '../../ui/buttons';
 import { Body2 } from '../../ui/typography';
 
@@ -133,7 +133,6 @@ export const ScannerOverlay: FC<ScannerOverlayProps> = ({
   isScanning,
 }) => {
   const styles = useStyles();
-  const { theme } = useTheme();
 
   return (
     <View style={styles.overlay} pointerEvents="box-none">
@@ -151,8 +150,8 @@ export const ScannerOverlay: FC<ScannerOverlayProps> = ({
       <View style={styles.instructionsContainer} pointerEvents="none">
         <Body2 style={styles.instructionText}>
           {isScanning
-            ? 'Position QR code within the frame to scan'
-            : 'Processing...'}
+            ? 'Posicioná el código QR dentro del marco para escanear'
+            : 'Procesando...'}
         </Body2>
       </View>
 
@@ -166,7 +165,7 @@ export const ScannerOverlay: FC<ScannerOverlayProps> = ({
           testID="flashlight-button-1"
           onPress={onFlashlightToggle}
           accessibilityLabel={
-            isFlashlightOn ? 'Turn off flashlight' : 'Turn on flashlight'
+            isFlashlightOn ? 'Apagar flash' : 'Encender flash'
           }
         />
 
@@ -178,7 +177,7 @@ export const ScannerOverlay: FC<ScannerOverlayProps> = ({
           size="md"
           testID="history-button-1"
           onPress={onHistoryPress}
-          accessibilityLabel="View scan history"
+          accessibilityLabel="Ver historial de escaneos"
         />
 
         <ButtonIcon
@@ -189,7 +188,7 @@ export const ScannerOverlay: FC<ScannerOverlayProps> = ({
           size="md"
           testID="paste-button-1"
           onPress={onPastePress}
-          accessibilityLabel="Paste QR data"
+          accessibilityLabel="Pegar datos del QR"
         />
       </View>
     </View>

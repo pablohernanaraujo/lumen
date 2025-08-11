@@ -17,6 +17,7 @@ export interface ScreenWrapperProps {
   children: ReactNode;
   style?: StyleProp<ViewStyle>;
   disableSafeArea?: boolean;
+  testID?: string;
 }
 
 export type ContentWrapperVariant = 'screen' | 'header' | 'body' | 'footer';
@@ -26,6 +27,7 @@ export interface ContentWrapperProps {
   variant?: ContentWrapperVariant;
   borderless?: boolean;
   style?: StyleProp<ViewStyle>;
+  testID?: string;
 }
 
 export type TextAlign = 'left' | 'center' | 'right' | 'space-between';

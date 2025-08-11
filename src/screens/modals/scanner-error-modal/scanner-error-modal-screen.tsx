@@ -217,7 +217,7 @@ export const ScannerErrorModalScreen: FC = () => {
     ) {
       return (
         <View style={styles.helpSection}>
-          <H2 style={styles.helpTitle}>Scanning Tips</H2>
+          <H2 style={styles.helpTitle}>Consejos para escanear</H2>
           <View style={styles.helpItem}>
             <Icon
               name="check-circle"
@@ -226,7 +226,7 @@ export const ScannerErrorModalScreen: FC = () => {
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
-              Position the QR code within the scanning frame
+              Posicioná el código QR dentro del marco de escaneo
             </Body2>
           </View>
           <View style={styles.helpItem}>
@@ -237,7 +237,7 @@ export const ScannerErrorModalScreen: FC = () => {
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
-              Ensure good lighting and avoid shadows
+              Asegurate de tener buena iluminación y evitá sombras
             </Body2>
           </View>
           <View style={styles.helpItem}>
@@ -248,7 +248,7 @@ export const ScannerErrorModalScreen: FC = () => {
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
-              Hold your device steady at about 6-8 inches away
+              Mantené tu dispositivo firme a unos 6-8 pulgadas de distancia
             </Body2>
           </View>
           <View style={styles.helpItem}>
@@ -259,7 +259,7 @@ export const ScannerErrorModalScreen: FC = () => {
               style={styles.helpIcon}
             />
             <Body2 style={styles.helpText}>
-              Clean your camera lens if the image appears blurry
+              Limpia el lente de tu cámara si la imagen aparece borrosa
             </Body2>
           </View>
         </View>

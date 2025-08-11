@@ -221,9 +221,9 @@ export const ExchangeScreen: FC = () => {
               />
             ) : (
               <VStack spacing="lg">
-                <VStack spacing="sm" align="flex-start" textAlign="left">
-                  <H2 style={styles.title}>Exchange</H2>
-                  <Body1 color="secondary">
+                <VStack spacing="sm" align="flex-start" fullWidth>
+                  <H2>Intercambiar</H2>
+                  <Body1 emphasis="medium">
                     Convertí entre criptomonedas y monedas fiat.
                   </Body1>
                 </VStack>

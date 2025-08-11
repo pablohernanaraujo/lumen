@@ -4,6 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { CryptoListScreen } from '../screens/crypto/crypto-list';
 import { ExchangeScreen } from '../screens/exchange';
+import { FavoritesScreen } from '../screens/history';
 import { ScannerScreen } from '../screens/scanner';
 import { useTheme } from '../theme';
 import { Icon } from '../ui';
@@ -74,6 +75,16 @@ export const TabNavigator: FC = () => {
               size={30}
               color={color}
             />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Favorites"
+        component={FavoritesScreen}
+        options={{
+          title: 'Favorites',
+          tabBarIcon: ({ color }) => (
+            <Icon name="star" family="MaterialIcons" size={30} color={color} />
           ),
         }}
       />

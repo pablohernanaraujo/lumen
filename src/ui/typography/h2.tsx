@@ -9,6 +9,7 @@ export const H2: FC<H2Props> = ({
   children,
   emphasis = 'high',
   color,
+  textAlign,
   style,
   testID,
 }) => {
@@ -31,6 +32,7 @@ export const H2: FC<H2Props> = ({
             theme.typography.lineHeight.tight * theme.typography.size.xxl,
           color: finalColor,
           fontFamily: theme.typography.family.semibold,
+          textAlign,
         },
         style,
       ]}

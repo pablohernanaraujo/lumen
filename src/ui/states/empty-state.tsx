@@ -1,43 +1,10 @@
 import React, { type FC } from 'react';
-import { Text, View } from 'react-native';
 
-import { makeStyles } from '../../theme';
 import { ButtonRegular } from '../buttons';
 import { Icon } from '../icon';
-import { VStack } from '../layout';
+import { ContentWrapper, VStack } from '../layout';
+import { Body1, H2 } from '../typography';
 import type { EmptyStateProps } from './types';
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: theme.spacing.xl,
-  },
-  iconContainer: {
-    marginBottom: theme.spacing.lg,
-  },
-  title: {
-    fontSize: theme.typography.size.xl,
-    fontWeight: theme.typography.weight.bold,
-    fontFamily: theme.typography.family.bold,
-    color: theme.colors.text.primary,
-    textAlign: 'center',
-    marginBottom: theme.spacing.sm,
-  },
-  message: {
-    fontSize: theme.typography.size.md,
-    fontWeight: theme.typography.weight.regular,
-    fontFamily: theme.typography.family.regular,
-    color: theme.colors.text.secondary,
-    textAlign: 'center',
-    marginBottom: theme.spacing.xl,
-    lineHeight: theme.typography.size.md * theme.typography.lineHeight.relaxed,
-  },
-  actionButton: {
-    minWidth: 150,
-  },
-}));
 
 const getDefaultContent = (
   variant: EmptyStateProps['variant'],
@@ -81,7 +48,6 @@ export const EmptyState: FC<EmptyStateProps> = ({
   testID = 'empty-state',
   variant = 'default',
 }) => {
-  const styles = useStyles();
   const defaults = getDefaultContent(variant);
 
   const displayIcon = icon || defaults.icon;
@@ -89,38 +55,38 @@ export const EmptyState: FC<EmptyStateProps> = ({
   const displayMessage = message || defaults.message;
 
   return (
-    <View style={[styles.container, style]} testID={testID}>
-      <VStack spacing="lg" style={{ alignItems: 'center' }}>
-        <View style={styles.iconContainer}>
+    <ContentWrapper style={[style]} testID={testID}>
+      <VStack spacing="xxl" align="center" fullWidth>
+        <VStack spacing="xl" align="center" fullWidth>
           <Icon
             name={displayIcon}
             family={iconFamily}
             size="xxxl"
-            color="secondary"
+            color="text.secondary"
             testID={`${testID}-icon`}
           />
-        </View>
-
-        <Text style={styles.title} testID={`${testID}-title`}>
-          {displayTitle}
-        </Text>
-
-        <Text style={styles.message} testID={`${testID}-message`}>
-          {displayMessage}
-        </Text>
-
-        {onAction && actionText && (
-          <View style={styles.actionButton}>
-            <ButtonRegular
-              onPress={onAction}
-              size="md"
-              testID={`${testID}-action-button`}
+          <VStack spacing="sm" align="center" fullWidth>
+            <H2 testID={`${testID}-title`}>{displayTitle}</H2>
+            <Body1
+              emphasis="medium"
+              testID={`${testID}-message`}
+              textAlign="center"
             >
-              {actionText}
-            </ButtonRegular>
-          </View>
+              {displayMessage}
+            </Body1>
+          </VStack>
+        </VStack>
+        {onAction && actionText && (
+          <ButtonRegular
+            onPress={onAction}
+            size="md"
+            testID={`${testID}-action-button`}
+            fullWidth
+          >
+            {actionText}
+          </ButtonRegular>
         )}
       </VStack>
-    </View>
+    </ContentWrapper>
   );
 };

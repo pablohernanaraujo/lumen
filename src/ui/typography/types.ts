@@ -10,6 +10,7 @@ export interface BaseTypographyProps {
   children: ReactNode;
   emphasis?: EmphasisLevel;
   color?: TextColorKeys;
+  textAlign?: 'auto' | 'left' | 'right' | 'center' | 'justify';
   style?: TextStyle;
   testID?: string;
 }

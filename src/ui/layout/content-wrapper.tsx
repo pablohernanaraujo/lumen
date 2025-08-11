@@ -50,6 +50,7 @@ export const ContentWrapper: FC<ContentWrapperProps> = ({
   variant = 'screen',
   borderless = false,
   style,
+  testID,
 }) => {
   const styles = useStyles();
 
@@ -63,6 +64,7 @@ export const ContentWrapper: FC<ContentWrapperProps> = ({
         borderless && styles.borderless,
         style,
       ]}
+      testID={testID}
     >
       {children}
     </View>

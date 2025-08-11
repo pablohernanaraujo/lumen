@@ -13,6 +13,8 @@ import {
 } from '../../components/camera';
 import { TimeoutIndicator } from '../../components/scanner';
 import { useQrScanner } from '../../hooks';
+import { AddressStorageService } from '../../services/address-storage-service';
+import { analyticsService } from '../../services/analytics-service';
 import { qrErrorService } from '../../services/qr-error-service';
 import { WalletValidationService } from '../../services/wallet-validation-service';
 import { BlockchainNetwork } from '../../services/wallet-validation-types';
@@ -71,6 +73,28 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
         onRetry: () => resetScanner(),
         onManualEntry: () => {
           console.log('Navigate to manual entry');
+          resetScanner(); // Reset scanner state when returning from manual entry
+        },
+        onCancel: () => {
+          resetScanner(); // Reset scanner state when cancelling from timeout
+        },
+        onHelp: () => {
+          Alert.alert(
+            'QR Scanning Help',
+            'Troubleshooting tips:\n\n' +
+              '• Make sure the QR code is clearly visible within the scanning frame\n' +
+              '• Ensure proper lighting - avoid shadows and glare\n' +
+              '• Hold the device steady at 6-8 inches from the QR code\n' +
+              '• Clean your camera lens if the image is blurry\n' +
+              '• Try adjusting the angle or distance\n' +
+              "• For cryptocurrency QRs, ensure it's a valid wallet address or URI",
+            [
+              {
+                text: 'Got it',
+                style: 'default',
+              },
+            ],
+          );
         },
       });
     },
@@ -84,7 +108,7 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
 
   // Create the scan processing function after hook initialization
   const processScanData = useCallback(
-    (data: string) => {
+    (data: string, source: 'scanner' | 'clipboard' = 'scanner') => {
       console.log('Processing scan data:', data);
 
       // Record successful scan duration
@@ -100,6 +124,11 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
         const parsedUri = WalletValidationService.parseURI(data);
 
         if (!parsedUri.isValid) {
+          // Track failed scan
+          if (scanStartTime) {
+            analyticsService.trackFailedScan('invalid_uri', scanStartTime);
+          }
+
           // Navigate to error modal instead of showing alert
           navigation?.navigate('ScannerErrorModal' as any, {
             errorType: QrErrorType.INVALID_QR_CONTENT,
@@ -111,6 +140,25 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
             onManualEntry: () => {
               // Navigate to manual entry screen
               console.log('Navigate to manual entry');
+              resetScannerRef.current?.(); // Reset scanner state when returning from manual entry
+            },
+            onHelp: () => {
+              Alert.alert(
+                'Invalid QR Code Help',
+                "This QR code doesn't contain valid cryptocurrency data.\n\n" +
+                  'Supported formats:\n' +
+                  '• Bitcoin addresses (starting with 1, 3, or bc1)\n' +
+                  '• Ethereum addresses (starting with 0x)\n' +
+                  '• Bitcoin URIs (bitcoin:address)\n' +
+                  '• Ethereum URIs (ethereum:address)\n\n' +
+                  "Make sure you're scanning a wallet QR code, not a regular website or text QR.",
+                [
+                  {
+                    text: 'Got it',
+                    style: 'default',
+                  },
+                ],
+              );
             },
           });
           return;
@@ -145,12 +193,71 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
             style: 'cancel',
           },
           {
-            text: 'Process',
+            text: 'Save & Use',
             style: 'default',
-            onPress: () => {
-              // Navigate to appropriate screen based on network
-              // navigation?.navigate('SendTransaction', { uri: parsedUri });
-              console.log('Processing URI:', parsedUri);
+            onPress: async (): Promise<void> => {
+              try {
+                // Track successful scan
+                if (scanStartTime) {
+                  analyticsService.trackSuccessfulScan(
+                    parsedUri.network!,
+                    scanStartTime,
+                    undefined, // No addressType for URIs
+                    !!(parsedUri.amount || parsedUri.value),
+                    !!parsedUri.label,
+                  );
+                }
+
+                // Save to storage
+                const savedAddress = await AddressStorageService.saveAddress(
+                  parsedUri.address!,
+                  parsedUri.network!,
+                  {
+                    source,
+                    amount: parsedUri.amount || parsedUri.value,
+                    unit:
+                      parsedUri.network === BlockchainNetwork.Bitcoin
+                        ? 'BTC'
+                        : 'ETH',
+                    message: parsedUri.message,
+                    uri: data,
+                    label: parsedUri.label,
+                  },
+                );
+
+                // Track address saved
+                analyticsService.track('address_saved', {
+                  blockchain_type: parsedUri.network!,
+                  source,
+                  is_duplicate: savedAddress.usageCount > 1,
+                  usage_count: savedAddress.usageCount,
+                });
+
+                console.log(
+                  '[ScannerScreen] URI saved to storage:',
+                  savedAddress,
+                );
+
+                // Show success feedback
+                Alert.alert(
+                  'Address Saved',
+                  'The address has been saved to your scan history.',
+                  [
+                    {
+                      text: 'View History',
+                      onPress: (): void =>
+                        navigation?.navigate('History' as any),
+                    },
+                    {
+                      text: 'Scan Another',
+                      style: 'default',
+                    },
+                  ],
+                );
+              } catch (saveError) {
+                console.error('[ScannerScreen] Failed to save URI:', saveError);
+                Alert.alert('Error', 'Failed to save address to history');
+              }
             },
           },
         ]);
@@ -159,6 +266,11 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
         const validation = WalletValidationService.validateAddress(data);
 
         if (!validation.isValid) {
+          // Track failed scan
+          if (scanStartTime) {
+            analyticsService.trackFailedScan('invalid_address', scanStartTime);
+          }
+
           // Determine specific error type
           let errorType = QrErrorType.INVALID_QR_CONTENT;
           if (data.match(/^[13bc]/i) || data.match(/^0x/i)) {
@@ -175,6 +287,27 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
             onRetry: () => resetScannerRef.current?.(),
             onManualEntry: () => {
               console.log('Navigate to manual entry');
+              resetScannerRef.current?.(); // Reset scanner state when returning from manual entry
+            },
+            onHelp: () => {
+              Alert.alert(
+                'Address Validation Help',
+                'The scanned address appears to be invalid or corrupted.\n\n' +
+                  'Common issues:\n' +
+                  '• QR code is damaged or partially obscured\n' +
+                  '• Address is incomplete or has extra characters\n' +
+                  '• Wrong cryptocurrency format\n\n' +
+                  'Try:\n' +
+                  '• Scanning from a different angle\n' +
+                  '• Getting a clearer image of the QR code\n' +
+                  '• Asking for a new QR code if possible',
+                [
+                  {
+                    text: 'Got it',
+                    style: 'default',
+                  },
+                ],
+              );
             },
           });
           return;
@@ -206,12 +339,67 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
               style: 'cancel',
             },
             {
-              text: 'Use Address',
+              text: 'Save & Use',
               style: 'default',
-              onPress: () => {
-                // Navigate to appropriate screen based on network
-                // navigation?.navigate('SendTransaction', { address: validation.address, network: validation.network });
-                console.log('Using address:', validation);
+              onPress: async (): Promise<void> => {
+                try {
+                  // Track successful scan
+                  if (scanStartTime) {
+                    analyticsService.trackSuccessfulScan(
+                      validation.network!,
+                      scanStartTime,
+                      validation.addressType,
+                      false, // Plain addresses don't have amounts
+                      false, // Plain addresses don't have labels
+                    );
+                  }
+
+                  // Save to storage
+                  const savedAddress = await AddressStorageService.saveAddress(
+                    validation.address!,
+                    validation.network!,
+                    {
+                      addressType: validation.addressType,
+                      source,
+                    },
+                  );
+
+                  // Track address saved
+                  analyticsService.track('address_saved', {
+                    blockchain_type: validation.network!,
+                    source,
+                    is_duplicate: savedAddress.usageCount > 1,
+                    usage_count: savedAddress.usageCount,
+                  });
+
+                  console.log(
+                    '[ScannerScreen] Address saved to storage:',
+                    savedAddress,
+                  );
+
+                  // Show success feedback
+                  Alert.alert(
+                    'Address Saved',
+                    'The address has been saved to your scan history.',
+                    [
+                      {
+                        text: 'View History',
+                        onPress: (): void =>
+                          navigation?.navigate('History' as any),
+                      },
+                      {
+                        text: 'Scan Another',
+                        style: 'default',
+                      },
+                    ],
+                  );
+                } catch (saveError) {
+                  console.error(
+                    '[ScannerScreen] Failed to save address:',
+                    saveError,
+                  );
+                  Alert.alert('Error', 'Failed to save address to history');
+                }
               },
             },
           ],
@@ -230,11 +418,23 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
       // Camera will be activated when screen gains focus
       console.log('Scanner screen focused - camera will activate');
 
+      // Resume scanning and timer when screen gains focus
+      resumeScanning();
+
+      // Track scanner session start
+      analyticsService.startScannerSession('tab_navigation');
+
       return () => {
         // Camera will be deactivated when screen loses focus
         console.log('Scanner screen blurred - camera will deactivate');
+
+        // Pause scanning and timer when screen loses focus
+        pauseScanning();
+
+        // Track scanner session end
+        analyticsService.endScannerSession();
       };
-    }, []),
+    }, [resumeScanning, pauseScanning]),
   );
 
   const handleFlashlightToggle = useCallback(() => {
@@ -243,9 +443,8 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
 
   const handleHistoryPress = useCallback(() => {
     console.log('History pressed');
-    // navigation?.navigate('ScanHistory');
-    Alert.alert('History', 'Scan history feature coming soon!');
-  }, []);
+    navigation?.navigate('History' as any);
+  }, [navigation]);
 
   const handlePastePress = useCallback(async (): Promise<void> => {
     try {
@@ -254,7 +453,8 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
 
       if (clipboardData?.trim()) {
         console.log('Clipboard data:', clipboardData);
-        processScanData(clipboardData.trim());
+        // Create a modified version of processScanData for clipboard source
+        processScanData(clipboardData.trim(), 'clipboard');
       } else {
         Alert.alert('Clipboard Empty', 'No data found in clipboard');
       }
@@ -310,6 +510,28 @@ export const ScannerScreen: FC<ScannerScreenProps> = ({ navigation }) => {
               onRetry: () => resetScanner(),
               onManualEntry: () => {
                 console.log('Navigate to manual entry');
+                resetScanner(); // Reset scanner state when returning from manual entry
+              },
+              onCancel: () => {
+                resetScanner(); // Reset scanner state when cancelling from timeout
+              },
+              onHelp: () => {
+                Alert.alert(
+                  'QR Scanning Help',
+                  'Scan timeout occurred. Try these tips:\n\n' +
+                    '• Position the QR code fully within the scanning frame\n' +
+                    '• Ensure adequate lighting\n' +
+                    '• Hold the device steady\n' +
+                    '• Clean your camera lens\n' +
+                    '• Move closer or further away (6-8 inches is ideal)\n' +
+                    '• Make sure the QR code is not damaged or blurry',
+                  [
+                    {
+                      text: 'Got it',
+                      style: 'default',
+                    },
+                  ],
+                );
               },
             });
           }}

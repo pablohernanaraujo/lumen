@@ -1,4 +1,5 @@
 export * from './api';
+export { useAppInitialization } from './use-app-initialization';
 export type { CameraPermissionStatus } from './use-camera-permissions';
 export { useCameraPermissions } from './use-camera-permissions';
 export type { PermissionFlowStep } from './use-enhanced-camera-permissions';

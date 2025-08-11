@@ -211,23 +211,8 @@ export const RootNavigator: FC = () => {
           name="ScannerErrorModal"
           component={ScannerErrorModalScreen}
           options={({ navigation }): NativeStackNavigationOptions => ({
-            title: 'Scan Error',
-            headerShown: true,
-            headerStyle: {
-              backgroundColor: theme.colors.background,
-            },
-            headerTintColor: theme.colors.text.primary,
-            headerLeft: () => (
-              <Icon
-                name="close"
-                family="MaterialIcons"
-                size={32}
-                color={theme.colors.text.primary}
-                onPress={() => navigation.goBack()}
-                accessibilityLabel="Cerrar"
-                testID="back-button-7"
-              />
-            ),
+            headerShown: false,
+            headerLeft: () => null,
           })}
         />
       </Stack.Group>

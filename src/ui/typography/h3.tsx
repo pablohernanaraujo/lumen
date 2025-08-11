@@ -9,6 +9,7 @@ export const H3: FC<H3Props> = ({
   children,
   emphasis = 'high',
   color,
+  textAlign,
   style,
   testID,
 }) => {
@@ -31,6 +32,7 @@ export const H3: FC<H3Props> = ({
             theme.typography.lineHeight.normal * theme.typography.size.xl,
           color: finalColor,
           fontFamily: theme.typography.family.medium,
+          textAlign,
         },
         style,
       ]}

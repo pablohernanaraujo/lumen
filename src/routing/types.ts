@@ -36,12 +36,15 @@ export type AuthStackParamList = {
 export type AppStackParamList = {
   MainTabs: undefined;
   CryptoDetail: { cryptoId: string };
+  History: undefined;
+  Favorites: undefined;
 };
 
 export type TabStackParamList = {
   CryptoListTab: undefined;
   Exchange: undefined;
   Scanner: undefined;
+  Favorites: undefined;
 };
 
 // Root Navigator Types
@@ -100,6 +103,27 @@ export interface ExchangeScreenProps {
 }
 
 export interface ScannerScreenProps {
-  navigation: BottomTabNavigationProp<TabStackParamList, 'Scanner'>;
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<TabStackParamList, 'Scanner'>,
+    NativeStackNavigationProp<AppStackParamList>
+  >;
   route: RouteProp<TabStackParamList, 'Scanner'>;
+}
+
+export interface HistoryScreenProps {
+  navigation: NativeStackNavigationProp<AppStackParamList, 'History'>;
+  route: RouteProp<AppStackParamList, 'History'>;
+}
+
+export interface FavoritesScreenProps {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<TabStackParamList, 'Favorites'>,
+    NativeStackNavigationProp<AppStackParamList>
+  >;
+  route: RouteProp<TabStackParamList, 'Favorites'>;
+}
+
+export interface FavoritesStackScreenProps {
+  navigation: NativeStackNavigationProp<AppStackParamList, 'Favorites'>;
+  route: RouteProp<AppStackParamList, 'Favorites'>;
 }
