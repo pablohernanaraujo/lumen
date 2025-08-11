@@ -11,6 +11,7 @@ import { FilterModalScreen } from '../screens/modals/filter-modal';
 import { PermissionEducationModalScreen } from '../screens/modals/permission-education-modal';
 import { PrivacyModalScreen } from '../screens/modals/privacy-modal';
 import { ProfileModalScreen } from '../screens/modals/profile-modal';
+import { ScannerErrorModalScreen } from '../screens/modals/scanner-error-modal';
 import { TermsModalScreen } from '../screens/modals/terms-modal';
 import { makeStyles, useTheme } from '../theme';
 import { Icon, Image } from '../ui';
@@ -202,6 +203,29 @@ export const RootNavigator: FC = () => {
                 onPress={() => navigation.goBack()}
                 accessibilityLabel="Cerrar"
                 testID="back-button-6"
+              />
+            ),
+          })}
+        />
+        <Stack.Screen
+          name="ScannerErrorModal"
+          component={ScannerErrorModalScreen}
+          options={({ navigation }): NativeStackNavigationOptions => ({
+            title: 'Scan Error',
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: theme.colors.background,
+            },
+            headerTintColor: theme.colors.text.primary,
+            headerLeft: () => (
+              <Icon
+                name="close"
+                family="MaterialIcons"
+                size={32}
+                color={theme.colors.text.primary}
+                onPress={() => navigation.goBack()}
+                accessibilityLabel="Cerrar"
+                testID="back-button-7"
               />
             ),
           })}

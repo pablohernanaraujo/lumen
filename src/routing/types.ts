@@ -5,6 +5,8 @@ import type {
 } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
+import type { ScannerErrorModalParams } from '../screens/modals/scanner-error-modal';
+
 export type RootStackParamList = {
   Auth: undefined;
   App: undefined;
@@ -24,6 +26,7 @@ export type RootStackParamList = {
         onCancel?: () => void;
       }
     | undefined;
+  ScannerErrorModal: ScannerErrorModalParams;
 };
 
 export type AuthStackParamList = {
