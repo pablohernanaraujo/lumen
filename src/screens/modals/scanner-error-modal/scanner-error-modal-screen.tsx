@@ -1,4 +1,4 @@
-import React, { type FC, useEffect } from 'react';
+import React, { type FC, type ReactNode, useEffect } from 'react';
 import { Linking, ScrollView, View } from 'react-native';
 import {
   type RouteProp,
@@ -210,7 +210,7 @@ export const ScannerErrorModalScreen: FC = () => {
     }
   };
 
-  const renderHelpTips = (): React.ReactNode => {
+  const renderHelpTips = (): ReactNode => {
     if (
       errorType === QrErrorType.SCAN_TIMEOUT ||
       errorType === QrErrorType.CAMERA_ERROR
@@ -283,7 +283,7 @@ export const ScannerErrorModalScreen: FC = () => {
   return (
     <ScreenWrapper>
       <ScrollView style={styles.container}>
-        <ContentWrapper style={styles.content}>
+        <ContentWrapper variant="body">
           <View style={getIconContainerStyle()}>
             <Icon
               name={getIconForSeverity(errorConfig.severity)}
@@ -318,7 +318,7 @@ export const ScannerErrorModalScreen: FC = () => {
         </ContentWrapper>
       </ScrollView>
 
-      <Container style={styles.actionContainer}>
+      <ContentWrapper variant="footer">
         <VStack spacing="sm">
           {actions
             .filter((action) => action.isPrimary)
@@ -326,7 +326,6 @@ export const ScannerErrorModalScreen: FC = () => {
               <ButtonRegular
                 key={action.type}
                 onPress={() => handleAction(action.type)}
-                style={styles.primaryButton}
                 testID={`action-${action.type}`}
                 fullWidth
               >
@@ -340,7 +339,6 @@ export const ScannerErrorModalScreen: FC = () => {
               <ButtonOutline
                 key={action.type}
                 onPress={() => handleAction(action.type)}
-                style={styles.flexButton}
                 testID={`action-${action.type}`}
                 fullWidth
               >
@@ -361,7 +359,7 @@ export const ScannerErrorModalScreen: FC = () => {
               </ButtonGhost>
             ))}
         </VStack>
-      </Container>
+      </ContentWrapper>
     </ScreenWrapper>
   );
 };

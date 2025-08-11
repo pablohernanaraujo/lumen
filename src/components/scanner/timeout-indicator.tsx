@@ -82,7 +82,7 @@ const getTextColor = (timeLeft: number, theme: ThemeContextValue): string => {
   if (timeLeft <= 10) {
     return theme.theme.colors.warning.main;
   }
-  return theme.theme.colors.text.primary;
+  return '#FFFFFF';
 };
 
 export const TimeoutIndicator: FC<TimeoutIndicatorProps> = ({
