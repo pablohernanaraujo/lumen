@@ -2,6 +2,30 @@
 
 **Lumen** is a modern cryptocurrency portfolio tracker built with React Native and the New Architecture. Track your crypto investments with a beautiful, intuitive interface and real-time data.
 
+## 🚀 Quick Start for Development
+
+Get the app running in development mode in just a few steps:
+
+```bash
+# 1. Install dependencies (using legacy peer deps for compatibility)
+npm install --legacy-peer-deps
+
+# 2. iOS setup (iOS development only)
+bundle install && bundle exec pod install
+
+# 3. Start the app
+npm start                    # Start Metro bundler
+npm run android             # Run on Android
+npm run ios                 # Run on iOS
+
+# Or with New Architecture (recommended)
+npm run start:new-arch      # Start with New Architecture
+npm run android:new-arch    # Run Android with New Architecture
+npm run ios:new-arch        # Run iOS with New Architecture
+```
+
+**First time setup issues?** Check the [Prerequisites](#-prerequisites) and [Troubleshooting](#-troubleshooting) sections below.
+
 ## ✨ Features
 
 - 🔐 **Authentication System** - Secure login and registration
@@ -49,8 +73,10 @@ Before running this application, make sure you have completed the [React Native 
 2. **Install dependencies**
 
    ```bash
-   npm install
+   npm install --legacy-peer-deps
    ```
+
+   > **Note**: The `--legacy-peer-deps` flag is required to resolve peer dependency conflicts with some React Native packages.
 
 3. **iOS Setup** (iOS only)
 

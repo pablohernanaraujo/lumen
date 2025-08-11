@@ -12,9 +12,15 @@
 ### 🏗️ Arquitectura
 
 - **[🚀 New Architecture](./NEW_ARCHITECTURE.md)** - Migración a Fabric, TurboModules y Codegen
+- **[⚡ Performance Optimizations](./PERFORMANCE_OPTIMIZATIONS.md)** - Optimizaciones de rendimiento implementadas
+- **[🔧 API Optimization](./API_OPTIMIZATION.md)** - Sistema de optimización de APIs y rate limiting
 - **Sistema de Tema** - Context + Hooks pattern para theming
 - **Gestión de Estado** - Patrones de useState, useEffect, y custom hooks
 - **Optimización** - Memoización y performance patterns
+
+### 📋 Referencias Técnicas
+
+- **[🐛 Null Fix Summary](./NULL_FIX_SUMMARY.md)** - Resumen de correcciones de valores null implementadas
 
 ## 🚀 Para Empezar
 

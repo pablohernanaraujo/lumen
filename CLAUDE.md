@@ -56,6 +56,534 @@ Key environment variables for New Architecture:
 - `scripts/new-arch.sh` - New Architecture startup script
 - `NEW_ARCHITECTURE.md` - Detailed New Architecture migration documentation
 
+## Application Features
+
+### Core Functionality
+
+**Lumen** is a React Native cryptocurrency utility app that provides the following main features:
+
+#### 1. Cryptocurrency Exchange (`src/screens/exchange/`)
+
+- **Real-time conversion** between cryptocurrencies and fiat currencies
+- **Dynamic rate updates** with automatic refresh every minute
+- **Bidirectional conversion** with swap functionality
+- **Currency picker modal** for selecting source and destination currencies
+- **Rate limiting and caching** to optimize API usage
+- **Visual feedback** during rate loading and error states
+
+Key components:
+
+- `ExchangeScreen` - Main exchange interface
+- `use-exchange-converter.ts` - Exchange logic and rate management
+- `CurrencyPickerModal` - Currency selection interface
+
+#### 2. QR Code Scanner (`src/screens/scanner/`)
+
+- **Advanced QR code scanning** with React Native Vision Camera
+- **Cryptocurrency address validation** (Bitcoin & Ethereum)
+- **URI parsing** for payment requests (bitcoin:, ethereum: schemes)
+- **Enhanced permission management** with educational flows
+- **Error handling** with specific error types and recovery options
+- **Analytics tracking** for scan success/failure rates
+- **Clipboard integration** for manual address input
+- **Timeout handling** with retry mechanisms
+
+Key components:
+
+- `ScannerScreen` - Main scanning interface
+- `CameraView` - Camera implementation with barcode detection
+- `ScannerOverlay` - UI overlay with controls
+- `EnhancedPermissionFlow` - Camera permission management
+- `use-qr-scanner.ts` - Scanning logic and state management
+
+#### 3. History & Favorites (`src/screens/history/`)
+
+- **Scan history tracking** with metadata
+- **Address favorites** management
+- **Filtering and sorting** by network, date, usage count
+- **Label editing** for saved addresses
+- **Usage analytics** and duplicate detection
+- **Export functionality** for addresses
+
+Key components:
+
+- `HistoryScreen` - Main history interface
+- `FavoritesScreen` - Favorites management
+- `HistoryFilterModal` - Advanced filtering options
+- `LabelEditModal` - Address label management
+
+#### 4. Authentication (`src/screens/auth/`)
+
+- **Google Sign-In integration** with @react-native-google-signin
+- **Secure token management** with encrypted storage
+- **Session restoration** with silent sign-in
+- **Auto-refresh tokens** for persistent authentication
+- **Privacy-compliant** user data handling
+
+Key components:
+
+- `LoginScreen` - Authentication interface
+- `AuthProvider` - Authentication context
+- `AuthService` - Google Sign-In implementation
+
+#### 5. Cryptocurrency Data (`src/screens/crypto/`)
+
+- **Real-time crypto prices** from CoinGecko API
+- **Detailed coin information** with charts and metadata
+- **Search functionality** with debounced queries
+- **Market data caching** with intelligent TTL strategies
+- **Rate limiting protection** to prevent API throttling
+
+Key components:
+
+- `CryptoListScreen` - Cryptocurrency listings
+- `CryptoDetailScreen` - Individual coin details
+- API hooks for data fetching and caching
+
+## Custom Theme System
+
+### Architecture (`src/theme/`)
+
+Lumen implements a comprehensive theme system supporting light and dark modes:
+
+#### Theme Provider (`theme-provider.tsx`)
+
+- **Dynamic theme switching** with system preference detection
+- **Persistent theme selection** with AsyncStorage
+- **Context-based theme distribution** throughout the app
+- **Automatic mode detection** from system settings
+
+```typescript
+// Usage example
+const { theme, mode, setMode, toggleMode } = useTheme();
+```
+
+#### Design Tokens (`tokens.ts`, `colors.ts`)
+
+- **Semantic color tokens** for consistent theming
+- **Typography scale** with font families and sizes
+- **Spacing system** with consistent measurements
+- **Border radius** and shadow definitions
+- **Breakpoint definitions** for responsive design
+
+#### Styling Utilities (`make-styles.ts`, `utils.ts`)
+
+- **Theme-aware styling** with TypeScript support
+- **Runtime style generation** based on current theme
+- **Performance optimization** with style memoization
+- **Utility functions** for common theme operations
+
+```typescript
+// makeStyles usage
+const useStyles = makeStyles((theme) => ({
+  container: {
+    backgroundColor: theme.colors.surface,
+    padding: theme.spacing.md,
+  },
+}));
+```
+
+## UI Components Library (`src/ui/`)
+
+### Typography Components (`ui/typography/`)
+
+- **Semantic text components**: H1, H2, H3, Body1, Body2, Body3
+- **Consistent styling** with theme integration
+- **Accessibility support** with proper semantic roles
+- **Responsive sizing** and weight variations
+
+### Layout Components (`ui/layout/`)
+
+- **Flexible containers**: Container, ContentWrapper, ScreenWrapper
+- **Stack layouts**: HStack (horizontal), VStack (vertical) with spacing
+- **Keyboard handling**: KeyboardAvoidingView, KeyboardAwareScrollView
+- **Safe area integration** for modern device support
+
+### Button System (`ui/buttons/`)
+
+- **Multiple variants**: Regular, Ghost, Outline, Link, Icon
+- **Consistent interaction patterns** with haptic feedback
+- **Icon integration** with customizable positioning
+- **Accessibility compliance** with proper ARIA labels
+
+### Input Components (`ui/amount-input/`)
+
+- **Specialized numeric input** for cryptocurrency amounts
+- **Decimal precision control** based on currency type
+- **Input validation** and formatting
+- **Visual feedback** for invalid states
+
+### Data Display (`ui/items/`, `ui/image/`)
+
+- **CryptoItem component** for consistent coin display
+- **Fallback image handling** with graceful degradation
+- **Lazy loading** and performance optimization
+- **Image caching** for improved performance
+
+### Feedback Components (`ui/states/`, `ui/loading-indicator/`)
+
+- **Loading states**: SkeletonLoader, LoadingIndicator with labels
+- **Empty states**: Customizable empty content displays
+- **Error states**: User-friendly error messages with retry actions
+- **Network banners**: Connection status indicators
+
+### Search & Selection (`ui/search/`, `ui/dropdown/`)
+
+- **Debounced search**: Performance-optimized search input
+- **Sort dropdown**: Multi-criteria sorting interface
+- **Currency picker**: Unified crypto/fiat selection
+
+## Wording & Internationalization System (`src/wording/`)
+
+The app uses a centralized wording system for text management:
+
+- **Centralized text constants** for maintainability
+- **Consistent messaging** across the application
+- **Easy localization preparation** for future i18n support
+- **Type-safe text references** with TypeScript
+
+_Note: The wording system is prepared but not yet fully populated with content._
+
+## State Management & Contexts (`src/contexts/`)
+
+### Authentication Context (`auth-context.tsx`)
+
+- **Global authentication state** with Google Sign-In
+- **Session persistence** and restoration
+- **Loading states** for authentication flows
+- **Error handling** for sign-in failures
+
+### Network Context (`network-context.tsx`)
+
+- **Network connectivity monitoring** with @react-native-community/netinfo
+- **Offline state handling** and user feedback
+- **API request queuing** during connectivity issues
+- **Background sync** when connection restores
+
+### Filter Context (`filter-context.tsx`)
+
+- **Global filter state** for cryptocurrency lists
+- **Persistent filter preferences**
+- **Complex filtering logic** with multiple criteria
+- **Reset and clear functionality**
+
+### Query Context (`query-context.tsx`)
+
+- **React Query configuration** and global settings
+- **Cache management** and invalidation strategies
+- **Error boundary integration**
+- **Background refetch policies**
+
+## Custom Hooks (`src/hooks/`)
+
+### API Hooks (`hooks/api/`)
+
+- **use-crypto-list**: Cryptocurrency listings with caching
+- **use-crypto-detail**: Individual coin data fetching
+- **use-search-cryptos**: Debounced search functionality
+- **use-supported-fiats**: Fiat currency data
+- **use-api-metrics**: API usage monitoring and optimization
+- **use-network-aware-refresh**: Smart refresh based on connection
+
+### Exchange Hooks (`hooks/exchange/`)
+
+- **use-exchange-converter**: Real-time currency conversion logic
+- **Rate caching** and refresh management
+- **Bidirectional conversion** calculations
+- **Error handling** for rate fetch failures
+
+### Specialized Hooks
+
+- **use-camera-permissions**: Camera permission management
+- **use-enhanced-camera-permissions**: Advanced permission flows with education
+- **use-qr-scanner**: QR scanning logic with timeout handling
+- **use-sort-data**: Generic sorting functionality
+- **use-app-initialization**: App startup and configuration
+
+## Services Layer (`src/services/`)
+
+### Core Services
+
+- **ApiService**: HTTP client with rate limiting and caching
+- **AuthService**: Google Sign-In implementation and token management
+- **AnalyticsService**: Event tracking and user behavior analysis
+
+### Specialized Services
+
+- **AddressStorageService**: Cryptocurrency address persistence
+- **WalletValidationService**: Address format validation for Bitcoin/Ethereum
+- **QrErrorService**: QR scanning error tracking and recovery
+- **RequestQueueService**: API rate limiting and request management
+- **RequestDeduplicationService**: Duplicate request prevention
+- **ApiCacheService**: Intelligent caching with TTL strategies
+- **NetworkStrategyService**: Network-aware API strategies
+
+### Utility Services
+
+- **BlockchainUtils**: Address formatting and validation utilities
+- **NumberFormat**: Currency and numeric display formatting
+
+## Modal System (`src/screens/modals/`)
+
+Comprehensive modal system for specialized interactions:
+
+### Core Modals
+
+- **CurrencyPickerModal**: Unified cryptocurrency and fiat selection
+- **FilterModal**: Advanced filtering interface with multiple criteria
+- **ScannerErrorModal**: QR scanning error handling with recovery options
+
+### Informational Modals
+
+- **TermsModal**: Terms of service display
+- **PrivacyModal**: Privacy policy information
+- **PermissionEducationModal**: Camera permission education
+- **ProfileModal**: User profile and settings
+
+Each modal includes:
+
+- **Consistent navigation patterns**
+- **Proper modal lifecycle management**
+- **Accessibility support**
+- **Theme integration**
+- **Error boundary protection**
+
+## Navigation System (`src/routing/`)
+
+### Architecture
+
+- **Stack Navigation**: Native stack navigator for screen transitions
+- **Tab Navigation**: Bottom tab bar for main app sections
+- **Modal Navigation**: Overlay modals for specialized interactions
+- **Type-safe routing**: TypeScript integration for navigation params
+
+Key files:
+
+- `types.ts` - Navigation type definitions and param lists
+- `app-stack.tsx` - Main application stack navigator
+- `tab-navigator.tsx` - Bottom tab navigation setup
+- `root-navigator.tsx` - Root navigation container
+- `routing-service.ts` - Navigation utilities and helpers
+
+### Navigation Patterns
+
+- **Screen-specific navigation props** with proper typing
+- **Modal presentation** with consistent UX patterns
+- **Deep linking support** (prepared for future implementation)
+- **Navigation state persistence** for development
+
+## Assets & Resources (`src/assets/`)
+
+### Custom Font System (`assets/fonts/`)
+
+- **Nunito font family** with multiple weights:
+  - Regular, Medium, SemiBold, Bold, Light
+- **Font loading configuration** via react-native.config.js
+- **Cross-platform font registration**
+
+### Images & Branding (`assets/images/`)
+
+- **App logos** and branding assets
+- **Placeholder images** for fallback states
+- **Optimized formats** for performance
+
+## TypeScript Architecture (`src/types/`)
+
+### Type Organization
+
+- **Domain-specific types**: Separate files for different app areas
+- **API response types**: Strongly typed service interfaces
+- **Component prop interfaces**: Comprehensive component typing
+- **Navigation types**: Type-safe routing with param validation
+
+Key type files:
+
+- `address-history-types.ts` - Address storage and history types
+- `qr-error-types.ts` - QR scanning error classifications
+- Component-specific `types.ts` files throughout the codebase
+
+### Type Safety Patterns
+
+- **Strict TypeScript configuration** with comprehensive rules
+- **Runtime type validation** using Zod for API responses
+- **Discriminated unions** for complex state management
+- **Generic constraints** for reusable component patterns
+
+## Development Tools & Git Hooks
+
+### Git Hooks Configuration (`.husky/`)
+
+The project uses Husky for Git hooks automation:
+
+#### Pre-commit Hook (`.husky/pre-commit`)
+
+- **Lint-staged execution**: Automatically runs linters and formatters on staged files
+- **Code quality enforcement**: Prevents commits that don't meet quality standards
+- **Performance optimization**: Only processes changed files, not entire codebase
+
+#### Commit Message Hook (`.husky/commit-msg`)
+
+- **Conventional Commits**: Enforces conventional commit message format
+- **Automated validation**: Uses commitlint to validate commit messages
+- **Consistent history**: Ensures readable and standardized commit history
+
+#### Commit Message Rules (`.commitlintrc.js`)
+
+Enforced commit types:
+
+- `feat`: Nueva funcionalidad (New feature)
+- `fix`: Bug fixes
+- `docs`: Documentation changes
+- `style`: Formatting changes (no code logic)
+- `refactor`: Code refactoring
+- `test`: Test additions or changes
+- `chore`: Maintenance tasks
+- `perf`: Performance improvements
+- `ci`: CI/CD changes
+- `build`: Build system changes
+- `revert`: Reverts previous commits
+
+Rules:
+
+- **Subject case**: Must be lowercase
+- **Header length**: Maximum 72 characters
+- **Type enforcement**: Must use predefined types
+
+### Lint-staged Configuration (`package.json`)
+
+Automated quality checks on staged files:
+
+```json
+{
+  "lint-staged": {
+    "*.{ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,yml,yaml}": ["prettier --write"],
+    "*.{ts,tsx}*": ["npm run test -- --findRelatedTests --passWithNoTests"]
+  }
+}
+```
+
+Features:
+
+- **Automatic fixing**: ESLint auto-fixes issues where possible
+- **Code formatting**: Prettier ensures consistent code style
+- **Related tests**: Runs tests for modified files
+- **File type handling**: Different rules for different file types
+
+### Development Scripts
+
+#### Quality Assurance
+
+- `npm run lint` - Run ESLint on entire codebase
+- `npm run lint:fix` - Auto-fix ESLint issues
+- `npm run format` - Format all files with Prettier
+- `npm run type-check` - TypeScript type checking without compilation
+
+#### Testing Scripts
+
+- `npm test` - Run Jest tests
+- `npm run test:coverage` - Generate coverage report
+- `npm run test:watch` - Run tests in watch mode
+
+## Testing Architecture
+
+### Jest Configuration (`jest.config.js`, `jest-setup.ts`)
+
+#### Test Environment Setup
+
+- **React Native preset**: Optimized for React Native testing
+- **Setup files**: `jest-setup.ts` for global test configuration
+- **Transform configuration**: TypeScript and React Native transforms
+- **Module mapping**: Proper path resolution for testing
+
+#### Coverage Requirements
+
+- **Minimum threshold**: 60% coverage enforced across:
+  - Lines of code
+  - Functions
+  - Branches
+  - Statements
+- **Build failure**: CI/CD fails if coverage drops below threshold
+- **Coverage reports**: HTML, JSON, and LCOV formats generated
+
+### Testing Patterns & Best Practices
+
+#### Component Testing (`src/ui/`)
+
+All UI components include comprehensive test suites:
+
+```typescript
+// Example test structure
+describe('ComponentName', () => {
+  it('should render correctly', () => {
+    // Arrange - setup test data
+    // Act - render component
+    // Assert - verify behavior
+  });
+
+  it('should handle user interactions', async () => {
+    // Test user events and state changes
+  });
+
+  it('should be accessible', () => {
+    // Test ARIA labels and accessibility
+  });
+});
+```
+
+#### Service Testing (`src/services/__tests__/`)
+
+Service layer includes unit tests for:
+
+- **API interactions** with mocked responses
+- **Data persistence** and storage operations
+- **Validation logic** with edge cases
+- **Error handling** scenarios
+
+#### Hook Testing (`src/hooks/`)
+
+Custom hooks tested with React Testing Library:
+
+- **State management** and updates
+- **API integrations** with mock data
+- **Error boundaries** and recovery
+- **Performance optimizations**
+
+#### TestID Requirements (ESLint Rule: `custom/require-testid`)
+
+- **Interactive elements**: All buttons, inputs require testID
+- **Format convention**: `[component]-[element]-[number]`
+- **Unique identifiers**: No duplicate testIDs per screen
+- **Accessibility support**: TestIDs enhance automated testing
+
+### Test Utilities (`src/test-utils.tsx`)
+
+Shared testing utilities for consistent test setup:
+
+- **Custom render functions** with providers
+- **Mock data generators** for consistent test data
+- **Helper functions** for common test operations
+- **Provider wrappers** for context testing
+
+### Coverage Reporting
+
+Generated coverage reports include:
+
+- **HTML reports**: Visual coverage analysis in `coverage/` directory
+- **LCOV reports**: Integration with CI/CD and IDE plugins
+- **JSON reports**: Programmatic coverage analysis
+- **Console output**: Quick coverage summary during development
+
+### Testing Best Practices Summary
+
+1. **Test behavior, not implementation** - Focus on user-facing functionality
+2. **Use proper TestIDs** - Enable reliable automated testing
+3. **Mock external dependencies** - Ensure isolated, fast tests
+4. **Test error states** - Verify proper error handling
+5. **Accessibility testing** - Ensure components work with screen readers
+6. **Performance testing** - Verify optimizations work as expected
+
 ## Build Configuration
 
 - **Metro**: Configured with symlinks disabled (`unstable_enableSymlinks: false`)
