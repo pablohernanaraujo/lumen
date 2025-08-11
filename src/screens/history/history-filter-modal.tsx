@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable max-statements */
 import React, { type FC, useCallback, useState } from 'react';
-import { Modal, ScrollView, TouchableOpacity, View } from 'react-native';
+import {
+  Modal,
+  ScrollView,
+  TextStyle,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DatePicker from '@react-native-community/datetimepicker';
 
@@ -351,12 +357,14 @@ export const HistoryFilterModal: FC<HistoryFilterModalProps> = ({
                       color={isSelected ? '#007AFF' : '#666'}
                     />
                     <Body2
-                      style={[
-                        styles.filterOptionText,
-                        ...(isSelected
-                          ? [styles.filterOptionSelectedText]
-                          : []),
-                      ]}
+                      style={
+                        [
+                          styles.filterOptionText,
+                          ...(isSelected
+                            ? [styles.filterOptionSelectedText]
+                            : []),
+                        ] as unknown as TextStyle
+                      }
                     >
                       {option.label}
                     </Body2>
@@ -408,12 +416,14 @@ export const HistoryFilterModal: FC<HistoryFilterModalProps> = ({
                       color={isSelected ? '#007AFF' : '#666'}
                     />
                     <Body2
-                      style={[
-                        styles.filterOptionText,
-                        ...(isSelected
-                          ? [styles.filterOptionSelectedText]
-                          : []),
-                      ]}
+                      style={
+                        [
+                          styles.filterOptionText,
+                          ...(isSelected
+                            ? [styles.filterOptionSelectedText]
+                            : []),
+                        ] as unknown as TextStyle
+                      }
                     >
                       {option.label}
                     </Body2>
@@ -506,12 +516,14 @@ export const HistoryFilterModal: FC<HistoryFilterModalProps> = ({
                       color={isSelected ? '#007AFF' : '#666'}
                     />
                     <Body2
-                      style={[
-                        styles.filterOptionText,
-                        ...(isSelected
-                          ? [styles.filterOptionSelectedText]
-                          : []),
-                      ]}
+                      style={
+                        [
+                          styles.filterOptionText,
+                          ...(isSelected
+                            ? [styles.filterOptionSelectedText]
+                            : []),
+                        ] as unknown as TextStyle
+                      }
                     >
                       {option.label}
                     </Body2>
