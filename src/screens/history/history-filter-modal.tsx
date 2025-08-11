@@ -449,12 +449,14 @@ export const HistoryFilterModal: FC<HistoryFilterModalProps> = ({
                     onPress={(): void => setShowDateFromPicker(true)}
                   >
                     <Body2
-                      style={[
-                        styles.dateButtonText,
-                        ...(localFilter.dateFrom
-                          ? [styles.dateButtonSelectedText]
-                          : []),
-                      ]}
+                      style={
+                        [
+                          styles.dateButtonText,
+                          ...(localFilter.dateFrom
+                            ? [styles.dateButtonSelectedText]
+                            : []),
+                        ] as unknown as TextStyle
+                      }
                     >
                       {formatDate(localFilter.dateFrom)}
                     </Body2>
@@ -476,12 +478,14 @@ export const HistoryFilterModal: FC<HistoryFilterModalProps> = ({
                     onPress={(): void => setShowDateToPicker(true)}
                   >
                     <Body2
-                      style={[
-                        styles.dateButtonText,
-                        ...(localFilter.dateTo
-                          ? [styles.dateButtonSelectedText]
-                          : []),
-                      ]}
+                      style={
+                        [
+                          styles.dateButtonText,
+                          ...(localFilter.dateTo
+                            ? [styles.dateButtonSelectedText]
+                            : []),
+                        ] as unknown as TextStyle
+                      }
                     >
                       {formatDate(localFilter.dateTo)}
                     </Body2>
