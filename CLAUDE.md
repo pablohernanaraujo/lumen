@@ -47,6 +47,99 @@ Key environment variables for New Architecture:
 - `USE_FABRIC=1`
 - `USE_TURBOMODULE=1`
 
+## Environment Variables Configuration
+
+### Environment Variables (`.env`)
+
+The project uses environment variables to configure React Native New Architecture and other settings:
+
+#### Core Variables
+
+```bash
+# React Native New Architecture
+REACT_NATIVE_USE_NEW_ARCHITECTURE=1
+USE_FABRIC=1
+USE_TURBOMODULE=1
+```
+
+#### Runtime Environment Detection
+
+- **NODE_ENV**: Used for development/test environment detection
+  - Set to `'test'` during Jest test execution
+  - Used in `auth-context.tsx` and `filter-context.tsx` to skip async operations during testing
+  - Controls test-specific behavior and mocking
+
+#### API Configuration
+
+Currently hardcoded in `src/services/api-service.ts`, but should be moved to environment variables for better configuration management:
+
+```typescript
+// Current configuration (should be moved to .env)
+export const API_CONFIG = {
+  BASE_URL: 'https://api.coingecko.com/api/v3',
+  TIMEOUT: 10000,
+  // ... other API settings
+};
+```
+
+**Recommended .env structure:**
+
+```bash
+# API Configuration
+API_BASE_URL=https://api.coingecko.com/api/v3
+API_TIMEOUT=10000
+API_RATE_LIMIT_MAX_REQUESTS=8
+API_RATE_LIMIT_WINDOW_MS=60000
+
+# Google Sign-In Configuration (if needed)
+GOOGLE_WEB_CLIENT_ID=your_google_client_id_here
+GOOGLE_IOS_CLIENT_ID=your_ios_client_id_here
+
+# Development Configuration
+DEBUG_MODE=true
+ENABLE_FLIPPER=true
+```
+
+### Environment Setup Best Practices
+
+#### Development Environment
+
+1. Copy `.env.example` to `.env` (if example exists)
+2. Configure API keys and URLs for development
+3. Ensure New Architecture variables are set for optimal performance
+
+#### Production Environment
+
+1. Use production API endpoints
+2. Disable debug features
+3. Ensure secure API key management
+4. Validate all required environment variables
+
+#### Security Considerations
+
+- **Never commit API keys** to version control
+- **Use different keys** for development/staging/production
+- **Validate environment variables** at app startup
+- **Use encrypted storage** for sensitive runtime data
+
+### Environment Variable Loading
+
+React Native loads environment variables automatically:
+
+- Variables defined in `.env` are available via `process.env`
+- Variables are bundled at build time, not runtime
+- Changes require app rebuild to take effect
+
+### Missing Environment Configuration
+
+The following should be added for better configuration management:
+
+- API base URL configuration
+- Rate limiting parameters
+- Google Sign-In client IDs
+- Debug and development flags
+- Analytics configuration
+
 ## Project Structure
 
 - `app.tsx` - Main application component using `@react-native/new-app-screen`
