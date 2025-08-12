@@ -1,4 +1,6 @@
 /* eslint-disable max-statements */
+import { Platform } from 'react-native';
+
 export type LocaleSeparators = {
   decimal: string;
   group: string;
@@ -34,6 +36,19 @@ export const getLocaleSeparators = (locale?: string): LocaleSeparators => {
   };
 };
 
+// Helper function for iOS-specific decimal formatting
+const formatIOSSmallDecimal = (
+  value: number,
+  maximumFractionDigits?: number,
+): string => {
+  const stringValue = value.toString();
+  if (stringValue.includes('e')) {
+    // Handle scientific notation
+    return value.toFixed(maximumFractionDigits || 18).replace(/\.?0+$/, '');
+  }
+  return stringValue;
+};
+
 export const formatNumberLocale = (
   value: number,
   options?: {
@@ -41,15 +56,40 @@ export const formatNumberLocale = (
     minimumFractionDigits?: number;
     maximumFractionDigits?: number;
     useGrouping?: boolean;
+    preserveLeadingZeros?: boolean;
   },
 ): string => {
-  const { locale, minimumFractionDigits, maximumFractionDigits, useGrouping } =
-    options ?? {};
-  return new Intl.NumberFormat(locale, {
-    style: 'decimal',
+  const {
+    locale,
     minimumFractionDigits,
     maximumFractionDigits,
     useGrouping,
+    preserveLeadingZeros = false,
+  } = options ?? {};
+
+  const isSmallDecimal = value > 0 && value < 1;
+
+  // iOS-specific handling for very small decimal numbers
+  if (Platform.OS === 'ios' && isSmallDecimal && value < 0.001) {
+    return formatIOSSmallDecimal(value, maximumFractionDigits);
+  }
+
+  const hasSignificantDecimals =
+    maximumFractionDigits && maximumFractionDigits > 4;
+
+  let effectiveUseGrouping = useGrouping;
+  let effectiveMinFractionDigits = minimumFractionDigits;
+
+  if (preserveLeadingZeros && isSmallDecimal && hasSignificantDecimals) {
+    effectiveUseGrouping = false;
+    effectiveMinFractionDigits = maximumFractionDigits;
+  }
+
+  return new Intl.NumberFormat(locale, {
+    style: 'decimal',
+    minimumFractionDigits: effectiveMinFractionDigits,
+    maximumFractionDigits,
+    useGrouping: effectiveUseGrouping,
   }).format(value);
 };
 
@@ -60,8 +100,23 @@ export const parseLocaleNumber = (
   if (!input) return null;
   const { decimal, group } = getLocaleSeparators(locale);
   // Normalize: remove grouping, replace locale decimal with '.'
-  const withoutGroups = group ? input.split(group).join('') : input;
-  const normalized = withoutGroups.split(decimal).join('.').replace(/\s/g, '');
+  // NEW: Force-treat '.' as decimal if present in input (overrides locale group if it conflicts)
+  let normalized = input;
+  if (input.includes('.')) {
+    // Remove locale groups, but preserve '.' as decimal
+    if (group !== '.') {
+      normalized = normalized.split(group).join('');
+    }
+    // If locale decimal is not '.', replace it with '.' (but since input uses '.', this preserves it)
+    if (decimal !== '.') {
+      normalized = normalized.split(decimal).join('.');
+    }
+  } else {
+    // Fallback to original logic if no '.' in input
+    const withoutGroups = group ? input.split(group).join('') : input;
+    normalized = withoutGroups.split(decimal).join('.').replace(/\s/g, '');
+  }
+
   if (!/^\d*(?:\.\d*)?$/.test(normalized)) return null;
   const value =
     normalized === '' || normalized === '.' ? Number.NaN : Number(normalized);

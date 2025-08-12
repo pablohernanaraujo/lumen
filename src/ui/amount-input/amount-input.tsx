@@ -1,6 +1,12 @@
 import React, { type FC, useCallback, useMemo, useRef, useState } from 'react';
 import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
-import { Animated, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  Platform,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import { makeStyles, useTheme } from '../../theme';
 import {
@@ -91,6 +97,35 @@ export const AmountInput: FC<AmountInputProps> = ({
     inputRef.current?.focus();
   };
 
+  // Helper function to format display value (reduces complexity)
+  const formatDisplayValue = useCallback(
+    (inputValue: string, numeric: number): string => {
+      const decimalPlaces = inputValue.includes('.')
+        ? inputValue.split('.')[1]?.length || 0
+        : 0;
+      const effectiveMaxDigits = Math.min(decimalPlaces, maxFractionDigits);
+      const isSmallDecimal = numeric > 0 && numeric < 1;
+      const hasMultipleDecimalPlaces = decimalPlaces > 2;
+
+      // iOS-specific fix: For very small decimal numbers, bypass Intl.NumberFormat completely
+      if (Platform.OS === 'ios' && isSmallDecimal && numeric < 0.001) {
+        return inputValue;
+      }
+
+      return formatNumberLocale(numeric, {
+        locale,
+        maximumFractionDigits: effectiveMaxDigits,
+        minimumFractionDigits:
+          isSmallDecimal && hasMultipleDecimalPlaces
+            ? effectiveMaxDigits
+            : undefined,
+        useGrouping: !(isSmallDecimal && hasMultipleDecimalPlaces),
+        preserveLeadingZeros: isSmallDecimal && hasMultipleDecimalPlaces,
+      });
+    },
+    [locale, maxFractionDigits],
+  );
+
   const displayValue = useMemo(() => {
     if (!value) return '';
     if (isFocused) return value; // avoid grouping while typing
@@ -98,19 +133,8 @@ export const AmountInput: FC<AmountInputProps> = ({
     const numeric = parseLocaleNumber(value, locale);
     if (numeric === null) return value;
 
-    // Use the actual decimal places present in the value instead of maxFractionDigits
-    // This prevents formatting issues when the value has fewer decimals than maxFractionDigits
-    const decimalPlaces = value.includes('.')
-      ? value.split('.')[1]?.length || 0
-      : 0;
-    const effectiveMaxDigits = Math.min(decimalPlaces, maxFractionDigits);
-
-    return formatNumberLocale(numeric, {
-      locale,
-      maximumFractionDigits: effectiveMaxDigits,
-      useGrouping: true,
-    });
-  }, [isFocused, locale, maxFractionDigits, value]);
+    return formatDisplayValue(value, numeric);
+  }, [formatDisplayValue, isFocused, locale, value]);
 
   return (
     <Animated.View

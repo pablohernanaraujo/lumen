@@ -153,12 +153,22 @@ export const ExchangeScreen: FC = () => {
           width={20}
           height={20}
           circular
+          enableFallback={true}
+          fallbackSource={undefined}
+          onError={() => {
+            // Image fallback will be handled by the Image component
+          }}
         />
       );
     }
 
+    // Better fallback icons based on currency
     const iconName =
-      sourceCurrency.type === 'crypto' ? 'currency-bitcoin' : 'payments';
+      sourceCurrency.type === 'crypto'
+        ? sourceCurrency.symbol === 'BTC'
+          ? 'currency-btc'
+          : 'currency-bitcoin'
+        : 'payments';
     const iconFamily =
       sourceCurrency.type === 'crypto'
         ? 'MaterialCommunityIcons'
@@ -182,12 +192,22 @@ export const ExchangeScreen: FC = () => {
           width={20}
           height={20}
           circular
+          enableFallback={true}
+          fallbackSource={undefined}
+          onError={() => {
+            // Image fallback will be handled by the Image component
+          }}
         />
       );
     }
 
+    // Better fallback icons based on currency
     const iconName =
-      destinationCurrency.type === 'crypto' ? 'currency-bitcoin' : 'payments';
+      destinationCurrency.type === 'crypto'
+        ? destinationCurrency.symbol === 'BTC'
+          ? 'currency-btc'
+          : 'currency-bitcoin'
+        : 'payments';
     const iconFamily =
       destinationCurrency.type === 'crypto'
         ? 'MaterialCommunityIcons'

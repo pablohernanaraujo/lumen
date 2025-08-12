@@ -51,6 +51,7 @@ const DEFAULT_SOURCE_CURRENCY: SelectedCurrency = {
   code: 'bitcoin',
   name: 'Bitcoin',
   symbol: 'BTC',
+  image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png',
   decimals: 8,
 };
 
@@ -95,8 +96,21 @@ const isValidAmount = (amount: string, decimals: number): boolean => {
 const formatAmount = (amount: number, decimals: number): string => {
   if (amount === 0) return '0';
 
-  // Remove trailing zeros and format to appropriate decimals
+  // For very small decimal numbers, be more careful about preserving significant digits
   const formatted = amount.toFixed(decimals);
+
+  // Check if this is a small decimal number (< 1) that needs special handling
+  if (amount > 0 && amount < 1) {
+    // For small decimals, find the position of the last non-zero digit
+    const lastNonZeroMatch = formatted.match(/[1-9](?=0*$)/);
+    if (lastNonZeroMatch) {
+      const lastNonZeroIndex = formatted.lastIndexOf(lastNonZeroMatch[0]);
+      // Keep everything up to and including the last significant digit
+      return formatted.slice(0, Math.max(0, lastNonZeroIndex + 1));
+    }
+  }
+
+  // For other numbers, remove trailing zeros normally
   return formatted.replace(/\.?0+$/, '');
 };
 
@@ -198,8 +212,8 @@ const fetchConversionRate = async (
 
 export const useExchangeConverter = (): UseExchangeConverterReturn => {
   const [state, setState] = useState<ConversionState>({
-    sourceAmount: '0',
-    destinationAmount: '0',
+    sourceAmount: '',
+    destinationAmount: '',
     sourceCurrency: DEFAULT_SOURCE_CURRENCY,
     destinationCurrency: DEFAULT_DESTINATION_CURRENCY,
     conversionRate: null,
@@ -248,13 +262,13 @@ export const useExchangeConverter = (): UseExchangeConverterReturn => {
   // Perform conversion calculation
   const calculateConversion = useCallback(
     (amount: string, rate: number | null, toDecimals: number): string => {
-      if (!rate || !amount || amount === '0' || amount === '') {
-        return '0';
+      if (!rate || !amount || amount === '') {
+        return '';
       }
 
       const numAmount = Number(amount);
       if (Number.isNaN(numAmount) || numAmount <= 0) {
-        return '0';
+        return '';
       }
 
       const converted = numAmount * rate;
@@ -267,9 +281,9 @@ export const useExchangeConverter = (): UseExchangeConverterReturn => {
   useEffect(() => {
     if (
       state.conversionRate &&
-      (state.sourceAmount !== '0' || state.destinationAmount !== '0')
+      (state.sourceAmount || state.destinationAmount)
     ) {
-      if (state.lastEditedField === 'source' && state.sourceAmount !== '0') {
+      if (state.lastEditedField === 'source' && state.sourceAmount) {
         const newDestAmount = calculateConversion(
           state.sourceAmount,
           state.conversionRate,
@@ -281,7 +295,7 @@ export const useExchangeConverter = (): UseExchangeConverterReturn => {
         }));
       } else if (
         state.lastEditedField === 'destination' &&
-        state.destinationAmount !== '0'
+        state.destinationAmount
       ) {
         const newSourceAmount = calculateConversion(
           state.destinationAmount,
@@ -333,7 +347,7 @@ export const useExchangeConverter = (): UseExchangeConverterReturn => {
           }
           return {
             ...prev,
-            destinationAmount: '0',
+            destinationAmount: '',
           };
         });
       }, 300);
@@ -372,7 +386,7 @@ export const useExchangeConverter = (): UseExchangeConverterReturn => {
           }
           return {
             ...prev,
-            sourceAmount: '0',
+            sourceAmount: '',
           };
         });
       }, 300);
